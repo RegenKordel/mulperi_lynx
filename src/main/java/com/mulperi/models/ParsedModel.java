@@ -5,16 +5,18 @@ import java.util.ArrayList;
 public class ParsedModel {
 
 	String modelName;
-	ArrayList<String> components;
+	ArrayList<Component> components;
 	ArrayList<Feature> features;
 	
 	public ParsedModel(String name) {
 		modelName = name;
-		components = new ArrayList<String>();
+		components = new ArrayList<Component>();
 		features = new ArrayList<Feature>();
+		components.add(new Component(name));
+		features.add(new Feature(name));
 	}
 	
-	public void addComponent(String component) {
+	public void addComponent(Component component) {
 		components.add(component);
 	}
 	
@@ -26,7 +28,7 @@ public class ParsedModel {
 		return modelName;
 	}
 	
-	public ArrayList<String> getComponents() {
+	public ArrayList<Component> getComponents() {
 		return components;
 	}
 	
