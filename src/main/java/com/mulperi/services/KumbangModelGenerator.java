@@ -1,9 +1,9 @@
 package com.mulperi.services;
 
+import com.mulperi.models.Component;
 import com.mulperi.models.Constraint;
 import com.mulperi.models.Feature;
 import com.mulperi.models.ParsedModel;
-import com.mulperi.models.Subfeature;
 
 public class KumbangModelGenerator {
 	
@@ -12,8 +12,8 @@ public class KumbangModelGenerator {
 	
 
 	public String generateKumbangModelString(ParsedModel data) {
-		ParsedModel model = data;
-		String kbm = "Kumbang model " + model.getModelName() +"\n\t root component " + model.getModelName() +
+		this.model = data;
+		this.kbm = "Kumbang model " + model.getModelName() +"\n\t root component " + model.getModelName() +
 		"\n\t root feature " + model.getModelName() + "\n";
 		
 		if (!data.getComponents().isEmpty()) {
@@ -32,8 +32,8 @@ public class KumbangModelGenerator {
 	private void listComponents() {
 		kbm += "\n//---components-----\n\n";
 		
-		for(String com : model.getComponents()) {
-			kbm += "component type " + com + " {\n}\n";
+		for(Component com : model.getComponents()) {
+			kbm += "component type " + com.getComponentType() + " {\n}\n";
 		}
 		
 	}
@@ -42,7 +42,7 @@ public class KumbangModelGenerator {
 		kbm += "\n//---features-----\n\n";
 		
 		for(Feature feat : model.getFeatures()) {
-			kbm += "feature type " + feat.getFeatureName() + "{\n}\n";
+			kbm += "feature type " + feat.getFeatureType() + " {\n";
 			
 			if (!feat.getSubFeatures().isEmpty()) {
 				listSubfeatures(feat);
@@ -59,7 +59,7 @@ public class KumbangModelGenerator {
 	private void listSubfeatures(Feature feat) {
 		kbm += "\tsubfeatures\n";
 		
-		for(Subfeature sub : feat.getSubFeatures()) {
+		for(Feature sub : feat.getSubFeatures()) {
 			kbm += "\t\t" + sub.toString() + ";\n";
 		}
 	}

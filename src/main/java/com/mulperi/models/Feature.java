@@ -4,51 +4,55 @@ import java.util.ArrayList;
 
 public class Feature {
 
-	//not sure if the subfeatures/constraints should just be strings and if
-	//these models are necessary at all (just parse straight to kbm string instead?)
-	
-	String featureName;
-	ArrayList<Subfeature> subFeatures;
+	String featureType;
+	String featureRole;
+	ArrayList<Feature> subFeatures;
 	ArrayList<Constraint> constraints;
-	
-	public Feature(String name) {
-		featureName = name;
-		subFeatures = new ArrayList<Subfeature>();
+
+	public Feature(String type, String role) {
+		featureType = type;
+		featureRole = role;
+		subFeatures = new ArrayList<Feature>();
 		constraints = new ArrayList<Constraint>();
 	}
-	
-	public void addSubFeature(Subfeature subfeature) {
+
+	public Feature(String type) {
+		featureType = type;
+		featureRole = "";
+		subFeatures = new ArrayList<Feature>();
+		constraints = new ArrayList<Constraint>();
+	}
+
+	public void addSubFeature(Feature subfeature) {
 		subFeatures.add(subfeature);
 	}
-	
+
 	public void addConstraint(Constraint constraint) {
 		constraints.add(constraint);
 	}
-	
-	public String getFeatureName() {
-		return featureName;
+
+	public String getFeatureType() {
+		return featureType;
 	}
-	
-	public ArrayList<Subfeature> getSubFeatures() {
+
+	public String getFeatureRole() {
+		return featureRole;
+	}
+
+	public ArrayList<Feature> getSubFeatures() {
 		return subFeatures;
 	}
-	
+
 	public ArrayList<Constraint> getConstraints() {
 		return constraints;
 	}
-	
-//	@Override
-//	public String toString() {
-//		String subf = new String();
-//		for (String feat : subFeatures) {
-//			subf = subf + " " + feat;
-//		}
-//		String con = new String();
-//		for (Constraint cnstr : constraints) {
-//			con = con + " " + cnstr.toString();
-//		}
-//		return featureName + " Features: " + subf + " Constraints: " + con;
-//	}
-	
-	
+
+	@Override
+	public String toString() {
+		if (!featureRole.equals("")) {
+			return featureType + " " + featureRole;
+		}
+		return featureType;
+	}
+
 }
