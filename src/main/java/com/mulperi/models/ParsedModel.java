@@ -36,4 +36,16 @@ public class ParsedModel {
 		return features;
 	}
 
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
+	public void setComponents(ArrayList<Component> components) {
+		this.components = components;
+	}
+
+	public void setFeatures(ArrayList<Feature> features) {
+		this.features = features;
+	}
+
 }
