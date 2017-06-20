@@ -46,9 +46,9 @@ public class ModelController {
 		model.addFeature(new Feature("Gearbox"));
 		model.addFeature(new Feature("AutoManual"));
 		model.getFeatures().get(0).addSubFeature(new Feature("Motor", "motor"));
-		model.getFeatures().get(0).addSubFeature(new Feature("Navigator", "navigator [0-1]"));
+		model.getFeatures().get(0).addSubFeature(new Feature("Navigator", "navigator", "0-1"));
 		model.getFeatures().get(0).addSubFeature(new Feature("Gearbox", "gearbox"));
-		model.getFeatures().get(3).addSubFeature(new Feature("AutoManual", "geartype [0-1]"));
+		model.getFeatures().get(3).addSubFeature(new Feature("AutoManual", "geartype", "0-1"));
 		
 		return model;
     }

@@ -30,7 +30,9 @@ public class CaasClient {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_XML);
-			
+		
+		//String hack = "<xml><model name=\""+ name + "\">" + model + "</model></xml>";
+		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder= dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.newDocument();
