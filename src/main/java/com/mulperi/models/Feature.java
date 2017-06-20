@@ -9,6 +9,10 @@ public class Feature {
 	ArrayList<Feature> subFeatures;
 	ArrayList<Constraint> constraints;
 
+	public Feature() {
+		
+	}
+	
 	public Feature(String type, String role) {
 		featureType = type;
 		featureRole = role;
@@ -17,11 +21,9 @@ public class Feature {
 	}
 
 	public Feature(String type) {
-		featureType = type;
-		featureRole = "";
-		subFeatures = new ArrayList<Feature>();
-		constraints = new ArrayList<Constraint>();
+		this(type, "");
 	}
+	
 
 	public void addSubFeature(Feature subfeature) {
 		subFeatures.add(subfeature);
@@ -55,4 +57,21 @@ public class Feature {
 		return featureType;
 	}
 
+	public void setFeatureType(String featureType) {
+		this.featureType = featureType;
+	}
+
+	public void setFeatureRole(String featureRole) {
+		this.featureRole = featureRole;
+	}
+
+	public void setSubFeatures(ArrayList<Feature> subFeatures) {
+		this.subFeatures = subFeatures;
+	}
+
+	public void setConstraints(ArrayList<Constraint> constraints) {
+		this.constraints = constraints;
+	}
+
+	
 }

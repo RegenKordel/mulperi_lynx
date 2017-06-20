@@ -54,4 +54,12 @@ public class KumbangModelGeneratorTests {
 				+ "Gearbox gearbox;\n}"));
 	}
 	
+	@Test
+	public void uploadingToCaasWorks() {	
+		
+		assertTrue(result.contains("feature type Car {\n\tsubfeatures\n\t\t"
+				+ "Motor motor;\n\t\tNavigator navigator [0-1];\n\t\t"
+				+ "Gearbox gearbox;\n}"));
+	}
+	
 }

@@ -8,6 +8,10 @@ public class ParsedModel {
 	ArrayList<Component> components;
 	ArrayList<Feature> features;
 	
+	public ParsedModel() {
+		
+	}
+	
 	public ParsedModel(String name) {
 		modelName = name;
 		components = new ArrayList<Component>();
@@ -34,6 +38,18 @@ public class ParsedModel {
 	
 	public ArrayList<Feature> getFeatures() {
 		return features;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
+	public void setComponents(ArrayList<Component> components) {
+		this.components = components;
+	}
+
+	public void setFeatures(ArrayList<Feature> features) {
+		this.features = features;
 	}
 
 }
