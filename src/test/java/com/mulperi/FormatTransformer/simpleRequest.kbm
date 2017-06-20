@@ -1,0 +1,42 @@
+Kumbang model TestModel
+	 root component TestModel
+	 root feature TestModel
+
+//---components-----
+
+component type TestModel {
+}
+
+
+//---features-----
+
+feature type TestModel {
+	subfeatures
+		ShowMap showmap;
+		ShowLocation showlocation;
+		Navigate navigate;
+	constraints
+		present(showlocation) => present(showmap);
+		present(navigate) => present(cachemap);
+		present(navigate) => present(showlocation);
+}
+
+
+feature type ShowMap {
+	subfeatures
+		CacheMap cachemap[0-1];
+}
+
+
+feature type CacheMap {
+}
+
+
+feature type ShowLocation {
+}
+
+
+feature type Navigate {
+}
+
+

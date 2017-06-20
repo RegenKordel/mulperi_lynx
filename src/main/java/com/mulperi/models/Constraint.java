@@ -12,11 +12,6 @@ public class Constraint {
 		ifPresent = name1;
 		thenRequired = name2;
 	}
-	
-	@Override
-	public String toString() {
-		return "present(" + ifPresent + ") => present(" + thenRequired + ")";
-	}
 
 	public String getIfPresent() {
 		return ifPresent;
@@ -34,5 +29,8 @@ public class Constraint {
 		this.thenRequired = thenRequired;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "present(" + ifPresent + ") => present(" + thenRequired + ")";
+	}
 }

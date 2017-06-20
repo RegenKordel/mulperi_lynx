@@ -42,7 +42,7 @@ public class KumbangModelGenerator {
 		kbm += "\n//---features-----\n\n";
 		
 		for(Feature feat : model.getFeatures()) {
-			kbm += "feature type " + feat.getFeatureType() + " {\n";
+			kbm += "feature type " + feat.getType() + " {\n";
 			
 			if (!feat.getSubFeatures().isEmpty()) {
 				listSubfeatures(feat);
