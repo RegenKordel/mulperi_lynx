@@ -11,6 +11,7 @@ import com.mulperi.services.KumbangModelGenerator;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
 public class ModelController {
-    
+	
+	@Value("${mulperi.caasAddress}")
+    private String caasAddress;
+	
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postDataForModel(@RequestBody ParsedModel model) {
     	
@@ -29,10 +33,8 @@ public class ModelController {
 		
 		CaasClient client = new CaasClient();
 		
-		String address = "http://localhost:8080/kumbang.configurator.server/Kumb";
-		
 		try {
-			client.uploadConfigurationModel(model.getModelName(), kumbangModel, address);
+			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
 			
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 

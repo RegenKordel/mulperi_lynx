@@ -35,6 +35,13 @@ public class FormatTransformerService {
 			//add constraints
 			for(String requiresId : req.getRequires()) {
 				Constraint constraint = new Constraint(req.getId().toLowerCase(), requiresId.toLowerCase());
+				
+				//seek parent info if the other side of the constraint does not reside in this feature's subfeatures
+				Requirement requires = findRequirementFromList(requiresId, requirements);
+				if(requires != null && requires.getParent() != null) {
+					constraint = new Constraint(req.getId().toLowerCase(), requires.getParent().toLowerCase() + "." + requiresId.toLowerCase());
+				}
+				
 				if(req.getParent() == null) { 
 					pm.getFeatures().get(0).addConstraint(constraint);
 				} else {
@@ -45,5 +52,14 @@ public class FormatTransformerService {
 		}
 		
 		return kumbangModelGenerator.generateKumbangModelString(pm);
+	}
+	
+	private Requirement findRequirementFromList(String needle, List<Requirement> haystack) {
+		for(Requirement r : haystack) {
+			if(r.getId().equals(needle)) {
+				return r;
+			}
+		}
+		return null;
 	}
 }
