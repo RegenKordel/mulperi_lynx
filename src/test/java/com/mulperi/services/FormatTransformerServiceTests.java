@@ -1,4 +1,4 @@
-package com.mulperi.FormatTransformer;
+package com.mulperi.services;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ import com.mulperi.models.submit.Requirement;
 import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.KumbangModelGenerator;
 
-public class FormatTransformerServiceTest {
+public class FormatTransformerServiceTests {
 	
 	private FormatTransformerService transform = new FormatTransformerService();
 	

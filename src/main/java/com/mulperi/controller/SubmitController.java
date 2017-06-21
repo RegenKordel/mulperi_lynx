@@ -34,9 +34,9 @@ public class SubmitController {
 			client.uploadConfigurationModel(name, kumbangModel, address);
 			
 		}	catch(Exception e) {
-            return "Couldn't upload the configuration model";            
+            return "Couldn't upload the configuration model\n\n" + e;            
 		} 
-        return kumbangModel;
+        return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
     }
 
 }
