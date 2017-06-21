@@ -22,7 +22,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.mulperi.models.Configuration;
 import com.mulperi.models.Selection;
 
 public class CaasClient {
@@ -64,7 +63,7 @@ public class CaasClient {
 
 	}
 	
-	public Configuration getConfiguration(String modelName, ArrayList<Selection> selections, String address) throws TransformerException, ParserConfigurationException {
+	public String getConfiguration(String modelName, ArrayList<Selection> selections, String address) throws TransformerException, ParserConfigurationException {
 		RestTemplate rt = new RestTemplate();
 
 		String result = "nothing";
@@ -84,6 +83,7 @@ public class CaasClient {
 		Attr attr = doc.createAttribute("name");
 		attr.setValue(modelName);
 		modelElement.setAttributeNode(attr);
+		rootElement.appendChild(modelElement);
 
 		Element configElement = doc.createElement("configuration");
 		Element featureElement = doc.createElement("feature");
@@ -99,16 +99,16 @@ public class CaasClient {
 		for(Selection sel : selections) {
 			Element selectionElement = doc.createElement("attribute");
 			
-			Attr selName = doc.createAttribute("name");
-			featName.setValue("root");
-			selectionElement.setAttributeNode(featName);
+			Attr selatt = doc.createAttribute("name");
+			selatt.setValue(sel.getName());
+			selectionElement.setAttributeNode(selatt);
+			selectionElement.appendChild(doc.createTextNode(sel.getParam()));
 			
-			Attr selType = doc.createAttribute("type");
-			featType.setValue(sel.getParam());
-			selectionElement.setAttributeNode(featType);
-		}
+			featureElement.appendChild(selectionElement);
+		}		
 		
-		modelElement.appendChild(configElement);
+		configElement.appendChild(featureElement);
+		rootElement.appendChild(configElement);
 		
 		HttpEntity<String> entity = new HttpEntity<String>(getStringFromDocument(doc), headers);
 
@@ -117,7 +117,7 @@ public class CaasClient {
 		result = response.toString();
 		System.out.println(result.toString());
 
-		return new Configuration("test");
+		return result;
 	}
 	
 	public static String getStringFromDocument(Document doc) throws TransformerException {
