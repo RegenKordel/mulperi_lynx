@@ -1,5 +1,6 @@
 package com.mulperi.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,9 @@ public class SubmitController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
 	
+	@Value("${mulperi.caasAddress}")
+    private String caasAddress;
+	
 	@RequestMapping(value = "/simple", method = RequestMethod.POST)
     public String simpleIn(@RequestBody List<Requirement> requirements) {
 		
@@ -28,10 +32,8 @@ public class SubmitController {
         
         CaasClient client = new CaasClient();
 		
-		String address = "http://localhost:8080/kumbang.configurator.server/Kumb";
-		
 		try {
-			client.uploadConfigurationModel(name, kumbangModel, address);
+			client.uploadConfigurationModel(name, kumbangModel, caasAddress);
 			
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model";            
