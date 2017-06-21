@@ -76,6 +76,7 @@ public class Requirement {
 		if(hasRelationshipType("isoptionalpartof")) {
 			return "0-1";
 		}
-		return null;
+		return "0-1"; //Defaults to optional 
 	}
+	
 }

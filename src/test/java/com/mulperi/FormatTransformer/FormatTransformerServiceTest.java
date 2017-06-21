@@ -50,7 +50,7 @@ public class FormatTransformerServiceTest {
 			+"\n"
 			+"feature type Test {\n"
 			+"	subfeatures\n"
-			+"		T1 t1;\n"
+			+"		T1 t1[0-1];\n"
 			+"	constraints\n"
 			+"		present(t1) => present(r2);\n"
 			+"}\n"
