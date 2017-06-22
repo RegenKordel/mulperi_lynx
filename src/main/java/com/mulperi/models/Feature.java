@@ -9,17 +9,18 @@ public class Feature {
 	String cardinality;
 	ArrayList<Feature> subFeatures;
 	ArrayList<Constraint> constraints;
-
+	ArrayList<Attribute> attributes;
+	
+	
 	public Feature() {
 		
-	}
-	
-	public Feature(String type, String role, String cardinality) {
+	}	public Feature(String type, String role, String cardinality) {
 		this.type = type;
 		this.role = role;
 		this.cardinality = cardinality;
 		subFeatures = new ArrayList<Feature>();
 		constraints = new ArrayList<Constraint>();
+		attributes = new ArrayList<Attribute>();
 	}
 	
 	public Feature(String type, String role) {
@@ -71,6 +72,14 @@ public class Feature {
 	public void setConstraints(ArrayList<Constraint> constraints) {
 		this.constraints = constraints;
 	}
+	
+	public ArrayList<Attribute> getAttributes() {
+		return attributes;
+	}
+	
+	public void setAttributes(ArrayList<Attribute> attributes) {
+		this.attributes = attributes;
+	}
 
 	@Override
 	public String toString() {
@@ -94,4 +103,7 @@ public class Feature {
 		constraints.add(constraint);
 	}
 	
+	public void addAttribute(Attribute attribute) {
+		attributes.add(attribute);
+	}
 }

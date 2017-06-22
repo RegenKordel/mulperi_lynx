@@ -45,7 +45,6 @@ public class FormatTransformerServiceTests {
 			+"component type Test {\n"
 			+"}\n"
 			+"\n"
-			+"\n"
 			+"//---features-----\n"
 			+"\n"
 			+"feature type Test {\n"
@@ -55,10 +54,8 @@ public class FormatTransformerServiceTests {
 			+"		present(t1) => present(r2);\n"
 			+"}\n"
 			+"\n"
-			+"\n"
 			+"feature type T1 {\n"
 			+"}\n"
-			+"\n"
 			+"\n", transform.SimpleToKumbang("Test", requirements));
 		
 	}
