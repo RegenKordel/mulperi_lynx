@@ -11,6 +11,7 @@ import com.mulperi.models.Attribute;
 import com.mulperi.models.Constraint;
 import com.mulperi.models.Feature;
 import com.mulperi.models.ParsedModel;
+import com.mulperi.models.SubFeature;
 import com.mulperi.services.KumbangModelGenerator;
 
 public class KumbangModelGeneratorTests {
@@ -21,7 +22,7 @@ public class KumbangModelGeneratorTests {
 
 	@Before
 	public void initialize() {
-		this.model = new ParsedModel("Car");
+		this.model = new ParsedModel("Car", "A car, mostly used for driving");
 		this.model.addFeature(new Feature("Motor"));
 		this.model.addFeature(new Feature("Navigator"));
 		this.model.addFeature(new Feature("Gearbox"));
@@ -31,10 +32,10 @@ public class KumbangModelGeneratorTests {
 		values.add("first");
 		values.add("second");
 		this.model.addAttribute(new Attribute("TestAtt", values));
-		this.model.getFeatures().get(0).addSubFeature(new Feature("Motor", "motor"));
-		this.model.getFeatures().get(0).addSubFeature(new Feature("Navigator", "navigator", "0-1"));
-		this.model.getFeatures().get(0).addSubFeature(new Feature("Gearbox", "gearbox"));
-		this.model.getFeatures().get(3).addSubFeature(new Feature("(Auto, Manual)", "geartype", "0-1"));
+		this.model.getFeatures().get(0).addSubFeature(new SubFeature("Motor", "motor"));
+		this.model.getFeatures().get(0).addSubFeature(new SubFeature("Navigator", "navigator", "0-1"));
+		this.model.getFeatures().get(0).addSubFeature(new SubFeature("Gearbox", "gearbox"));
+		this.model.getFeatures().get(3).addSubFeature(new SubFeature("(Auto, Manual)", "geartype", "0-1"));
 		this.model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
 		this.model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
 		this.kmg = new KumbangModelGenerator();
@@ -53,8 +54,13 @@ public class KumbangModelGeneratorTests {
 	}
 	
 	@Test
-	public void simpleSubfeatureTest() {		
+	public void simpleSubFeatureTest() {		
 		assertTrue(result.contains("Navigator navigator[0-1]"));
+	}
+	
+	@Test
+	public void simpleCommentTest() {		
+		assertTrue(result.contains("//A car, mostly used for driving"));
 	}
 	
 	@Test

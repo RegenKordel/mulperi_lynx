@@ -5,31 +5,25 @@ import java.util.ArrayList;
 public class Feature {
 
 	String type;
-	String role;
-	String cardinality;
-	ArrayList<Feature> subFeatures;
+	String comment;
+	ArrayList<SubFeature> subFeatures;
 	ArrayList<Constraint> constraints;
 	ArrayList<Attribute> attributes;
 	
 	
 	public Feature() {
 		
-	}	public Feature(String type, String role, String cardinality) {
+	}
+	public Feature(String type, String comment) {
 		this.type = type;
-		this.role = role;
-		this.cardinality = cardinality;
-		subFeatures = new ArrayList<Feature>();
+		this.comment = comment;
+		subFeatures = new ArrayList<SubFeature>();
 		constraints = new ArrayList<Constraint>();
 		attributes = new ArrayList<Attribute>();
 	}
-	
-	public Feature(String type, String role) {
-		this(type, role, null);
 
-	}
-	
 	public Feature(String type) {
-		this(type, null, null);
+		this(type, null);
 	}
 
 	
@@ -41,27 +35,11 @@ public class Feature {
 		this.type = type;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getCardinality() {
-		return cardinality;
-	}
-
-	public void setCardinality(String cardinality) {
-		this.cardinality = cardinality;
-	}
-
-	public ArrayList<Feature> getSubFeatures() {
+	public ArrayList<SubFeature> getSubFeatures() {
 		return subFeatures;
 	}
 
-	public void setSubFeatures(ArrayList<Feature> subFeatures) {
+	public void setSubFeatures(ArrayList<SubFeature> subFeatures) {
 		this.subFeatures = subFeatures;
 	}
 
@@ -81,21 +59,15 @@ public class Feature {
 		this.attributes = attributes;
 	}
 
-	@Override
-	public String toString() {
-		String result = type;
-		
-		if (role != null && !role.equals("")) {
-			result += " " + role;
-			if (cardinality != null && !cardinality.equals("")) {
-				result += "[" + cardinality + "]";
-			}
-		}
-		
-		return result;
+	public String getComment() {
+		return comment;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
-	public void addSubFeature(Feature subfeature) {
+	public void addSubFeature(SubFeature subfeature) {
 		subFeatures.add(subfeature);
 	}
 

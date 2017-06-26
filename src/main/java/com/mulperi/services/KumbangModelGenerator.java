@@ -5,6 +5,7 @@ import com.mulperi.models.Component;
 import com.mulperi.models.Constraint;
 import com.mulperi.models.Feature;
 import com.mulperi.models.ParsedModel;
+import com.mulperi.models.SubFeature;
 
 public class KumbangModelGenerator {
 
@@ -15,6 +16,10 @@ public class KumbangModelGenerator {
 		this.model = model;
 		this.kbm = "Kumbang model " + model.getModelName() + "\n\t root component " + model.getModelName()
 				+ "\n\t root feature " + model.getModelName() + "\n\n";
+		
+		if (model.getComment()!=null) {
+			kbm += "//" + model.getComment() + "\n\n"; 
+		}
 
 		if (!model.getComponents().isEmpty()) {
 			listComponents();
@@ -45,6 +50,10 @@ public class KumbangModelGenerator {
 
 		for (Feature feat : model.getFeatures()) {
 			kbm += "feature type " + feat.getType() + " {\n";
+			
+			if (feat.getComment()!=null) {
+				kbm += "\n//" + feat.getComment() + "\n\n";
+			}
 
 			if (!feat.getSubFeatures().isEmpty()) {
 				listSubfeatures(feat);
@@ -82,7 +91,7 @@ public class KumbangModelGenerator {
 	private void listSubfeatures(Feature feat) {
 		kbm += "\tsubfeatures\n";
 
-		for (Feature sub : feat.getSubFeatures()) {
+		for (SubFeature sub : feat.getSubFeatures()) {
 			kbm += "\t\t" + sub.toString() + ";\n";
 		}
 	}
