@@ -72,6 +72,10 @@ public class Requirement {
 		return requires;
 	}
 	
+	/**
+	 * Cardinality in Kumbang form for Parsed Model
+	 * @return String
+	 */
 	public String getCardinality() {
 		if(hasRelationshipType("isoptionalpartof")) {
 			return "0-1";

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REQ-IF xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" xmlns:configuration="http://eclipse.org/rmf/pror/toolextensions/1.0" xmlns:id="http://pror.org/presentation/id" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <THE-HEADER>
+    <REQ-IF-HEADER IDENTIFIER="_4mfcASp_EeeGvcRfuLHMLw">
+      <COMMENT>Created by: jutiihon</COMMENT>
+      <CREATION-TIME>2017-04-26T15:57:20.458+03:00</CREATION-TIME>
+      <REQ-IF-TOOL-ID>fmStudio (http://formalmind.com/studio)</REQ-IF-TOOL-ID>
+      <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
+      <SOURCE-TOOL-ID>fmStudio (http://formalmind.com/studio)</SOURCE-TOOL-ID>
+      <TITLE>MapAppV01</TITLE>
+    </REQ-IF-HEADER>
+  </THE-HEADER>
+  <CORE-CONTENT>
+    <REQ-IF-CONTENT>
+      <DATATYPES>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_4mfcAyp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_String32k" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_4mfcBCp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_String32k_SO_ForeignId" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_4mfcBSp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_Xhtml_SO_ChapterName"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_4mfcBip_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_Xhtml_SO_Text"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_4mfcByp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_Xhtml_Spec_Description"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_4mfcCCp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_Xhtml_SR_Description"/>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_4mfcCSp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="T_String32k_SR_ForeignId" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-BOOLEAN IDENTIFIER="_X4J8kCqKEee6jMFsTlpDtw" LAST-CHANGE="2017-04-26T17:12:21.568+03:00" LONG-NAME="isMandatory"/>
+      </DATATYPES>
+      <SPEC-TYPES>
+        <SPEC-OBJECT-TYPE IDENTIFIER="_4mfcCip_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="OpenReq Requirement Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_4mfcCyp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.ForeignID">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>_4mfcBCp_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_4mfcDCp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.ChapterName">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_4mfcBSp_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_4mfcDSp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.Text">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_4mfcBip_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_1BCXQCqKEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:15:34.343+03:00" LONG-NAME="isMandatory">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>_X4J8kCqKEee6jMFsTlpDtw</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+          </SPEC-ATTRIBUTES>
+        </SPEC-OBJECT-TYPE>
+        <SPECIFICATION-TYPE IDENTIFIER="_4mfcDip_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="Specification Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_4mfcDyp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.Description">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_4mfcByp_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPECIFICATION-TYPE>
+        <SPEC-RELATION-TYPE DESC="A requires B == A implies B == A cannot exist without B" IDENTIFIER="_4mfcECp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="Requires">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_4mfcESp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.Description">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_4mfcCCp_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_4mfcEip_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="ReqIF.ForeignID">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>_4mfcCSp_EeeGvcRfuLHMLw</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+          </SPEC-ATTRIBUTES>
+        </SPEC-RELATION-TYPE>
+      </SPEC-TYPES>
+      <SPEC-OBJECTS>
+        <SPEC-OBJECT IDENTIFIER="_JDs0UCqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:18:53.905+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-3">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcCyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDSp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">A mobile device MAY have a map application. </xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_1BCXQCqKEee4xasBBKtviQ</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_4mfcCip_EeeGvcRfuLHMLw</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_XS_kkCqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:19:18.515+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-4">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcCyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDSp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">A map application SHALL use and show existing cloud-based maps in a mash-up manner. </xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_1BCXQCqKEee4xasBBKtviQ</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_4mfcCip_EeeGvcRfuLHMLw</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_iVH1QCqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:51:05.459+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-5">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcCyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDSp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">A map application MAY provide ability to store or cache maps locally to device. Locally stored maps potentially save networking costs especially when the map application is being used abroad.  </xhtml:span><xhtml:span style="font-family: Calibri, sans-serif; font-size: 15px;">Locally stored maps enable the map application to work</xhtml:span> <xhtml:span style="font-family: Calibri, sans-serif; font-size: 11pt;">under bad network coverage.</xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_1BCXQCqKEee4xasBBKtviQ</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_4mfcCip_EeeGvcRfuLHMLw</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_SMsjsCqMEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:28:37.459+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-6">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcCyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDSp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">A map application MAY provide GPS positioning. GPS positioning shows the current location on the map</xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_1BCXQCqKEee4xasBBKtviQ</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_4mfcCip_EeeGvcRfuLHMLw</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_a93eYCqMEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:28:43.874+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-7">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcCyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDSp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">A map application MAY provide routing and navigation functionality that provide the user with guidance.  </xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_1BCXQCqKEee4xasBBKtviQ</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_4mfcCip_EeeGvcRfuLHMLw</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+      </SPEC-OBJECTS>
+      <SPEC-RELATIONS>
+        <SPEC-RELATION IDENTIFIER="_DnexUCqNEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:53:21.518+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcEip_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcESp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">Navigation REQUIRES GPS in order to position the user</xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_SMsjsCqMEee4xasBBKtviQ</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_a93eYCqMEee4xasBBKtviQ</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_4mfcECp_EeeGvcRfuLHMLw</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_HJpQgCqNEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:54:11.751+03:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-2">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_4mfcEip_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcESp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font: minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;; mso-bidi-theme-font:minor-bidi;mso-ansi-language:FI;mso-fareast-language:EN-US; mso-bidi-language:AR-SA">Navigation REQUIRES offline maps in order to ensure reliability of navigation even though technically navigation could work even with only online maps.</xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_iVH1QCqLEee4xasBBKtviQ</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_a93eYCqMEee4xasBBKtviQ</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_4mfcECp_EeeGvcRfuLHMLw</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+      </SPEC-RELATIONS>
+      <SPECIFICATIONS>
+        <SPECIFICATION IDENTIFIER="_4mfcGyp_EeeGvcRfuLHMLw" LAST-CHANGE="2017-04-26T15:57:20.458+03:00" LONG-NAME="Requirements Document">
+          <VALUES>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_4mfcDyp_EeeGvcRfuLHMLw</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div>Requirements Document</xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>_4mfcDip_EeeGvcRfuLHMLw</SPECIFICATION-TYPE-REF>
+          </TYPE>
+          <CHILDREN>
+            <SPEC-HIERARCHY IDENTIFIER="_JD_IMSqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:17:46.097+03:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_JDs0UCqLEee4xasBBKtviQ</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_XTTtoSqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:19:18.515+03:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_XS_kkCqLEee4xasBBKtviQ</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_iVawMCqLEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:20:34.224+03:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_iVH1QCqLEee4xasBBKtviQ</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_SNAFsCqMEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:26:03.013+03:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_SMsjsCqMEee4xasBBKtviQ</SPEC-OBJECT-REF>
+                  </OBJECT>
+                  <CHILDREN/>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_a-KZUCqMEee4xasBBKtviQ" LAST-CHANGE="2017-04-26T17:32:22.150+03:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_a93eYCqMEee4xasBBKtviQ</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+          </CHILDREN>
+        </SPECIFICATION>
+      </SPECIFICATIONS>
+    </REQ-IF-CONTENT>
+  </CORE-CONTENT>
+  <TOOL-EXTENSIONS>
+    <REQ-IF-TOOL-EXTENSION>
+      <configuration:ProrToolExtension>
+        <configuration:generalConfiguration>
+          <configuration:ProrGeneralConfiguration>
+            <configuration:labelConfiguration>
+              <configuration:LabelConfiguration>
+                <defaultLabel>ReqIF.Description</defaultLabel>
+                <defaultLabel>ReqIF.ForeignID</defaultLabel>
+              </configuration:LabelConfiguration>
+            </configuration:labelConfiguration>
+          </configuration:ProrGeneralConfiguration>
+        </configuration:generalConfiguration>
+        <configuration:presentationConfigurations>
+          <configuration:ProrPresentationConfigurations>
+            <configuration:presentationConfigurations>
+              <id:IdConfiguration datatype="_4mfcBCp_EeeGvcRfuLHMLw" prefix="REQ-" count="7"/>
+              <id:IdConfiguration datatype="_4mfcCSp_EeeGvcRfuLHMLw" prefix="LNK-" count="2"/>
+            </configuration:presentationConfigurations>
+          </configuration:ProrPresentationConfigurations>
+        </configuration:presentationConfigurations>
+      </configuration:ProrToolExtension>
+    </REQ-IF-TOOL-EXTENSION>
+  </TOOL-EXTENSIONS>
+</REQ-IF>

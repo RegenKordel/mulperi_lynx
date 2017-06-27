@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.submit.Requirement;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
+import com.mulperi.services.ReqifParser;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
@@ -30,12 +33,31 @@ public class SubmitController {
 	
 	@RequestMapping(value = "/simple", method = RequestMethod.POST)
     public ResponseEntity<?> simpleIn(@RequestBody List<Requirement> requirements) {
-		int hashCode = requirements.hashCode();
-		String name = "ID" + (hashCode > 0 ? hashCode : "_" + Math.abs(hashCode));
+		String name = generateName(requirements);
 		
         String kumbangModel = transform.SimpleToKumbang(name, requirements);
         
-        CaasClient client = new CaasClient();
+        return sendToCaas(name, kumbangModel);
+    }
+	
+	@RequestMapping(value = "/reqif", method = RequestMethod.POST, consumes="application/xml")
+    public ResponseEntity<?> reqifIn(@RequestBody String reqifXML) {
+		ReqifParser parser = new ReqifParser();
+		String name = generateName(reqifXML);
+		Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
+		
+        String kumbangModel = transform.ReqifToKumbang(name, specObjects);
+        
+        return sendToCaas(name, kumbangModel);
+    }
+
+	private String generateName(Object object) {
+		int hashCode = object.hashCode();
+		return "ID" + (hashCode > 0 ? hashCode : "_" + Math.abs(hashCode)); //replace - with _, since Kumbang doesn't like hyphens
+	}
+	
+	private ResponseEntity<?> sendToCaas(String name, String kumbangModel) {
+		CaasClient client = new CaasClient();
 		
 		try {
 			client.uploadConfigurationModel(name, kumbangModel, caasAddress);
@@ -49,6 +71,5 @@ public class SubmitController {
 		} 
 		
 		return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + kumbangModel, HttpStatus.CREATED);
-    }
-
+	}
 }
