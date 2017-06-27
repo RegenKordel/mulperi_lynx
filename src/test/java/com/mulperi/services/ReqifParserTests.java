@@ -4,29 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import com.mulperi.models.Feature;
-import com.mulperi.models.ParsedModel;
 import com.mulperi.models.reqif.SpecObject;
-import com.mulperi.models.submit.Relationship;
-import com.mulperi.models.submit.Requirement;
-import com.mulperi.services.FormatTransformerService;
-import com.mulperi.services.KumbangModelGenerator;
 
 public class ReqifParserTests {
 	

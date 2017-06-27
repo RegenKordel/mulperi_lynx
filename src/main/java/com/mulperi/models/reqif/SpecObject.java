@@ -3,8 +3,6 @@ package com.mulperi.models.reqif;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mulperi.models.submit.Relationship;
-
 public class SpecObject {
 
 	private String id; //internal to .reqif

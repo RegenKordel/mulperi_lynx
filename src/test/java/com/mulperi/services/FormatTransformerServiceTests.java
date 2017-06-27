@@ -2,21 +2,14 @@ package com.mulperi.services;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import com.mulperi.models.Feature;
-import com.mulperi.models.ParsedModel;
 import com.mulperi.models.submit.Relationship;
 import com.mulperi.models.submit.Requirement;
 import com.mulperi.services.FormatTransformerService;
-import com.mulperi.services.KumbangModelGenerator;
 
 public class FormatTransformerServiceTests {
 	
@@ -45,7 +38,6 @@ public class FormatTransformerServiceTests {
 			+"component type Test {\n"
 			+"}\n"
 			+"\n"
-			+"\n"
 			+"//---features-----\n"
 			+"\n"
 			+"feature type Test {\n"
@@ -55,10 +47,8 @@ public class FormatTransformerServiceTests {
 			+"		present(t1) => present(r2);\n"
 			+"}\n"
 			+"\n"
-			+"\n"
 			+"feature type T1 {\n"
 			+"}\n"
-			+"\n"
 			+"\n", transform.SimpleToKumbang("Test", requirements));
 		
 	}

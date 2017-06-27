@@ -3,7 +3,6 @@ package com.mulperi.services;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.mockito.Mock;
 
 public class CaasClientTests {
 

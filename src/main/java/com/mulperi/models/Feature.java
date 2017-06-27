@@ -5,30 +5,25 @@ import java.util.ArrayList;
 public class Feature {
 
 	String type;
-	String role;
-	String cardinality;
-	ArrayList<Feature> subFeatures;
+	String name;
+	ArrayList<SubFeature> subFeatures;
 	ArrayList<Constraint> constraints;
-
-	public Feature() {
-		
+	ArrayList<Attribute> attributes;
+	
+	
+	public Feature() {		
 	}
 	
-	public Feature(String type, String role, String cardinality) {
+	public Feature(String type, String comment) {
 		this.type = type;
-		this.role = role;
-		this.cardinality = cardinality;
-		subFeatures = new ArrayList<Feature>();
+		this.name = comment;
+		subFeatures = new ArrayList<SubFeature>();
 		constraints = new ArrayList<Constraint>();
+		attributes = new ArrayList<Attribute>();
 	}
-	
-	public Feature(String type, String role) {
-		this(type, role, null);
 
-	}
-	
 	public Feature(String type) {
-		this(type, null, null);
+		this(type, null);
 	}
 
 	
@@ -40,27 +35,11 @@ public class Feature {
 		this.type = type;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getCardinality() {
-		return cardinality;
-	}
-
-	public void setCardinality(String cardinality) {
-		this.cardinality = cardinality;
-	}
-
-	public ArrayList<Feature> getSubFeatures() {
+	public ArrayList<SubFeature> getSubFeatures() {
 		return subFeatures;
 	}
 
-	public void setSubFeatures(ArrayList<Feature> subFeatures) {
+	public void setSubFeatures(ArrayList<SubFeature> subFeatures) {
 		this.subFeatures = subFeatures;
 	}
 
@@ -71,22 +50,24 @@ public class Feature {
 	public void setConstraints(ArrayList<Constraint> constraints) {
 		this.constraints = constraints;
 	}
-
-	@Override
-	public String toString() {
-		String result = type;
-		
-		if (role != null && !role.equals("")) {
-			result += " " + role;
-			if (cardinality != null && !cardinality.equals("")) {
-				result += "[" + cardinality + "]";
-			}
-		}
-		
-		return result;
+	
+	public ArrayList<Attribute> getAttributes() {
+		return attributes;
+	}
+	
+	public void setAttributes(ArrayList<Attribute> attributes) {
+		this.attributes = attributes;
 	}
 
-	public void addSubFeature(Feature subfeature) {
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String comment) {
+		this.name = comment;
+	}
+
+	public void addSubFeature(SubFeature subfeature) {
 		subFeatures.add(subfeature);
 	}
 
@@ -94,4 +75,7 @@ public class Feature {
 		constraints.add(constraint);
 	}
 	
+	public void addAttribute(Attribute attribute) {
+		attributes.add(attribute);
+	}
 }
