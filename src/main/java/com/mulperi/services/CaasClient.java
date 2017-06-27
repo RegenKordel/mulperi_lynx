@@ -14,11 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.mulperi.models.selections.AttributeSelection;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import com.mulperi.models.Selection;
 
 public class CaasClient {
 
@@ -50,7 +50,7 @@ public class CaasClient {
 
 	}
 	
-	public String getConfiguration(String modelName, ArrayList<Selection> selections, String caasAddress) throws Exception {
+	public String getConfiguration(String modelName, ArrayList<AttributeSelection> selections, String caasAddress) throws Exception {
 		
 		RestTemplate rt = new RestTemplate();
 		
@@ -62,6 +62,8 @@ public class CaasClient {
 		HttpEntity<String> entity = new HttpEntity<String>(xmlString, headers);
 		
 		ResponseEntity<String> response = null;
+		
+		System.out.println(entity);
 		
 		try {
 			response = rt.postForEntity(caasAddress, entity, String.class);
@@ -93,7 +95,7 @@ public class CaasClient {
 		return stringWriter.getBuffer().toString();
 	}
 	
-	public String selectionsToXML(String modelName, ArrayList<Selection> selections) throws XMLStreamException {
+	public String selectionsToXML(String modelName, ArrayList<AttributeSelection> selections) throws XMLStreamException {
 		StringWriter stringWriter = new StringWriter();
 		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();	
 		XMLStreamWriter xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
@@ -106,11 +108,11 @@ public class CaasClient {
 		xMLStreamWriter.writeStartElement("configuration");
 		xMLStreamWriter.writeStartElement("feature");
 		xMLStreamWriter.writeAttribute("name", "root");
-		xMLStreamWriter.writeAttribute("type", "Status");
-		for(Selection sel : selections) {
+		xMLStreamWriter.writeAttribute("type", "Car");
+		for(AttributeSelection sel : selections) {
 			xMLStreamWriter.writeStartElement("attribute");
 			xMLStreamWriter.writeAttribute("name", sel.getName());;
-			xMLStreamWriter.writeCharacters(sel.getParam());
+			xMLStreamWriter.writeCharacters(sel.getValue());
 			xMLStreamWriter.writeEndElement();
 		}		
 		xMLStreamWriter.writeEndElement();

@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Feature {
 
 	String type;
-	String comment;
+	String name;
 	ArrayList<SubFeature> subFeatures;
 	ArrayList<Constraint> constraints;
 	ArrayList<Attribute> attributes;
 	
 	
-	public Feature() {
-		
+	public Feature() {		
 	}
+	
 	public Feature(String type, String comment) {
 		this.type = type;
-		this.comment = comment;
+		this.name = comment;
 		subFeatures = new ArrayList<SubFeature>();
 		constraints = new ArrayList<Constraint>();
 		attributes = new ArrayList<Attribute>();
@@ -59,12 +59,12 @@ public class Feature {
 		this.attributes = attributes;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getName() {
+		return name;
 	}
 	
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setName(String comment) {
+		this.name = comment;
 	}
 
 	public void addSubFeature(SubFeature subfeature) {

@@ -51,8 +51,8 @@ public class KumbangModelGenerator {
 		for (Feature feat : model.getFeatures()) {
 			kbm += "feature type " + feat.getType() + " {\n";
 			
-			if (feat.getComment()!=null) {
-				kbm += "\n//" + feat.getComment() + "\n\n";
+			if (feat.getName()!=null) {
+				kbm += "//" + feat.getName() + "\n";
 			}
 
 			if (!feat.getSubFeatures().isEmpty()) {

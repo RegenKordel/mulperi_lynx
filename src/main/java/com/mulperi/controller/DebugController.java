@@ -52,19 +52,24 @@ public class DebugController {
     	ParsedModel model = new ParsedModel("Car", "A car, mostly used for driving");
 		model.addFeature(new Feature("Motor", "This better work"));
 		model.addFeature(new Feature("Navigator"));
-		model.addFeature(new Feature("Gearbox", "Auto or manual? Choice matters"));
+		model.addFeature(new Feature("Gearbox", "Auto or manual?"));
 		model.addFeature(new Feature("Auto"));
 		model.addFeature(new Feature("Manual"));
 		ArrayList<String> values = new ArrayList<String>();
 		values.add("first");
 		values.add("second");
 		model.addAttribute(new Attribute("TestAtt", values));
+		ArrayList<String> engine = new ArrayList<String>();
+		engine.add("Gasoline");
+		engine.add("Diesel");
+		model.addAttribute(new Attribute("EngineType", engine));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Motor", "motor"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Navigator", "navigator", "0-1"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Gearbox", "gearbox"));
 		model.getFeatures().get(3).addSubFeature(new SubFeature("(Auto, Manual)", "geartype", "0-1"));
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
 		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
+		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));
 		
 		return model;
     }
