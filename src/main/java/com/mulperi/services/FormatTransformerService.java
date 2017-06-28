@@ -16,7 +16,7 @@ public class FormatTransformerService {
 	
 	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
 	
-	public String simpleToKumbang(String modelName, List<Requirement> requirements) {
+	public String mulsonToKumbang(String modelName, List<Requirement> requirements) {
 		
 		ParsedModel pm = new ParsedModel(modelName);
 		

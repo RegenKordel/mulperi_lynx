@@ -35,11 +35,11 @@ public class SubmitController {
 
     private String caasAddress;
 	
-	@RequestMapping(value = "/simpleModel", method = RequestMethod.POST)
-    public ResponseEntity<?> simpleIn(@RequestBody List<Requirement> requirements) {
+	@RequestMapping(value = "/mulsonModel", method = RequestMethod.POST)
+    public ResponseEntity<?> mulsonIn(@RequestBody List<Requirement> requirements) {
 		String name = generateName(requirements);
 		
-        String kumbangModel = transform.simpleToKumbang(name, requirements);
+        String kumbangModel = transform.mulsonToKumbang(name, requirements);
         
         return sendToCaas(name, kumbangModel);
     }

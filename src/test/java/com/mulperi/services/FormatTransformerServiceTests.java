@@ -49,7 +49,7 @@ public class FormatTransformerServiceTests {
 			+"\n"
 			+"feature type T1 {\n"
 			+"}\n"
-			+"\n", transform.simpleToKumbang("Test", requirements));
+			+"\n", transform.mulsonToKumbang("Test", requirements));
 		
 	}
 	
