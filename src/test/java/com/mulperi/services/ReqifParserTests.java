@@ -3,7 +3,6 @@ package com.mulperi.services;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -15,7 +14,7 @@ public class ReqifParserTests {
 	private ReqifParser parser = new ReqifParser();
 	
 	@Test
-	public void mapApplicationTestCase() throws FileNotFoundException {
+	public void mapApplicationTestCase() throws Exception {
 		
 		Scanner scanner = new Scanner( new File("src/test/resources/MapAppV01.reqif") );
 		String text = scanner.useDelimiter("\\A").next();

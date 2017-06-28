@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mulperi.models.mulson.Requirement;
 import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.selections.AttributeSelection;
-import com.mulperi.models.submit.Requirement;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.ReqifParser;
@@ -39,7 +39,7 @@ public class SubmitController {
     public ResponseEntity<?> simpleIn(@RequestBody List<Requirement> requirements) {
 		String name = generateName(requirements);
 		
-        String kumbangModel = transform.SimpleToKumbang(name, requirements);
+        String kumbangModel = transform.simpleToKumbang(name, requirements);
         
         return sendToCaas(name, kumbangModel);
     }
@@ -48,11 +48,14 @@ public class SubmitController {
     public ResponseEntity<?> reqifIn(@RequestBody String reqifXML) {
 		ReqifParser parser = new ReqifParser();
 		String name = generateName(reqifXML);
-		Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
 		
-        String kumbangModel = transform.ReqifToKumbang(name, specObjects);
-        
-        return sendToCaas(name, kumbangModel);
+		try {
+			Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
+			String kumbangModel = transform.reqifToKumbang(name, specObjects);
+	        return sendToCaas(name, kumbangModel);
+		} catch (Exception e) { //ReqifParser error
+			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
     }
 
 	private String generateName(Object object) {

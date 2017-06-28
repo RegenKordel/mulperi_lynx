@@ -77,7 +77,7 @@ public class CaasClient {
 		return result;
 	}
 
-	public String modelToXML(String modelName, String modelContent) throws XMLStreamException {
+	private String modelToXML(String modelName, String modelContent) throws XMLStreamException {
 		StringWriter stringWriter = new StringWriter();
 		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();	
 		XMLStreamWriter xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
@@ -95,7 +95,7 @@ public class CaasClient {
 		return stringWriter.getBuffer().toString();
 	}
 	
-	public String selectionsToXML(String modelName, ArrayList<AttributeSelection> selections) throws XMLStreamException {
+	private String selectionsToXML(String modelName, ArrayList<AttributeSelection> selections) throws XMLStreamException {
 		StringWriter stringWriter = new StringWriter();
 		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();	
 		XMLStreamWriter xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
@@ -124,7 +124,7 @@ public class CaasClient {
 		return stringWriter.getBuffer().toString();
 	}
 	
-	public void modelErrorHandling(HttpServerErrorException e) throws Exception {
+	private void modelErrorHandling(HttpServerErrorException e) throws Exception {
 		if(e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR 
 				&& e.getResponseBodyAsString().contains("There are no configurations that satisfy the given model.")) {
 			throw new IntrospectionException(e.getResponseBodyAsString());

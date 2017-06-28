@@ -2,12 +2,11 @@ package com.mulperi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mulperi.models.Attribute;
-import com.mulperi.models.Constraint;
-import com.mulperi.models.Feature;
-
-import com.mulperi.models.ParsedModel;
-import com.mulperi.models.SubFeature;
+import com.mulperi.models.kumbang.Attribute;
+import com.mulperi.models.kumbang.Constraint;
+import com.mulperi.models.kumbang.Feature;
+import com.mulperi.models.kumbang.ParsedModel;
+import com.mulperi.models.kumbang.SubFeature;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.KumbangModelGenerator;
 

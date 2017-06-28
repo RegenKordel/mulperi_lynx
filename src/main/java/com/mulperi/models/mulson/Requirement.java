@@ -1,4 +1,4 @@
-package com.mulperi.models.submit;
+package com.mulperi.models.mulson;
 
 import java.util.ArrayList;
 import java.util.List;

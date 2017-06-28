@@ -1,4 +1,4 @@
-package com.mulperi.models;
+package com.mulperi.models.kumbang;
 
 import java.util.ArrayList;
 

@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mulperi.models.submit.Relationship;
-import com.mulperi.models.submit.Requirement;
+import com.mulperi.models.mulson.Relationship;
+import com.mulperi.models.mulson.Requirement;
 import com.mulperi.services.FormatTransformerService;
 
 public class FormatTransformerServiceTests {
@@ -49,7 +49,7 @@ public class FormatTransformerServiceTests {
 			+"\n"
 			+"feature type T1 {\n"
 			+"}\n"
-			+"\n", transform.SimpleToKumbang("Test", requirements));
+			+"\n", transform.simpleToKumbang("Test", requirements));
 		
 	}
 	

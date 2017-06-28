@@ -3,18 +3,18 @@ package com.mulperi.services;
 import java.util.Collection;
 import java.util.List;
 
-import com.mulperi.models.Constraint;
-import com.mulperi.models.Feature;
-import com.mulperi.models.ParsedModel;
 import com.mulperi.models.reqif.SpecObject;
-import com.mulperi.models.SubFeature;
-import com.mulperi.models.submit.Requirement;
+import com.mulperi.models.kumbang.Constraint;
+import com.mulperi.models.kumbang.Feature;
+import com.mulperi.models.kumbang.ParsedModel;
+import com.mulperi.models.kumbang.SubFeature;
+import com.mulperi.models.mulson.Requirement;
 
 public class FormatTransformerService {
 	
 	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
 	
-	public String SimpleToKumbang(String modelName, List<Requirement> requirements) {
+	public String simpleToKumbang(String modelName, List<Requirement> requirements) {
 		
 		ParsedModel pm = new ParsedModel(modelName);
 		
@@ -72,7 +72,7 @@ public class FormatTransformerService {
 	 * @param specObjects
 	 * @return
 	 */
-	public String ReqifToKumbang(String modelName, Collection<SpecObject> specObjects) {
+	public String reqifToKumbang(String modelName, Collection<SpecObject> specObjects) {
 		
 		ParsedModel pm = new ParsedModel(modelName);
 		

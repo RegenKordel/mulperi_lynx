@@ -1,7 +1,5 @@
 package com.mulperi.services;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +7,6 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -20,7 +17,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import com.mulperi.models.reqif.Attribute;
 import com.mulperi.models.reqif.SpecObject;
@@ -28,37 +24,21 @@ import com.mulperi.models.reqif.SpecRelation;
 
 public class ReqifParser {
 
-	public HashMap<String, SpecObject> parse(String xml) {
+	public HashMap<String, SpecObject> parse(String xml) throws Exception {
 
-		try {
-			Document doc = loadXMLFromString(xml);
-			doc.getDocumentElement().normalize();
+		Document doc = loadXMLFromString(xml);
+		doc.getDocumentElement().normalize();
 
-			XPath xPath =  XPathFactory.newInstance().newXPath();
+		XPath xPath =  XPathFactory.newInstance().newXPath();
 
-
-			HashMap<String, String> specTypes = getSpecTypes(doc, xPath);
-			HashMap<String, SpecObject> specObjects = getSpecObjects(doc, xPath, specTypes); 
-			getSpecRelations(doc, xPath, specObjects); //The return value is discarded because SpecObjects' internal relation lists are populated
-			populateSpecObjectParents(doc, xPath, specObjects);
-			return specObjects;
-
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		HashMap<String, String> specTypes = getSpecTypes(doc, xPath);
+		HashMap<String, SpecObject> specObjects = getSpecObjects(doc, xPath, specTypes); 
+		getSpecRelations(doc, xPath, specObjects); //The return value is discarded because SpecObjects' internal relation lists are populated
+		populateSpecObjectParents(doc, xPath, specObjects);
+		return specObjects;
 	}
 
-	public static Document loadXMLFromString(String xml) throws Exception	{
+	private Document loadXMLFromString(String xml) throws Exception	{
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    DocumentBuilder builder = factory.newDocumentBuilder();
 	    InputSource is = new InputSource(new StringReader(xml));

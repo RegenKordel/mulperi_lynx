@@ -1,11 +1,11 @@
 package com.mulperi.services;
 
-import com.mulperi.models.Attribute;
-import com.mulperi.models.Component;
-import com.mulperi.models.Constraint;
-import com.mulperi.models.Feature;
-import com.mulperi.models.ParsedModel;
-import com.mulperi.models.SubFeature;
+import com.mulperi.models.kumbang.Attribute;
+import com.mulperi.models.kumbang.Component;
+import com.mulperi.models.kumbang.Constraint;
+import com.mulperi.models.kumbang.Feature;
+import com.mulperi.models.kumbang.ParsedModel;
+import com.mulperi.models.kumbang.SubFeature;
 
 public class KumbangModelGenerator {
 
