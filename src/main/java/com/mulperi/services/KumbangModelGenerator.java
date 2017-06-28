@@ -16,22 +16,22 @@ public class KumbangModelGenerator {
 		this.model = model;
 		this.kbm = "Kumbang model " + model.getModelName() + "\n\t root component " + model.getModelName()
 				+ "\n\t root feature " + model.getModelName() + "\n\n";
-		
-		if (model.getComment()!=null) {
-			kbm += "//" + model.getComment() + "\n\n"; 
+
+		if (model.getComment() != null) {
+			kbm += "//" + model.getComment() + "\n\n";
 		}
 
 		if (!model.getComponents().isEmpty()) {
 			listComponents();
-		}	
+		}
 
 		if (!model.getFeatures().isEmpty()) {
 			listFeatures();
-		}	
+		}
 
 		if (!model.getAttributes().isEmpty()) {
 			listAttributes();
-		}		
+		}
 
 		return kbm;
 	}
@@ -50,8 +50,8 @@ public class KumbangModelGenerator {
 
 		for (Feature feat : model.getFeatures()) {
 			kbm += "feature type " + feat.getType() + " {\n";
-			
-			if (feat.getName()!=null) {
+
+			if (feat.getName() != null) {
 				kbm += "//" + feat.getName() + "\n";
 			}
 
@@ -62,7 +62,7 @@ public class KumbangModelGenerator {
 			if (!feat.getConstraints().isEmpty()) {
 				listConstraints(feat);
 			}
-			
+
 			if (!feat.getAttributes().isEmpty()) {
 				listFeatureAttributes(feat);
 			}
@@ -76,14 +76,14 @@ public class KumbangModelGenerator {
 
 		for (Attribute att : model.getAttributes()) {
 			kbm += "attribute type " + att.getName() + " = {\n";
-			for (String val : att.getValues()) {				
+			for (String val : att.getValues()) {
 				kbm += "\t" + val;
-				if (!val.equals(att.getValues().get(att.getValues().size()-1))) {
+				if (!val.equals(att.getValues().get(att.getValues().size() - 1))) {
 					kbm += ",";
 				}
 				kbm += "\n";
 			}
-			
+
 			kbm += "}\n\n";
 		}
 	}
@@ -108,7 +108,11 @@ public class KumbangModelGenerator {
 		kbm += "\tattributes\n";
 
 		for (Attribute att : feat.getAttributes()) {
-			kbm += "\t\t" + att.getName() + " " + att.getRole() + ";\n";
+			if (att.getRole() != null) {
+				kbm += "\t\t" + att.getName() + " " + att.getRole() + ";\n";
+			} else {
+				kbm += "\t\t" + att.getName() + " " + att.getName().toLowerCase() + ";\n";
+			}
 		}
 	}
 }

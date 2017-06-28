@@ -2,14 +2,14 @@ package com.mulperi.models.mulson;
 
 public class Relationship {
 
-	private String id;
+	private String targetId;
 	private String type;
 	
-	public String getId() {
-		return id;
+	public String getTargetId() {
+		return targetId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setTargetId(String id) {
+		this.targetId = id;
 	}
 	public String getType() {
 		return type;

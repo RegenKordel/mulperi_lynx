@@ -1,14 +1,15 @@
 package com.mulperi.models.kumbang;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Feature {
 
 	String type;
 	String name;
-	ArrayList<SubFeature> subFeatures;
-	ArrayList<Constraint> constraints;
-	ArrayList<Attribute> attributes;
+	List<SubFeature> subFeatures;
+	List<Constraint> constraints;
+	List<Attribute> attributes;
 	
 	
 	public Feature() {		
@@ -35,27 +36,27 @@ public class Feature {
 		this.type = type;
 	}
 
-	public ArrayList<SubFeature> getSubFeatures() {
+	public List<SubFeature> getSubFeatures() {
 		return subFeatures;
 	}
 
-	public void setSubFeatures(ArrayList<SubFeature> subFeatures) {
+	public void setSubFeatures(List<SubFeature> subFeatures) {
 		this.subFeatures = subFeatures;
 	}
 
-	public ArrayList<Constraint> getConstraints() {
+	public List<Constraint> getConstraints() {
 		return constraints;
 	}
 
-	public void setConstraints(ArrayList<Constraint> constraints) {
+	public void setConstraints(List<Constraint> constraints) {
 		this.constraints = constraints;
 	}
 	
-	public ArrayList<Attribute> getAttributes() {
+	public List<Attribute> getAttributes() {
 		return attributes;
 	}
 	
-	public void setAttributes(ArrayList<Attribute> attributes) {
+	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
 

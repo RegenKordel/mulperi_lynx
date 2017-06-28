@@ -3,11 +3,18 @@ package com.mulperi.models.mulson;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mulperi.models.kumbang.Attribute;
+
 public class Requirement {
 
 	private String id;
 	private String name;
 	private List<Relationship> relationships;
+	private List<Attribute> attributes;
+	
+	public Requirement() {
+		this.attributes = new ArrayList<>();
+	}
 	
 	public String getId() {
 		return id;
@@ -26,6 +33,12 @@ public class Requirement {
 	}
 	public void setRelationships(List<Relationship> relationships) {
 		this.relationships = relationships;
+	}		
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
 	}
 	
 	public boolean hasRelationshipType(String type) {
@@ -52,7 +65,7 @@ public class Requirement {
 					|| rel.getType().equals("isoptionalpartof")
 					|| rel.getType().equals("ispartof")) {
 				
-				return rel.getId();
+				return rel.getTargetId();
 			}
 		}
 		
@@ -60,13 +73,13 @@ public class Requirement {
 	}
 	
 	public List<String> getRequires() {
-		ArrayList<String> requires = new ArrayList<>();
+		List<String> requires = new ArrayList<>();
 		if(relationships == null) {
 			return requires;
 		}
 		for(Relationship rel : relationships) {
 			if(rel.getType().equals("requires")) {
-				requires.add(rel.getId());
+				requires.add(rel.getTargetId());
 			}
 		}
 		return requires;

@@ -22,7 +22,7 @@ public class FormatTransformerServiceTests {
 		Requirement req = new Requirement();
 		req.setId("T1");
 		Relationship rel = new Relationship();
-		rel.setId("R2");
+		rel.setTargetId("R2");
 		rel.setType("requires");
 		List<Relationship> relationships = new ArrayList<Relationship>();
 		relationships.add(rel);

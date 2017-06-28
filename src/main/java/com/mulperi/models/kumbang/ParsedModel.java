@@ -1,6 +1,7 @@
 package com.mulperi.models.kumbang;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParsedModel {
 
@@ -11,15 +12,15 @@ public class ParsedModel {
 	ArrayList<Attribute> attributes;
 	
 	public ParsedModel() {
-		
-	}
-	
-	public ParsedModel(String name, String description) {
-		modelName = name;
-		comment = description;
 		components = new ArrayList<Component>();
 		features = new ArrayList<Feature>();
 		attributes = new ArrayList<Attribute>();
+	}
+	
+	public ParsedModel(String name, String description) {
+		this(); //initialize lists
+		modelName = name;
+		comment = description;	
 		components.add(new Component(name));
 		features.add(new Feature(name));		
 	}
@@ -78,5 +79,13 @@ public class ParsedModel {
 	
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
+	}
+	
+	public void addNewAttributes(List<Attribute> newAttributes) {
+		
+		//first remove duplicates
+		this.attributes.removeAll(newAttributes);
+		
+		this.attributes.addAll(newAttributes);
 	}
 }
