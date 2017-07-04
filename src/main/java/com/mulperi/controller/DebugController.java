@@ -48,7 +48,7 @@ public class DebugController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ParsedModel getExampleJSON() {
     	
-    	ParsedModel model = new ParsedModel("Car", "A car, mostly used for driving");
+    	ParsedModel model = new ParsedModel("Car", "A car, best used for driving");
 		model.addFeature(new Feature("Motor", "This better work"));
 		model.addFeature(new Feature("Navigator"));
 		model.addFeature(new Feature("Gearbox", "Auto or manual?"));

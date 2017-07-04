@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mulperi.models.mulson.Requirement;
 import com.mulperi.models.reqif.SpecObject;
-import com.mulperi.models.selections.AttributeSelection;
+import com.mulperi.models.selections.FeatureSelection;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.ReqifParser;
@@ -82,7 +82,7 @@ public class SubmitController {
 	}
 
 	@RequestMapping(value = "/selections", method = RequestMethod.POST)
-	public String postSelectionsForConfiguration(@RequestBody ArrayList<AttributeSelection> selections,
+	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections,
 			@RequestParam("modelName") String modelName) {
 
 		CaasClient client = new CaasClient();
