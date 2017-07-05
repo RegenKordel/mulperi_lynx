@@ -26,7 +26,7 @@ import javax.management.IntrospectionException;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("modelSubmit")
+@RequestMapping("models")
 public class ModelController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
@@ -35,7 +35,7 @@ public class ModelController {
 
     private String caasAddress;
 	
-	@RequestMapping(value = "/mulsonModel", method = RequestMethod.POST)
+	@RequestMapping(value = "/submitMulsonModel", method = RequestMethod.POST)
     public ResponseEntity<?> mulsonIn(@RequestBody List<Requirement> requirements) {
 		String name = generateName(requirements);
 		
@@ -44,7 +44,7 @@ public class ModelController {
         return sendToCaas(name, kumbangModel);
     }
 	
-	@RequestMapping(value = "/reqifModel", method = RequestMethod.POST, consumes="application/xml")
+	@RequestMapping(value = "/submitReqifModel", method = RequestMethod.POST, consumes="application/xml")
     public ResponseEntity<?> reqifIn(@RequestBody String reqifXML) {
 		ReqifParser parser = new ReqifParser();
 		String name = generateName(reqifXML);
