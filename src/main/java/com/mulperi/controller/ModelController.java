@@ -26,8 +26,8 @@ import javax.management.IntrospectionException;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("submit")
-public class SubmitController {
+@RequestMapping("modelSubmit")
+public class ModelController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
 
@@ -79,23 +79,6 @@ public class SubmitController {
 		} 
 		
 		return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + kumbangModel, HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = "/selections", method = RequestMethod.POST)
-	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections,
-			@RequestParam("modelName") String modelName) {
-
-		CaasClient client = new CaasClient();
-
-		String result = "";
-
-		try {
-			result = client.getConfiguration(modelName, selections, caasAddress);
-
-		} catch (Exception e) {
-			return "Configuration failed.\n\n" + e;
-		}
-		return "Configuration successful.\n\n - - - \n\n" + result;
 	}
 
 }
