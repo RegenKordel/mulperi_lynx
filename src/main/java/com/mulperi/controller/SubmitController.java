@@ -30,13 +30,13 @@ import javax.management.IntrospectionException;
 public class SubmitController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
-
+	
 	@Value("${mulperi.caasAddress}")
-
     private String caasAddress;
 	
 	@RequestMapping(value = "/mulsonModel", method = RequestMethod.POST)
     public ResponseEntity<?> mulsonIn(@RequestBody List<Requirement> requirements) {
+		
 		String name = generateName(requirements);
 		
         String kumbangModel = transform.mulsonToKumbang(name, requirements);

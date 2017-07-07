@@ -3,16 +3,29 @@ package com.mulperi.models.kumbang;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Feature {
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
-	String type;
-	String name;
-	List<SubFeature> subFeatures;
-	List<Constraint> constraints;
-	List<Attribute> attributes;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class Feature extends AbstractPersistable<Long> {
+
+	private static final long serialVersionUID = -5144125345854141995L;
 	
+	private String type;
+	private String name;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<SubFeature> subFeatures;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<Constraint> constraints;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<Attribute> attributes;
+	private Feature parent;
 	
-	public Feature() {		
+	public Feature() {
 	}
 	
 	public Feature(String type, String comment) {
@@ -26,7 +39,6 @@ public class Feature {
 	public Feature(String type) {
 		this(type, null);
 	}
-
 	
 	public String getType() {
 		return type;
@@ -67,6 +79,14 @@ public class Feature {
 	public void setName(String comment) {
 		this.name = comment;
 	}
+	
+	public Feature getParent() {
+		return parent;
+	}
+
+	public void setParent(Feature parent) {
+		this.parent = parent;
+	}
 
 	public void addSubFeature(SubFeature subfeature) {
 		subFeatures.add(subfeature);
@@ -79,4 +99,5 @@ public class Feature {
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
 	}
+	
 }

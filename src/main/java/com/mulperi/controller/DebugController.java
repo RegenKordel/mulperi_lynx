@@ -7,11 +7,15 @@ import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
+import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.KumbangModelGenerator;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +29,9 @@ public class DebugController {
 	
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;
+	
+	@Autowired
+	private ParsedModelRepository parsedModelRepository;
 	
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public String postDataForModel(@RequestBody ParsedModel model) {
@@ -42,6 +49,18 @@ public class DebugController {
             return "Couldn't upload the configuration model\n\n" + e; 
 		} 
 		return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
+    }
+    
+    @RequestMapping(value = "/test2", method = RequestMethod.POST)
+    public String testDatabaseFeatures(@RequestBody ParsedModel model) {
+    	
+    	parsedModelRepository.save(model);
+    	model.findFeatureParentRelations();
+    	
+    	assertEquals(null, model.getFeatures().get(0).getParent());
+    	System.out.println(model.getFeatures().get(0).getParent().getName());
+    	
+    	return "test";
     }
     
     @ResponseBody
@@ -65,7 +84,9 @@ public class DebugController {
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Motor", "motor"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Navigator", "navigator", "0-1"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Gearbox", "gearbox"));
-		model.getFeatures().get(3).addSubFeature(new SubFeature("(Auto, Manual)", "geartype", "0-1"));
+		SubFeature geartype = new SubFeature("Auto", "geartype", "0-1");
+		geartype.addType("Manual");
+		model.getFeatures().get(3).addSubFeature(geartype);
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
 		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
 		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));

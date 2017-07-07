@@ -1,17 +1,18 @@
 package com.mulperi.services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
-import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.mulson.Requirement;
 
+@Service
 public class FormatTransformerService {
 	
 	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
@@ -21,7 +22,7 @@ public class FormatTransformerService {
 		ParsedModel pm = new ParsedModel(modelName);
 		
 		for(Requirement req : requirements) {
-			Feature feat = new Feature(req.getId());
+			Feature feat = new Feature(req.getRequirementId());
 			pm.addFeature(feat);
 			
 			//add attributes not yet in parsedmodel
@@ -29,25 +30,25 @@ public class FormatTransformerService {
 			
 			//if the requirement is not part of anything, then it's a subfeature of root
 			if(req.getParent() == null) { 
-				pm.getFeatures().get(0).addSubFeature(new SubFeature(req.getId(), req.getId().toLowerCase(), req.getCardinality()));
+				pm.getFeatures().get(0).addSubFeature(new SubFeature(req.getRequirementId(), req.getRequirementId().toLowerCase(), req.getCardinality()));
 			}
 			
 			//add the subfeatures of the requirement
 			for(Requirement subReq : requirements) {
 				String parent = subReq.getParent();
-				if(parent != null && parent.equals(req.getId())) {
-					feat.addSubFeature(new SubFeature(subReq.getId(), subReq.getId().toLowerCase(), subReq.getCardinality()));
+				if(parent != null && parent.equals(req.getRequirementId())) {
+					feat.addSubFeature(new SubFeature(subReq.getRequirementId(), subReq.getRequirementId().toLowerCase(), subReq.getCardinality()));
 				}
 			}		
 			
 			//add constraints
 			for(String requiresId : req.getRequires()) {
-				Constraint constraint = new Constraint(req.getId().toLowerCase(), requiresId.toLowerCase());
+				Constraint constraint = new Constraint(req.getRequirementId().toLowerCase(), requiresId.toLowerCase());
 				
 				//seek parent info if the other side of the constraint does not reside in this feature's subfeatures
 				Requirement requires = findRequirementFromList(requiresId, requirements);
 				if(requires != null && requires.getParent() != null) {
-					constraint = new Constraint(req.getId().toLowerCase(), requires.getParent().toLowerCase() + "." + requiresId.toLowerCase());
+					constraint = new Constraint(req.getRequirementId().toLowerCase(), requires.getParent().toLowerCase() + "." + requiresId.toLowerCase());
 				}
 				
 				if(req.getParent() == null) { 
@@ -67,7 +68,7 @@ public class FormatTransformerService {
 
 	private Requirement findRequirementFromList(String needle, List<Requirement> haystack) {
 		for(Requirement r : haystack) {
-			if(r.getId().equals(needle)) {
+			if(r.getRequirementId().equals(needle)) {
 				return r;
 			}
 		}
@@ -121,4 +122,5 @@ public class FormatTransformerService {
 		
 		return kumbangModelGenerator.generateKumbangModelString(pm);
 	}
+	
 }
