@@ -3,24 +3,35 @@ package com.mulperi.models.mulson;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import com.mulperi.models.kumbang.Attribute;
 
-public class Requirement {
+@Entity
+public class Requirement extends AbstractPersistable<Long> {
 
-	private String id;
+	private static final long serialVersionUID = -8873722269641439557L;
+	
+	private String requirementId;
 	private String name;
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Relationship> relationships;
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Attribute> attributes;
 	
 	public Requirement() {
 		this.attributes = new ArrayList<>();
 	}
 	
-	public String getId() {
-		return id;
+	public String getRequirementId() {
+		return requirementId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setRequirementId(String requirementId) {
+		this.requirementId = requirementId;
 	}
 	public String getName() {
 		return name;

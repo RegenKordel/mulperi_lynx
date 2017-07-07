@@ -1,7 +1,14 @@
 package com.mulperi.models.mulson;
 
-public class Relationship {
+import javax.persistence.Entity;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class Relationship extends AbstractPersistable<Long> {
+
+	private static final long serialVersionUID = 8815373175639095921L;
+	
 	private String targetId;
 	private String type;
 	

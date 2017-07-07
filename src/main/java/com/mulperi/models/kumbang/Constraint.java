@@ -1,6 +1,14 @@
 package com.mulperi.models.kumbang;
 
-public class Constraint {
+import javax.persistence.Entity;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class Constraint extends AbstractPersistable<Long> {
+	
+	private static final long serialVersionUID = -4884066864162001583L;
+	
 	String ifPresent;
 	String thenRequired;
 	

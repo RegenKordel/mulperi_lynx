@@ -1,15 +1,28 @@
 package com.mulperi.models.kumbang;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import java.util.ArrayList;
 
-public class ParsedModel {
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class ParsedModel extends AbstractPersistable<Long> {
+
+	private static final long serialVersionUID = -3020633975702914269L;
+	
 	String modelName;
 	String comment;
-	ArrayList<Component> components;
-	ArrayList<Feature> features;
-	ArrayList<Attribute> attributes;
+	@OneToMany(cascade = {CascadeType.ALL})
+	List<Component> components;
+	@OneToMany(cascade = {CascadeType.ALL})
+	List<Feature> features;
+	@OneToMany(cascade = {CascadeType.ALL})
+	List<Attribute> attributes;
 	
 	public ParsedModel() {
 		components = new ArrayList<Component>();
@@ -33,15 +46,15 @@ public class ParsedModel {
 		return modelName;
 	}
 	
-	public ArrayList<Component> getComponents() {
+	public List<Component> getComponents() {
 		return components;
 	}
 	
-	public ArrayList<Feature> getFeatures() {
+	public List<Feature> getFeatures() {
 		return features;
 	}
 	
-	public ArrayList<Attribute> getAttributes() {
+	public List<Attribute> getAttributes() {
 		return attributes;
 	}
 
@@ -49,15 +62,15 @@ public class ParsedModel {
 		this.modelName = modelName;
 	}
 
-	public void setComponents(ArrayList<Component> components) {
+	public void setComponents(List<Component> components) {
 		this.components = components;
 	}
 
-	public void setFeatures(ArrayList<Feature> features) {
+	public void setFeatures(List<Feature> features) {
 		this.features = features;
 	}
 	
-	public void setAttributes(ArrayList<Attribute> attributes) {
+	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
 	
@@ -87,5 +100,48 @@ public class ParsedModel {
 		this.attributes.removeAll(newAttributes);
 		
 		this.attributes.addAll(newAttributes);
+	}
+	
+	/**
+	 * Creates getParent-relations between model's features. Call after creating the model
+	 */
+	public void populateFeatureParentRelations() {
+		for(Feature feature : this.features) {
+			for(Feature parent : this.features) {
+				for(SubFeature subfeat : parent.getSubFeatures()) {
+					if(subfeat.getTypes().contains(feature.getType())) {
+						feature.setParent(parent);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Find feature of given type from the model
+	 * @param type
+	 * @return
+	 */
+	public Feature getFeature(String type) {
+		for(Feature feature : this.features) {
+			if(feature.getType().equals(type)) {
+				return feature;
+			}
+		}
+		return null;
+	}
+	
+	public Stack<Feature> findPath(String type) {
+		Stack<Feature> stack = new Stack<Feature>();
+		Feature currentFeat = this.getFeature(type);
+		
+		do {
+			stack.push(currentFeat);
+//			path = ".(" + currentFeat.getType() + ", " + currentFeat.getRoleNameInModel() + ")" + path;
+			currentFeat = currentFeat.getParent();
+		} while (currentFeat != null);
+		
+//		path = "root" + path;
+		return stack;
 	}
 }

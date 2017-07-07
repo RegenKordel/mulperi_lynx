@@ -1,17 +1,35 @@
 package com.mulperi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
+import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
+import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.KumbangModelGenerator;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +44,12 @@ public class DebugController {
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;
 	
+	@Autowired
+	private ParsedModelRepository parsedModelRepository;
+	
+	@Autowired
+	private FormatTransformerService transform;
+	
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public String postDataForModel(@RequestBody ParsedModel model) {
     	
@@ -37,11 +61,19 @@ public class DebugController {
 		
 		try {
 			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
-			
+			parsedModelRepository.save(model);
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 
 		} 
 		return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
+    }
+    
+    @RequestMapping(value = "/test2", method = RequestMethod.POST, produces="application/xml")
+    public String testDatabaseFeatures(@RequestBody ParsedModel model) {
+    	
+    	parsedModelRepository.save(model);
+    	
+    	return "OK: " + model.getModelName();
     }
     
     @ResponseBody
@@ -65,7 +97,9 @@ public class DebugController {
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Motor", "motor"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Navigator", "navigator", "0-1"));
 		model.getFeatures().get(0).addSubFeature(new SubFeature("Gearbox", "gearbox"));
-		model.getFeatures().get(3).addSubFeature(new SubFeature("(Auto, Manual)", "geartype", "0-1"));
+		SubFeature geartype = new SubFeature("Auto", "geartype", "0-1");
+		geartype.addType("Manual");
+		model.getFeatures().get(3).addSubFeature(geartype);
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
 		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
 		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));

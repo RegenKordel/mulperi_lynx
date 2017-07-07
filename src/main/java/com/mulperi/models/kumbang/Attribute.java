@@ -1,23 +1,32 @@
 package com.mulperi.models.kumbang;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class Attribute {
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class Attribute  extends AbstractPersistable<Long> {
+
+	private static final long serialVersionUID = 8108228292152293692L;
+	
 	String name;
 	String role;
-	ArrayList<String> values;
+	@ElementCollection
+	List<String> values;
 	
 	public Attribute() {
 	}
 
-	public Attribute(String name, String role, ArrayList<String> values) {
+	public Attribute(String name, String role, List<String> values) {
 		this.name = name;
 		this.role = role;
 		this.values = values;
 	}
 	
-	public Attribute(String name, ArrayList<String> values) {
+	public Attribute(String name, List<String> values) {
 		this(name, null, values);
 	}
 		
@@ -33,10 +42,10 @@ public class Attribute {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public ArrayList<String> getValues() {
+	public List<String> getValues() {
 		return values;
 	}
-	public void setValues(ArrayList<String> values) {
+	public void setValues(List<String> values) {
 		this.values = values;
 	}
 	

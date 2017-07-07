@@ -1,16 +1,30 @@
 package com.mulperi.models.kumbang;
 
-public class SubFeature {
+import java.util.ArrayList;
+import java.util.List;
 
-	private String type;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+@Entity
+public class SubFeature extends AbstractPersistable<Long> {
+
+	private static final long serialVersionUID = -187885907598416501L;
+	
+	@ElementCollection
+	List<String> types;
 	private String role;
 	private String cardinality;
 	
 	public SubFeature() {
+		this.types = new ArrayList<String>();
 	}
 	
 	public SubFeature(String type, String role, String cardinality) {
-		this.type = type;
+		this();
+		this.types.add(type);
 		this.role = role;
 		this.cardinality = cardinality;
 	}
@@ -19,12 +33,12 @@ public class SubFeature {
 		this(type, role, null);
 	}
 
-	public String getType() {
-		return type;
+	public List<String> getTypes() {
+		return types;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypes(List<String> types) {
+		this.types = types;
 	}
 
 	public String getRole() {
@@ -43,9 +57,26 @@ public class SubFeature {
 		this.cardinality = cardinality;
 	}
 	
+	public void addType(String type) {
+		this.types.add(type);
+	}
+	
+	/**
+	 * 
+	 * @return type in string form, for example "Manual" or "(Manual, Automatic)" 
+	 */
+	public String getTypeString() {
+		if(this.types.size() == 1) {
+			return this.types.get(0);
+		} else if(types.size() >= 2) {
+			return "(" + String.join(", ", this.types) + ")";
+		}
+		return "";
+	}
+	
 	@Override
 	public String toString() {
-		String result = type;
+		String result = getTypeString();
 		
 		if (role != null && !role.equals("")) {
 			result += " " + role;

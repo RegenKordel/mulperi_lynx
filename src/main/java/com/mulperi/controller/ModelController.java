@@ -30,17 +30,18 @@ import javax.management.IntrospectionException;
 public class ModelController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
-
+	
 	@Value("${mulperi.caasAddress}")
-
     private String caasAddress;
 	
 	@RequestMapping(value = "/submitMulsonModel", method = RequestMethod.POST)
     public ResponseEntity<?> mulsonIn(@RequestBody List<Requirement> requirements) {
+		
 		String name = generateName(requirements);
 		
         String kumbangModel = transform.mulsonToKumbang(name, requirements);
         
+        //TODO: save model if send successful
         return sendToCaas(name, kumbangModel);
     }
 	
@@ -52,6 +53,7 @@ public class ModelController {
 		try {
 			Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
 			String kumbangModel = transform.reqifToKumbang(name, specObjects);
+			//TODO: save model if send successful
 	        return sendToCaas(name, kumbangModel);
 		} catch (Exception e) { //ReqifParser error
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);

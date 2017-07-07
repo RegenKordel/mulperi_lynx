@@ -6,6 +6,7 @@ import java.util.zip.DataFormatException;
 
 import javax.management.IntrospectionException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,38 @@ public class CaasClient {
 
 	}
 
-	public String getConfiguration(String modelName, ArrayList<FeatureSelection> selections, String caasAddress)
+	/**
+	 * 
+	 * @param configurationRequest XML
+	 * @return
+	 * @throws Exception
+	 */
+	public String getConfiguration(String configurationRequest, String caasAddress) throws Exception {
+
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_XML);
+
+		HttpEntity<String> entity = new HttpEntity<String>(configurationRequest, headers);
+
+		ResponseEntity<String> response = null;
+
+		System.out.println(entity);
+
+//		try {
+			response = rt.postForEntity(caasAddress, entity, String.class);
+//		} catch (HttpServerErrorException e) {
+//			selectionErrorHandling(e);
+//		}
+
+		String result = response.toString();
+		System.out.println(result.toString());
+
+		return result;
+	}
+	
+	public String getConfiguration(String modelName, ArrayList<FeatureSelection> selections, String caasAddress) //DEPRECATED
 			throws Exception {
 
 		RestTemplate rt = new RestTemplate();
