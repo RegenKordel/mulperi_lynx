@@ -1,9 +1,25 @@
 package com.mulperi.services;
 
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.kumbang.Constraint;
@@ -123,4 +139,87 @@ public class FormatTransformerService {
 		return kumbangModelGenerator.generateKumbangModelString(pm);
 	}
 	
+	public String featuresToConfigurationRequest(List<String> features, ParsedModel model) throws Exception {
+		model.populateFeatureParentRelations();
+    	
+    	ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
+    	
+    	for(String feature : features) {
+    		featureStacks.add(model.findPath(feature));
+    	}
+    	
+    	HashMap<Feature, Element> processed = new HashMap<>();
+    	
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.newDocument();
+        
+        Element xmlRoot = doc.createElement("xml");
+        doc.appendChild(xmlRoot);
+        
+        Element modelElement = doc.createElement("model");
+        Attr modelNameAttribute = doc.createAttribute("name");
+        modelNameAttribute.setValue(model.getModelName());
+        modelElement.setAttributeNode(modelNameAttribute);
+        xmlRoot.appendChild(modelElement);
+        
+        Element confRoot = doc.createElement("configuration");
+        xmlRoot.appendChild(confRoot);
+        
+        for(Stack<Feature> setOfFeatures : featureStacks) {
+        	while(!setOfFeatures.isEmpty()) {
+            	Feature feature = setOfFeatures.pop();
+            	if(processed.containsKey(feature)) { //this element already exists
+            		continue;
+            	}
+            	
+            	Element featureElement = doc.createElement("feature");
+            	processed.put(feature, featureElement);
+            	
+                Attr nameAttribute = doc.createAttribute("name");
+                nameAttribute.setValue(feature.getRoleNameInModel());
+                featureElement.setAttributeNode(nameAttribute);
+                
+                Attr typeAttribute = doc.createAttribute("type");
+                typeAttribute.setValue(feature.getType());
+                featureElement.setAttributeNode(typeAttribute);
+            	
+            	if(feature.getParent() == null) { //child of root
+            		confRoot.appendChild(featureElement);
+            	} else { //child of another element
+            		Element parentElement = processed.get(feature.getParent());
+            		parentElement.appendChild(featureElement);
+            	}
+        	}
+        	
+        }
+        
+//      Output to console for testing
+//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//        Transformer transformer = transformerFactory.newTransformer();
+//        DOMSource source = new DOMSource(doc);
+//        StreamResult consoleResult = new StreamResult(System.out);
+//        transformer.transform(source, consoleResult);
+        
+        return documentToString(doc);
+	}
+	
+	public static String documentToString(Document doc) {
+	    try {
+	        StringWriter sw = new StringWriter();
+	        TransformerFactory tf = TransformerFactory.newInstance();
+	        Transformer transformer = tf.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+	        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	
+	        transformer.transform(new DOMSource(doc), new StreamResult(sw));
+	        return sw.toString();
+	    } catch (Exception ex) {
+	        throw new RuntimeException("Error converting to String", ex);
+	    }
+	}
+
+
 }

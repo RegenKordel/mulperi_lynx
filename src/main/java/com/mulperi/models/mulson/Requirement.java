@@ -9,11 +9,10 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import com.mulperi.models.database.Hierarchy;
 import com.mulperi.models.kumbang.Attribute;
 
 @Entity
-public class Requirement extends AbstractPersistable<Long> implements Hierarchy {
+public class Requirement extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = -8873722269641439557L;
 	
@@ -106,16 +105,6 @@ public class Requirement extends AbstractPersistable<Long> implements Hierarchy 
 			return "0-1";
 		}
 		return "0-1"; //Defaults to optional 
-	}
-
-	@Override
-	public String getParentId() {
-		return this.getParent();
-	}
-
-	@Override
-	public String getRequirementName() {
-		return this.name;
 	}
 	
 }

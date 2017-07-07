@@ -41,6 +41,7 @@ public class SubmitController {
 		
         String kumbangModel = transform.mulsonToKumbang(name, requirements);
         
+        //TODO: save model if send successful
         return sendToCaas(name, kumbangModel);
     }
 	
@@ -52,6 +53,7 @@ public class SubmitController {
 		try {
 			Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
 			String kumbangModel = transform.reqifToKumbang(name, specObjects);
+			//TODO: save model if send successful
 	        return sendToCaas(name, kumbangModel);
 		} catch (Exception e) { //ReqifParser error
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);

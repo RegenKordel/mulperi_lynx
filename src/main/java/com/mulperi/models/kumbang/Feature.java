@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -98,6 +97,28 @@ public class Feature extends AbstractPersistable<Long> {
 	
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
+	}
+	
+	/**
+	 * Populate parent relations of model first 
+	 * @return name of the role the feature participates in
+	 */
+	public String getRoleNameInModel() {
+		if(this.parent == null) {
+			return "root";
+		}
+		
+		if(this.parent.getSubFeatures().isEmpty()) {
+			return "error";
+		}
+		
+		for(SubFeature subfeature : this.parent.getSubFeatures()) {
+			if(subfeature.getTypes().contains(this.type)) {
+				return subfeature.getRole();
+			}
+		}
+		
+		return "";
 	}
 	
 }

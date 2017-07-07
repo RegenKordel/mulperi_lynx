@@ -1,6 +1,9 @@
 package com.mulperi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.kumbang.Constraint;
@@ -9,11 +12,22 @@ import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
+import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.KumbangModelGenerator;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +47,9 @@ public class DebugController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
+	@Autowired
+	private FormatTransformerService transform;
+	
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public String postDataForModel(@RequestBody ParsedModel model) {
     	
@@ -44,23 +61,19 @@ public class DebugController {
 		
 		try {
 			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
-			
+			parsedModelRepository.save(model);
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 
 		} 
 		return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
     }
     
-    @RequestMapping(value = "/test2", method = RequestMethod.POST)
+    @RequestMapping(value = "/test2", method = RequestMethod.POST, produces="application/xml")
     public String testDatabaseFeatures(@RequestBody ParsedModel model) {
     	
     	parsedModelRepository.save(model);
-    	model.findFeatureParentRelations();
     	
-    	assertEquals(null, model.getFeatures().get(0).getParent());
-    	System.out.println(model.getFeatures().get(0).getParent().getName());
-    	
-    	return "test";
+    	return "OK: " + model.getModelName();
     }
     
     @ResponseBody

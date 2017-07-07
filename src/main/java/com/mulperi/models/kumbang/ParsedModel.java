@@ -1,6 +1,7 @@
 package com.mulperi.models.kumbang;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
@@ -104,7 +105,7 @@ public class ParsedModel extends AbstractPersistable<Long> {
 	/**
 	 * Creates getParent-relations between model's features. Call after creating the model
 	 */
-	public void findFeatureParentRelations() {
+	public void populateFeatureParentRelations() {
 		for(Feature feature : this.features) {
 			for(Feature parent : this.features) {
 				for(SubFeature subfeat : parent.getSubFeatures()) {
@@ -114,5 +115,33 @@ public class ParsedModel extends AbstractPersistable<Long> {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Find feature of given type from the model
+	 * @param type
+	 * @return
+	 */
+	public Feature getFeature(String type) {
+		for(Feature feature : this.features) {
+			if(feature.getType().equals(type)) {
+				return feature;
+			}
+		}
+		return null;
+	}
+	
+	public Stack<Feature> findPath(String type) {
+		Stack<Feature> stack = new Stack<Feature>();
+		Feature currentFeat = this.getFeature(type);
+		
+		do {
+			stack.push(currentFeat);
+//			path = ".(" + currentFeat.getType() + ", " + currentFeat.getRoleNameInModel() + ")" + path;
+			currentFeat = currentFeat.getParent();
+		} while (currentFeat != null);
+		
+//		path = "root" + path;
+		return stack;
 	}
 }
