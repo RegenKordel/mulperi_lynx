@@ -70,11 +70,11 @@ public class CaasClient {
 
 		System.out.println(entity);
 
-//		try {
+		try {
 			response = rt.postForEntity(caasAddress, entity, String.class);
-//		} catch (HttpServerErrorException e) {
-//			selectionErrorHandling(e);
-//		}
+		} catch (HttpServerErrorException e) {
+			selectionErrorHandling(e);
+		}
 
 		String result = response.getBody();
 		System.out.println(result);
@@ -181,7 +181,9 @@ public class CaasClient {
 	}
 
 	private void selectionErrorHandling(HttpServerErrorException e) throws Exception {
-
+		if (e.getStatusCode() == HttpStatus.BAD_REQUEST || e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+			throw new Exception(e.getResponseBodyAsString());
+		}
 	}
 
 }

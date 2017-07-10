@@ -62,7 +62,48 @@ public class ConfigurationController {
     	
     }
 	
+	@RequestMapping(value = "/models/{model}/configurations/isconsistent", method = RequestMethod.POST)
+    public ResponseEntity<?> isConsistent(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+		
+		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
+		
+		if(model == null) {
+			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
+		}
+		
+		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
+		for(FeatureSelection selection : selections) {
+			features.add(selection.getType());
+		}
+		
+		String configurationRequest;
+    	try {
+    		configurationRequest = transform.featuresToConfigurationRequest(features, model);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Failed to create configurationRequest (feature typos?): " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+    	//TDB: Notice copy-paste above
+    	
+    	//Todo: all invalid configurations could return HTTP 400 to tell server errors and invalid configurations apart
+    	try {
+    		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		
+    		for(String feature : features) { //TBD: do this nicer
+    			if(!response.contains("\"" + feature + "\"")) {
+    				return new ResponseEntity<>("no", HttpStatus.OK);
+    			}
+    		}
+    		
+			return new ResponseEntity<>("yes", HttpStatus.OK);
 
+		} catch (Exception e) {
+			return new ResponseEntity<>("no", HttpStatus.OK);
+		}
+    	
+    }
+
+	
 	@RequestMapping(value = "/selections", method = RequestMethod.POST)
 	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections, //DEPRECATED
 			@RequestParam("modelName") String modelName) { 
