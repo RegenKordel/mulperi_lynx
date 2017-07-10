@@ -1,4 +1,4 @@
-package com.mulperi.controller;
+package com.mulperi.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Attr;

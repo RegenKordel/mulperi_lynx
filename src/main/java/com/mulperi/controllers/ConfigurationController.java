@@ -1,9 +1,10 @@
-package com.mulperi.controller;
+package com.mulperi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,22 +21,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("configuration")
 public class ConfigurationController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
 	
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;
+	private CaasClient caasClient = new CaasClient();
 	
-
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
-	@RequestMapping(value = "/request", method = RequestMethod.POST)
-    public ResponseEntity<?> request(@RequestBody List<FeatureSelection> selections, @RequestParam("model") String modelName) {
+	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST)
+    public ResponseEntity<?> requestConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 		
-		ParsedModel model = parsedModelRepository.findByModelName(modelName);
+		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
 		
 		if(model == null) {
 			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
@@ -45,8 +45,7 @@ public class ConfigurationController {
 		for(FeatureSelection selection : selections) {
 			features.add(selection.getType());
 		}
-    	
-		CaasClient caasClient = new CaasClient();
+		
 		String configurationRequest;
     	try {
     		configurationRequest = transform.featuresToConfigurationRequest(features, model);
@@ -65,7 +64,7 @@ public class ConfigurationController {
 	
 
 	@RequestMapping(value = "/selections", method = RequestMethod.POST)
-	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections,
+	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections, //DEPRECATED
 			@RequestParam("modelName") String modelName) { 
 
 		CaasClient client = new CaasClient();

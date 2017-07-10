@@ -9,5 +9,5 @@ public interface ParsedModelRepository extends JpaRepository<ParsedModel, Long> 
 	
 	//Query creation: http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
 	
-	ParsedModel findByModelName(String modelName);
+	ParsedModel findFirstByModelName(String modelName);
 }

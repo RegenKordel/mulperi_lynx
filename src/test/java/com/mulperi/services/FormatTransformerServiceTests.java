@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.mulson.Relationship;
 import com.mulperi.models.mulson.Requirement;
 import com.mulperi.services.FormatTransformerService;
@@ -14,6 +15,7 @@ import com.mulperi.services.FormatTransformerService;
 public class FormatTransformerServiceTests {
 	
 	private FormatTransformerService transform = new FormatTransformerService();
+	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
 	
 	@Test
 	public void smallTestCase() {
@@ -28,6 +30,8 @@ public class FormatTransformerServiceTests {
 		relationships.add(rel);
 		req.setRelationships(relationships);
 		requirements.add(req);
+		
+		ParsedModel pm = transform.parseMulson("Test", requirements);
 		
 		assertEquals("Kumbang model Test\n"
 			+"	 root component Test\n"
@@ -49,7 +53,7 @@ public class FormatTransformerServiceTests {
 			+"\n"
 			+"feature type T1 {\n"
 			+"}\n"
-			+"\n", transform.mulsonToKumbang("Test", requirements));
+			+"\n", kumbangModelGenerator.generateKumbangModelString(pm));
 		
 	}
 	

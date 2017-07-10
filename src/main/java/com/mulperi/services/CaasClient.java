@@ -76,8 +76,8 @@ public class CaasClient {
 //			selectionErrorHandling(e);
 //		}
 
-		String result = response.toString();
-		System.out.println(result.toString());
+		String result = response.getBody();
+		System.out.println(result);
 
 		return result;
 	}

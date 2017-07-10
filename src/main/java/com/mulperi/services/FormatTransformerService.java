@@ -9,7 +9,6 @@ import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -31,9 +30,7 @@ import com.mulperi.models.mulson.Requirement;
 @Service
 public class FormatTransformerService {
 	
-	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
-	
-	public String mulsonToKumbang(String modelName, List<Requirement> requirements) {
+	public ParsedModel parseMulson(String modelName, List<Requirement> requirements) {
 		
 		ParsedModel pm = new ParsedModel(modelName);
 		
@@ -79,7 +76,7 @@ public class FormatTransformerService {
 			
 		}
 		
-		return kumbangModelGenerator.generateKumbangModelString(pm);
+		return pm;
 	}
 
 	private Requirement findRequirementFromList(String needle, List<Requirement> haystack) {
@@ -97,7 +94,7 @@ public class FormatTransformerService {
 	 * @param specObjects
 	 * @return
 	 */
-	public String reqifToKumbang(String modelName, Collection<SpecObject> specObjects) {
+	public ParsedModel parseReqif(String modelName, Collection<SpecObject> specObjects) {
 		
 		ParsedModel pm = new ParsedModel(modelName);
 		
@@ -136,7 +133,7 @@ public class FormatTransformerService {
 			
 		}
 		
-		return kumbangModelGenerator.generateKumbangModelString(pm);
+		return pm;
 	}
 	
 	public String featuresToConfigurationRequest(List<String> features, ParsedModel model) throws Exception {
