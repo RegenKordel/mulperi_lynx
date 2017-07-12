@@ -16,6 +16,7 @@ import com.mulperi.models.selections.FeatureSelection;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
+import com.mulperi.services.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 public class ConfigurationController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
+	private Utils utils = new Utils();
 	
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;
@@ -32,25 +34,14 @@ public class ConfigurationController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
-	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST)
+	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST, produces="application/xml")
     public ResponseEntity<?> requestConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 		
-		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
-		
-		if(model == null) {
-			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
-		}
-		
-		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
-		for(FeatureSelection selection : selections) {
-			features.add(selection.getType());
-		}
-		
 		String configurationRequest;
-    	try {
-    		configurationRequest = transform.featuresToConfigurationRequest(features, model);
+		try {
+			configurationRequest = makeConfigurationRequest(selections, modelName);
 		} catch (Exception e) {
-			return new ResponseEntity<>("Failed to create configurationRequest (feature typos?): " + e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
     	try {
@@ -65,32 +56,19 @@ public class ConfigurationController {
 	@RequestMapping(value = "/models/{model}/configurations/isconsistent", method = RequestMethod.POST)
     public ResponseEntity<?> isConsistent(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 		
-		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
-		
-		if(model == null) {
-			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
-		}
-		
-		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
-		for(FeatureSelection selection : selections) {
-			features.add(selection.getType());
-		}
-		
 		String configurationRequest;
-    	try {
-    		configurationRequest = transform.featuresToConfigurationRequest(features, model);
+		try {
+			configurationRequest = makeConfigurationRequest(selections, modelName);
 		} catch (Exception e) {
-			return new ResponseEntity<>("Failed to create configurationRequest (feature typos?): " + e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
-    	//TDB: Notice copy-paste above
     	
     	//Todo: all invalid configurations could return HTTP 400 to tell server errors and invalid configurations apart
     	try {
     		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
     		
-    		for(String feature : features) { //TBD: do this nicer
-    			if(!response.contains("\"" + feature + "\"")) {
+    		for(FeatureSelection selection : selections) { //TBD: do this nicer
+    			if(!response.contains("\"" + selection.getType() + "\"")) {
     				return new ResponseEntity<>("no", HttpStatus.OK);
     			}
     		}
@@ -102,7 +80,61 @@ public class ConfigurationController {
 		}
     	
     }
+	
+	@RequestMapping(value = "/models/{model}/configurations/consequences", method = RequestMethod.POST)
+    public ResponseEntity<?> findDirectConsequences(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+		
+		String emptyConfigurationRequest;
+		try {
+			emptyConfigurationRequest = makeConfigurationRequest(new ArrayList<FeatureSelection>(), modelName);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		String configurationRequest;
+		try {
+			configurationRequest = makeConfigurationRequest(selections, modelName);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+    	
+    	try {
+    		String emptyResponse = caasClient.getConfiguration(emptyConfigurationRequest, caasAddress);
+    		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		
+    		FeatureSelection original = this.transform.xmlToFeatures(emptyResponse);
+    		FeatureSelection modified = this.transform.xmlToFeatures(response);
+    		FeatureSelection diff = new FeatureSelection();
+    		
+    		this.utils.diffFeatures(original, modified, diff);
+    		
+			return new ResponseEntity<>(diff.getFeatures().get(0), HttpStatus.OK);
 
+		} catch (Exception e) {
+			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+    	
+    }
+	
+
+	private String makeConfigurationRequest(List<FeatureSelection> selections, String modelName) throws Exception {
+		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
+		
+		if(model == null) {
+			throw new Exception("Model not found");
+		}
+		
+		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
+		for(FeatureSelection selection : selections) {
+			features.add(selection.getType());
+		}
+		
+    	try {
+    		return transform.featuresToConfigurationRequest(features, model);
+		} catch (Exception e) {
+			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
+		}
+	}
 	
 	@RequestMapping(value = "/selections", method = RequestMethod.POST)
 	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections, //DEPRECATED

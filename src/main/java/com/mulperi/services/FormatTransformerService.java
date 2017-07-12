@@ -7,6 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import java.io.File;
+import java.io.StringReader;
+
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.w3c.dom.Node;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -21,6 +28,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.mulperi.models.reqif.SpecObject;
+import com.mulperi.models.selections.AttributeSelection;
+import com.mulperi.models.selections.FeatureSelection;
 import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
@@ -214,9 +223,69 @@ public class FormatTransformerService {
 	        transformer.transform(new DOMSource(doc), new StreamResult(sw));
 	        return sw.toString();
 	    } catch (Exception ex) {
-	        throw new RuntimeException("Error converting to String", ex);
+	    	throw new RuntimeException("Error converting to String", ex);
 	    }
 	}
 
+	public FeatureSelection xmlToFeatures(String xml) {
 
+		FeatureSelection rootFeature = new FeatureSelection();
+		
+		try {	
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
+			doc.getDocumentElement().normalize();
+
+			rootFeature.setAttributes(processXmlAttributes(doc.getElementsByTagName("configuration").item(0)));
+			rootFeature.setFeatures(processXmlFeatures(doc.getElementsByTagName("configuration").item(0).getChildNodes()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return rootFeature;
+	}
+
+	private List<FeatureSelection> processXmlFeatures(NodeList xmlNodes) {
+		ArrayList<FeatureSelection> children = new ArrayList<>();
+		
+		if (xmlNodes == null) return children;
+
+		for (int i = 0; i < xmlNodes.getLength(); i++) {
+			if (xmlNodes.item(i).getNodeType() == Node.ELEMENT_NODE
+					&& xmlNodes.item(i).getNodeName().equals("feature")) { //get only feature elements
+				Element featureXmlElement = (Element) xmlNodes.item(i);
+
+				FeatureSelection feature = new FeatureSelection();
+				feature.setName(featureXmlElement.getAttribute("name"));
+				feature.setType(featureXmlElement.getAttribute("type"));
+				feature.setAttributes(processXmlAttributes(featureXmlElement));
+				feature.setFeatures(processXmlFeatures(featureXmlElement.getChildNodes()));
+				children.add(feature);
+			}
+		}
+		return children;
+	}
+	
+	private List<AttributeSelection> processXmlAttributes(Node element) {
+		NodeList xmlNodes = element.getChildNodes();
+		
+		ArrayList<AttributeSelection> attributes = new ArrayList<>();
+		
+		if (xmlNodes == null) return attributes;
+
+		for (int i = 0; i < xmlNodes.getLength(); i++) {
+			if (xmlNodes.item(i).getNodeType() == Node.ELEMENT_NODE
+					&& xmlNodes.item(i).getNodeName().equals("attribute")) { //get only attribute elements
+				Element attributeXmlElement = (Element) xmlNodes.item(i);
+
+				AttributeSelection attribute = new AttributeSelection();
+				attribute.setName(attributeXmlElement.getAttribute("name"));
+				attribute.setValue(attributeXmlElement.getAttribute("value"));
+				attributes.add(attribute);
+			}
+		}
+		return attributes;
+	}
 }

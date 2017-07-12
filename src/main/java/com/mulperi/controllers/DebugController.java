@@ -68,12 +68,11 @@ public class DebugController {
 		return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
     }
     
-    @RequestMapping(value = "/test2", method = RequestMethod.POST, produces="application/xml")
-    public String testDatabaseFeatures(@RequestBody ParsedModel model) {
+    @RequestMapping(value = "/test2", method = RequestMethod.POST)
+    public String testDatabaseFeatures(@RequestBody String xml) {
     	
-    	parsedModelRepository.save(model);
-    	
-    	return "OK: " + model.getModelName();
+    	transform.xmlToFeatures(xml);
+    	return "OK";
     }
     
     @ResponseBody
