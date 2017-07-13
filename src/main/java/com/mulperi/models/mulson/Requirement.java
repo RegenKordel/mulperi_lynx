@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.mulperi.models.kumbang.Attribute;
+import com.mulperi.models.kumbang.SubFeature;
 
 @Entity
 public class Requirement extends AbstractPersistable<Long> {
@@ -22,9 +23,13 @@ public class Requirement extends AbstractPersistable<Long> {
 	private List<Relationship> relationships;
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Attribute> attributes;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<SubFeature> subfeatures;
 	
 	public Requirement() {
 		this.attributes = new ArrayList<>();
+		this.subfeatures = new ArrayList<>();
+		this.relationships = new ArrayList<>();
 	}
 	
 	public String getRequirementId() {
@@ -51,7 +56,13 @@ public class Requirement extends AbstractPersistable<Long> {
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
 	}
-	
+	public List<SubFeature> getSubfeatures() {
+		return subfeatures;
+	}
+	public void setSubfeatures(List<SubFeature> subfeatures) {
+		this.subfeatures = subfeatures;
+	}
+
 	public boolean hasRelationshipType(String type) {
 		if(relationships == null) {
 			return false;

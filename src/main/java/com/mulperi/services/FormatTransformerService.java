@@ -47,21 +47,15 @@ public class FormatTransformerService {
 			Feature feat = new Feature(req.getRequirementId());
 			pm.addFeature(feat);
 			
-			//add attributes not yet in parsedmodel
+			//add attributes that are not yet in parsed model
 			pm.addNewAttributes(req.getAttributes());
 			
+			feat.setSubFeatures(req.getSubfeatures());
+			
 			//if the requirement is not part of anything, then it's a subfeature of root
-			if(req.getParent() == null) { 
+			if(findRequirementsParent(req.getRequirementId(), requirements) == null) { 
 				pm.getFeatures().get(0).addSubFeature(new SubFeature(req.getRequirementId(), req.getRequirementId().toLowerCase(), req.getCardinality()));
 			}
-			
-			//add the subfeatures of the requirement
-			for(Requirement subReq : requirements) {
-				String parent = subReq.getParent();
-				if(parent != null && parent.equals(req.getRequirementId())) {
-					feat.addSubFeature(new SubFeature(subReq.getRequirementId(), subReq.getRequirementId().toLowerCase(), subReq.getCardinality()));
-				}
-			}		
 			
 			//add constraints
 			for(String requiresId : req.getRequires()) {
@@ -69,11 +63,12 @@ public class FormatTransformerService {
 				
 				//seek parent info if the other side of the constraint does not reside in this feature's subfeatures
 				Requirement requires = findRequirementFromList(requiresId, requirements);
-				if(requires != null && requires.getParent() != null) {
-					constraint = new Constraint(req.getRequirementId().toLowerCase(), requires.getParent().toLowerCase() + "." + requiresId.toLowerCase());
+				if(requires != null && findRequirementsParent(requires.getRequirementId(), requirements) != null) {
+					constraint = new Constraint(req.getRequirementId().toLowerCase(), 
+							findRequirementsParent(requires.getRequirementId(), requirements).getRequirementId().toLowerCase() + "." + requiresId.toLowerCase());
 				}
 				
-				if(req.getParent() == null) { 
+				if(findRequirementsParent(req.getRequirementId(), requirements) == null) { 
 					pm.getFeatures().get(0).addConstraint(constraint);
 				} else {
 					feat.addConstraint(constraint);
@@ -92,6 +87,17 @@ public class FormatTransformerService {
 		for(Requirement r : haystack) {
 			if(r.getRequirementId().equals(needle)) {
 				return r;
+			}
+		}
+		return null;
+	}
+	
+	private Requirement findRequirementsParent(String needle, List<Requirement> haystack) {
+		for(Requirement r : haystack) {
+			for(SubFeature subfeature : r.getSubfeatures()) {
+				if(subfeature.getTypes().contains(needle)) {
+					return r;
+				}
 			}
 		}
 		return null;

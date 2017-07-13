@@ -10,6 +10,7 @@ import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
+import com.mulperi.models.mulson.Requirement;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
@@ -30,6 +31,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +75,19 @@ public class DebugController {
     	
     	transform.xmlToFeatures(xml);
     	return "OK";
+    }
+    
+    @RequestMapping(value = "/test3", method = RequestMethod.GET)
+    public Requirement testNewRequirements() {
+    	Requirement req = new Requirement();
+    	req.setName("MapApplication");
+    	req.setRequirementId("R1");
+    	
+    	SubFeature sub = new SubFeature("GPS", "navitech", "0-1");
+    	sub.addType("GLONASS");
+    	req.getSubfeatures().add(sub);
+    	
+    	return req;
     }
     
     @ResponseBody
