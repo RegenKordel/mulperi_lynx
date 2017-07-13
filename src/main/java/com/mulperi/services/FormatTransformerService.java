@@ -151,13 +151,20 @@ public class FormatTransformerService {
 		return pm;
 	}
 	
-	public String featuresToConfigurationRequest(List<String> features, ParsedModel model) throws Exception {
+	/**
+	 * 
+	 * @param features Note: populate only the type and attributes of each FeatureSelection object
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	public String featuresToConfigurationRequest(List<FeatureSelection> features, ParsedModel model) throws Exception {
 		model.populateFeatureParentRelations();
     	
     	ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
     	
-    	for(String feature : features) {
-    		featureStacks.add(model.findPath(feature));
+    	for(FeatureSelection feature : features) {
+    		featureStacks.add(model.findPath(feature.getType()));
     	}
     	
     	HashMap<Feature, Element> processed = new HashMap<>();
@@ -195,6 +202,9 @@ public class FormatTransformerService {
                 Attr typeAttribute = doc.createAttribute("type");
                 typeAttribute.setValue(feature.getType());
                 featureElement.setAttributeNode(typeAttribute);
+                
+                //Add this feature's attributes
+                this.addAttributes(doc, featureElement, findFeaturesAttributes(features, feature.getType()));
             	
             	if(feature.getParent() == null) { //child of root
             		confRoot.appendChild(featureElement);
@@ -214,6 +224,35 @@ public class FormatTransformerService {
 //        transformer.transform(source, consoleResult);
         
         return documentToString(doc);
+	}
+	
+	/**
+	 * Add AttributeSelections as XML elements to a feature XML element
+	 * @param doc
+	 * @param to
+	 * @param attributes
+	 */
+	private void addAttributes(Document doc, Element to, List<AttributeSelection> attributes) {
+		for(AttributeSelection attribute : attributes) {
+        	Element attributeElement = doc.createElement("attribute");
+        	
+            Attr nameAttribute = doc.createAttribute("name");
+            nameAttribute.setValue(attribute.getName());
+            attributeElement.setAttributeNode(nameAttribute);
+            
+            attributeElement.appendChild(doc.createTextNode(attribute.getValue()));
+            
+            to.appendChild(attributeElement);
+        }
+	}
+	
+	private List<AttributeSelection> findFeaturesAttributes(List<FeatureSelection> haystack, String needle) {
+		for(FeatureSelection feature : haystack) {
+			if(feature.getType().equals(needle)) {
+				return feature.getAttributes();
+			}
+		}
+		return new ArrayList<AttributeSelection>();
 	}
 	
 	public static String documentToString(Document doc) {

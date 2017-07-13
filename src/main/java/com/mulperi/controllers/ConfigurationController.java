@@ -124,13 +124,8 @@ public class ConfigurationController {
 			throw new Exception("Model not found");
 		}
 		
-		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
-		for(FeatureSelection selection : selections) {
-			features.add(selection.getType());
-		}
-		
     	try {
-    		return transform.featuresToConfigurationRequest(features, model);
+    		return transform.featuresToConfigurationRequest(selections, model);
 		} catch (Exception e) {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}
