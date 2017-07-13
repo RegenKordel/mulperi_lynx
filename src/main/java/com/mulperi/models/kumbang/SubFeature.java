@@ -83,6 +83,8 @@ public class SubFeature extends AbstractPersistable<Long> {
 			if (cardinality != null && !cardinality.equals("")) {
 				result += "[" + cardinality + "]";
 			}
+			if (this.types.size()>=2) {
+				result += " {different}";			}
 		}
 		
 		return result;
