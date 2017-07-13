@@ -108,11 +108,11 @@ public class KumbangModelGenerator {
 		kbm += "\tattributes\n";
 
 		for (Attribute att : feat.getAttributes()) {
-			if (att.getRole() != null) {
-				kbm += "\t\t" + att.getName() + " " + att.getRole() + ";\n";
-			} else {
-				kbm += "\t\t" + att.getName() + " " + att.getName().toLowerCase() + ";\n";
-			}
+				kbm += "\t\t" + att.getName() + " " + att.getName().toLowerCase() + ";"; 
+				if (att.getDefaultValue()!=null) {
+					kbm += " //default = " + att.getDefaultValue();
+				}
+				kbm += "\n";		
 		}
 	}
 }

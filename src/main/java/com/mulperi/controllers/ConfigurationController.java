@@ -135,23 +135,6 @@ public class ConfigurationController {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}
 	}
-	
-	@RequestMapping(value = "/selections", method = RequestMethod.POST)
-	public String postSelectionsForConfiguration(@RequestBody ArrayList<FeatureSelection> selections, //DEPRECATED
-			@RequestParam("modelName") String modelName) { 
-
-		CaasClient client = new CaasClient();
-
-		String result = "";
-
-		try {
-			result = client.getConfiguration(modelName, selections, caasAddress);
-
-		} catch (Exception e) {
-			return "Configuration failed.\n\n" + e;
-		}
-		return "Configuration successful.\n\n - - - \n\n" + result;
-	}
 
 }
 
