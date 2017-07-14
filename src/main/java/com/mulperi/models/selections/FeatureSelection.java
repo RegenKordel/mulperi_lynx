@@ -66,4 +66,18 @@ public class FeatureSelection {
 		}
 		return content;
 	}
+
+	public AttributeSelection getAttribute(String name) {
+		for(AttributeSelection attribute : this.attributes) {
+			if(attribute.getName().toLowerCase().equals(name.toLowerCase())) {
+				return attribute;
+			}
+		}
+		return null;
+	}
+	@Override
+	public String toString() {
+		return "FeatureSelection [name=" + name + ", type=" + type + ", " + attributes.size() + " attributes, " 
+				+ features.size() + " features]";
+	}
 }

@@ -73,7 +73,7 @@ public class DebugController {
     @RequestMapping(value = "/test2", method = RequestMethod.POST)
     public String testDatabaseFeatures(@RequestBody String xml) {
     	
-    	transform.xmlToFeatures(xml);
+    	transform.xmlToFeatureSelection(xml);
     	return "OK";
     }
     

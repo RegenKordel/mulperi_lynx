@@ -25,14 +25,15 @@ public class Feature extends AbstractPersistable<Long> {
 	private Feature parent;
 	
 	public Feature() {
-	}
-	
-	public Feature(String type, String comment) {
-		this.type = type;
-		this.name = comment;
 		subFeatures = new ArrayList<SubFeature>();
 		constraints = new ArrayList<Constraint>();
 		attributes = new ArrayList<Attribute>();
+	}
+	
+	public Feature(String type, String comment) {
+		this();
+		this.type = type;
+		this.name = comment;
 	}
 
 	public Feature(String type) {
@@ -119,6 +120,11 @@ public class Feature extends AbstractPersistable<Long> {
 		}
 		
 		return "";
+	}
+
+	@Override
+	public String toString() {
+		return "Feature [type=" + type + ", name=" + name + "]";
 	}
 	
 }

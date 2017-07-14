@@ -78,5 +78,10 @@ public class Attribute  extends AbstractPersistable<Long> {
         result = prime * result + ((values == null) ? 0 : values.hashCode());
         return result;
 	}
+
+	@Override
+	public String toString() {
+		return "Attribute [name=" + name + ", values=" + values + ", defaultValue=" + defaultValue + "]";
+	}
 	
 }
