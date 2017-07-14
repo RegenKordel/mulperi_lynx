@@ -64,7 +64,9 @@ public class UtilsTests {
 		model.getFeatures().get(3).addSubFeature(geartype);
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
 		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
-		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));
+		Attribute defaultAttributeTest = new Attribute("EngineType", "enginetype", engine);
+		defaultAttributeTest.setDefaultValue("Diesel");
+		model.getFeatures().get(1).addAttribute(defaultAttributeTest);
 		
 		ArrayList<FeatureSelection> selections = new ArrayList<>(); 
 		FeatureSelection selection1 = new FeatureSelection();
@@ -76,10 +78,10 @@ public class UtilsTests {
 		String text = scanner.useDelimiter("\\A").next();
 		FeatureSelection response = transform.xmlToFeatureSelection(text); //this is a response from CaaS
 		
-		System.out.println(request.getFullContentString());
+		assertEquals("(null,null)/(root,Car1234-testatt=second)/(motor,Motor-enginetype=Gasoline)/(gearbox,Gearbox)/(geartype,Manual)/", response.getFullContentString());
 		
 		this.utils.setDefaults(response, request, model);
 		
-		System.out.println(request.getFullContentString());
+		assertEquals("(null,null)/(root,Car1234-testatt=second)/(motor,Motor-enginetype=Diesel)/(gearbox,Gearbox)/(geartype,Manual)/", response.getFullContentString());
 	}
 }
