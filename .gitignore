@@ -1,5 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+mulperi-test.mv.db
+mulperi-test.trace.db
 
 ### STS ###
 .apt_generated

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mulperi.models.kumbang.ParsedModel;
@@ -38,6 +39,11 @@ public class ModelController {
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+    public List<ParsedModel> modelList() {
+        return parsedModelRepository.findAll();
+    }
 	
 	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
     public ResponseEntity<?> mulson(@RequestBody List<Requirement> requirements) {
