@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="Car1234">
+    	<feature type="Car1234" name="root">
+    		<attribute name="testatt" value="second" />
+    		<feature type="Motor" name="motor">
+    			<attribute name="enginetype" value="Gasoline" />
+    		</feature>
+    		<feature type="Gearbox" name="gearbox">
+    			<feature type="Manual" name="geartype" />
+    		</feature>
+    	</feature>
+    	<component type="Car1234" name="root" />
+</configuration>

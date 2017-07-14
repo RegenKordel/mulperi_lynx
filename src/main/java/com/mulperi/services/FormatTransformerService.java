@@ -151,13 +151,20 @@ public class FormatTransformerService {
 		return pm;
 	}
 	
-	public String featuresToConfigurationRequest(List<String> features, ParsedModel model) throws Exception {
+	/**
+	 * 
+	 * @param features Note: populate only the type and attributes of each FeatureSelection object
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	public String featuresToConfigurationRequest(List<FeatureSelection> features, ParsedModel model) throws Exception {
 		model.populateFeatureParentRelations();
     	
     	ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
     	
-    	for(String feature : features) {
-    		featureStacks.add(model.findPath(feature));
+    	for(FeatureSelection feature : features) {
+    		featureStacks.add(model.findPath(feature.getType()));
     	}
     	
     	HashMap<Feature, Element> processed = new HashMap<>();
@@ -195,6 +202,9 @@ public class FormatTransformerService {
                 Attr typeAttribute = doc.createAttribute("type");
                 typeAttribute.setValue(feature.getType());
                 featureElement.setAttributeNode(typeAttribute);
+                
+                //Add this feature's attributes (all of them)
+                this.addAttributes(doc, featureElement, findFeaturesAttributes(features, feature.getType()));
             	
             	if(feature.getParent() == null) { //child of root
             		confRoot.appendChild(featureElement);
@@ -207,6 +217,7 @@ public class FormatTransformerService {
         }
         
 //      Output to console for testing
+//        System.out.println("KOE");
 //        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 //        Transformer transformer = transformerFactory.newTransformer();
 //        DOMSource source = new DOMSource(doc);
@@ -214,6 +225,35 @@ public class FormatTransformerService {
 //        transformer.transform(source, consoleResult);
         
         return documentToString(doc);
+	}
+	
+	/**
+	 * Add AttributeSelections as XML elements to a feature XML element
+	 * @param doc
+	 * @param to
+	 * @param attributes
+	 */
+	private void addAttributes(Document doc, Element to, List<AttributeSelection> attributes) {
+		for(AttributeSelection attribute : attributes) {
+        	Element attributeElement = doc.createElement("attribute");
+        	
+            Attr nameAttribute = doc.createAttribute("name");
+            nameAttribute.setValue(attribute.getName());
+            attributeElement.setAttributeNode(nameAttribute);
+            
+            attributeElement.appendChild(doc.createTextNode(attribute.getValue()));
+            
+            to.appendChild(attributeElement);
+        }
+	}
+	
+	private List<AttributeSelection> findFeaturesAttributes(List<FeatureSelection> haystack, String needle) {
+		for(FeatureSelection feature : haystack) {
+			if(feature.getType().equals(needle)) {
+				return feature.getAttributes();
+			}
+		}
+		return new ArrayList<AttributeSelection>();
 	}
 	
 	public static String documentToString(Document doc) {
@@ -233,7 +273,12 @@ public class FormatTransformerService {
 	    }
 	}
 
-	public FeatureSelection xmlToFeatures(String xml) {
+	/**
+	 * Transforms a configuration to a FeatureSelection with a tree structure
+	 * @param xml
+	 * @return
+	 */
+	public FeatureSelection xmlToFeatureSelection(String xml) {
 
 		FeatureSelection rootFeature = new FeatureSelection();
 		
@@ -293,5 +338,82 @@ public class FormatTransformerService {
 			}
 		}
 		return attributes;
+	}
+	
+	/**
+	 * Convert a list of individual FeatureSelection nodes into a FeatureSelection with a tree structure
+	 * @param selections
+	 * @return
+	 */
+	public FeatureSelection listOfFeatureSelectionsToOne(List<FeatureSelection> selections, ParsedModel model) {
+		
+		FeatureSelection result = new FeatureSelection();
+		
+		model.populateFeatureParentRelations();
+    	
+    	ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
+    	
+    	for(FeatureSelection feature : selections) {
+    		featureStacks.add(model.findPath(feature.getType()));
+    	}
+    	
+    	HashMap<Feature, FeatureSelection> processed = new HashMap<>();
+    	
+        for(Stack<Feature> setOfFeatures : featureStacks) {
+        	while(!setOfFeatures.isEmpty()) {
+            	Feature feature = setOfFeatures.pop();
+            	if(processed.containsKey(feature)) { //this element already exists
+            		continue;
+            	}
+            	
+            	FeatureSelection selection = new FeatureSelection();
+            	processed.put(feature, selection);
+            	
+            	selection.setName(feature.getName());
+            	selection.setType(feature.getType());
+                
+                //Add this selection's attributes
+            	for(FeatureSelection s : selections) {
+            		if(s.getType() == feature.getType()) {
+            			selection.setAttributes(s.getAttributes()); //note: makes a reference to array
+            		}
+            	}
+            	
+            	if(feature.getParent() == null) { //child of root
+            		result.getFeatures().add(selection);
+            	} else { //child of another element
+            		FeatureSelection parentElement = processed.get(feature.getParent());
+            		parentElement.getFeatures().add(selection);
+            	}
+        	}
+        }
+		
+		return result;
+	}
+	
+	/**
+	 * Convert a FeatureSelection with a tree structure to individual FeatureSelections. Only leaf nodes and features that have attributes
+	 * @param selection
+	 * @return
+	 */
+	public List<FeatureSelection> featureSelectionToList(FeatureSelection selection) {
+		ArrayList<FeatureSelection> list = new ArrayList<>();
+		
+		this.addLeafsAndAttributeNodesToList(selection, list);
+		
+		return list;
+	}
+	
+	private void addLeafsAndAttributeNodesToList(FeatureSelection selection, List<FeatureSelection> list) {
+		//Add nodes with attributes and leafs
+		if(!selection.getAttributes().isEmpty() || selection.getFeatures().isEmpty()) {
+			list.add(selection);
+		}
+		
+		if(!selection.getFeatures().isEmpty()) {
+			for(FeatureSelection child : selection.getFeatures()) {
+				addLeafsAndAttributeNodesToList(child, list);
+			}
+		}
 	}
 }

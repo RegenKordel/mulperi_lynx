@@ -53,6 +53,33 @@ public class ConfigurationController {
     	
     }
 	
+	@RequestMapping(value = "/models/{model}/configurations/defaults", method = RequestMethod.POST, produces="application/xml")
+    public ResponseEntity<?> requestConfigurationWithDefaults(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+		
+		String configurationRequest;
+		try {
+			configurationRequest = makeConfigurationRequest(selections, modelName);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+    	try {
+    		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
+    		String responseWithoutDefaults = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		FeatureSelection response = this.transform.xmlToFeatureSelection(responseWithoutDefaults);
+    		FeatureSelection request = this.transform.listOfFeatureSelectionsToOne(selections, model);
+    		
+    		this.utils.setDefaults(response, request, model);
+    		
+    		configurationRequest = makeConfigurationRequest(this.transform.featureSelectionToList(response), modelName);
+			return new ResponseEntity<>(caasClient.getConfiguration(configurationRequest, caasAddress), HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+    	
+    }
+	
 	@RequestMapping(value = "/models/{model}/configurations/isconsistent", method = RequestMethod.POST)
     public ResponseEntity<?> isConsistent(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 		
@@ -102,8 +129,8 @@ public class ConfigurationController {
     		String emptyResponse = caasClient.getConfiguration(emptyConfigurationRequest, caasAddress);
     		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
     		
-    		FeatureSelection original = this.transform.xmlToFeatures(emptyResponse);
-    		FeatureSelection modified = this.transform.xmlToFeatures(response);
+    		FeatureSelection original = this.transform.xmlToFeatureSelection(emptyResponse);
+    		FeatureSelection modified = this.transform.xmlToFeatureSelection(response);
     		FeatureSelection diff = new FeatureSelection();
     		
     		this.utils.diffFeatures(original, modified, diff);
@@ -124,13 +151,8 @@ public class ConfigurationController {
 			throw new Exception("Model not found");
 		}
 		
-		ArrayList<String> features = new ArrayList<>(); //Make list of features from another type of list of features, TBD according to WP4 requirements
-		for(FeatureSelection selection : selections) {
-			features.add(selection.getType());
-		}
-		
     	try {
-    		return transform.featuresToConfigurationRequest(features, model);
+    		return transform.featuresToConfigurationRequest(selections, model);
 		} catch (Exception e) {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}
