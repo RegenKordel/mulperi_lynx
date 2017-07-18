@@ -118,4 +118,15 @@ public class Requirement extends AbstractPersistable<Long> {
 		return "0-1"; //Defaults to optional 
 	}
 	
+	public List<Attribute> getAttributesNumbered(int startingNumber) {
+		int current = startingNumber;
+		List<Attribute> newList = new ArrayList<>();
+		for (Attribute attr : this.attributes) {
+			Attribute newAttr = attr;
+			newAttr.setName(attr.getName() + "" + current);
+			newList.add(newAttr);
+			current++;
+		}
+		return newList;
+	}
 }

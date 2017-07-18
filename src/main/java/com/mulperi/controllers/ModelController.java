@@ -34,8 +34,10 @@ public class ModelController {
 	private FormatTransformerService transform = new FormatTransformerService();
 	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
 	
-	@Value("${mulperi.caasAddress}")
-    private String caasAddress;
+	@Value("${mulperi.caasKumbAddress}")
+    private String kumbAddress;
+	@Value("${mulperi.caasChocoAddress}")
+    private String chocoAddress;
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
@@ -52,7 +54,17 @@ public class ModelController {
 		
         ParsedModel pm = transform.parseMulson(name, requirements);
         
-        return sendModelToCaasAndSave(pm);
+        return sendModelToCaasAndSave(pm, kumbAddress);
+    }
+	
+	@RequestMapping(value = "/chocoMulson", method = RequestMethod.POST)
+    public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
+		
+		String name = generateName(requirements);
+		
+        ParsedModel pm = transform.parseMulson(name, requirements);
+		
+		return sendModelToCaasAndSave(pm, chocoAddress);
     }
 	
 	@RequestMapping(value = "/reqif", method = RequestMethod.POST, consumes="application/xml")
@@ -63,7 +75,7 @@ public class ModelController {
 		try {
 			Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
 			ParsedModel pm = transform.parseReqif(name, specObjects);
-	        return sendModelToCaasAndSave(pm);
+	        return sendModelToCaasAndSave(pm, kumbAddress);
 		} catch (Exception e) { //ReqifParser error
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -75,7 +87,7 @@ public class ModelController {
 		//replace - with _, since Kumbang doesn't like hyphens
 	}
 	
-	private ResponseEntity<?> sendModelToCaasAndSave(ParsedModel pm) {
+	private ResponseEntity<?> sendModelToCaasAndSave(ParsedModel pm, String caasAddress) {
 		String kumbangModel = kumbangModelGenerator.generateKumbangModelString(pm);
 		CaasClient client = new CaasClient();
 		

@@ -27,7 +27,7 @@ public class ConfigurationController {
 	private FormatTransformerService transform = new FormatTransformerService();
 	private Utils utils = new Utils();
 	
-	@Value("${mulperi.caasAddress}")
+	@Value("${mulperi.caasKumbAddress}")
     private String caasAddress;
 	private CaasClient caasClient = new CaasClient();
 	

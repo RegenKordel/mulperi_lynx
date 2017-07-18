@@ -63,8 +63,8 @@ public class UtilsTests {
 		geartype.addType("Manual");
 		model.getFeatures().get(3).addSubFeature(geartype);
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
-		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
-		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));
+		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", values));
+		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", engine));
 		
 		ArrayList<FeatureSelection> selections = new ArrayList<>(); 
 		FeatureSelection selection1 = new FeatureSelection();

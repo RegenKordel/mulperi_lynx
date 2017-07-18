@@ -43,8 +43,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RestController
 public class DebugController {
 	
-	@Value("${mulperi.caasAddress}")
-    private String caasAddress;
+	@Value("${mulperi.caasKumbAddress}")
+    private String kumbAddress;
+	@Value("${mulperi.caasChocoAddress}")
+    private String chocoAddress;
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
@@ -62,7 +64,7 @@ public class DebugController {
 		CaasClient client = new CaasClient();
 		
 		try {
-			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
+			client.uploadConfigurationModel(model.getModelName(), kumbangModel, kumbAddress);
 			parsedModelRepository.save(model);
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 
@@ -90,6 +92,24 @@ public class DebugController {
     	return req;
     }
     
+    @RequestMapping(value = "/test4", method = RequestMethod.POST)
+    public String chocoTest(@RequestBody ParsedModel model) {
+    	
+    	KumbangModelGenerator generator = new KumbangModelGenerator();
+		
+		String kumbangModel = generator.generateKumbangModelString(model);
+		
+		CaasClient client = new CaasClient();
+		
+		try {
+			client.uploadConfigurationModel(model.getModelName(), kumbangModel, chocoAddress);
+			parsedModelRepository.save(model);
+		}	catch(Exception e) {
+            return "Couldn't upload the configuration model\n\n" + e; 
+		} 
+		return "Configuration model upload successful.\n\n - - - \n\n" + kumbangModel;
+    }
+    
     @ResponseBody
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ParsedModel getExampleJSON() {
@@ -115,8 +135,8 @@ public class DebugController {
 		geartype.addType("Manual");
 		model.getFeatures().get(3).addSubFeature(geartype);
 		model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
-		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
-		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", "enginetype", engine));
+		model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", values));
+		model.getFeatures().get(1).addAttribute(new Attribute("EngineType", engine));
 		
 		return model;
     }

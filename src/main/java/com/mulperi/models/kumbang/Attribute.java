@@ -26,10 +26,6 @@ public class Attribute  extends AbstractPersistable<Long> {
 		this.defaultValue = defaultValue;
 	}
 
-	public Attribute(String name, String role, List<String> values) {
-		this(name, values, null);
-	}
-	
 	public Attribute(String name, List<String> values) {
 		this(name, values, null);
 	}

@@ -37,7 +37,7 @@ public class KumbangModelGeneratorTests {
 		this.model.getFeatures().get(0).addSubFeature(new SubFeature("Gearbox", "gearbox"));
 		this.model.getFeatures().get(3).addSubFeature(new SubFeature("(Auto, Manual)", "geartype", "0-1"));
 		this.model.getFeatures().get(0).addConstraint(new Constraint("Motor","Gearbox"));
-		this.model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", "testatt", values));
+		this.model.getFeatures().get(0).addAttribute(new Attribute("TestAtt", values));
 		this.kmg = new KumbangModelGenerator();
 		this.result = kmg.generateKumbangModelString(model);
 	}

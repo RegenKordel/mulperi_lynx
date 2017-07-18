@@ -47,7 +47,7 @@ public class FormatTransformerService {
 			Feature feat = new Feature(req.getRequirementId());
 			pm.addFeature(feat);
 			
-			//add attributes that are not yet in parsed model
+			//add attributes not yet in parsed model
 			pm.addNewAttributes(req.getAttributes());
 			
 			feat.setSubFeatures(req.getSubfeatures());
@@ -77,7 +77,6 @@ public class FormatTransformerService {
 			
 			//add attributes for feature
 			feat.setAttributes(req.getAttributes());
-			
 		}
 		
 		return pm;
