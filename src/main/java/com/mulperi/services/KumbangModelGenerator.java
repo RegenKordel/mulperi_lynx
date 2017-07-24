@@ -74,7 +74,7 @@ public class KumbangModelGenerator {
 	private void listAttributes() {
 		kbm += "//---attributes-----\n\n";
 
-		for (Attribute att : model.getAttributes()) {
+		for (Attribute att : model.getAttributesDefaultsFirst()) {
 			kbm += "attribute type " + att.getName() + " = {\n";
 			for (String val : att.getValues()) {
 				kbm += "\t" + val;

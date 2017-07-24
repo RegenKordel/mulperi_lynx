@@ -143,4 +143,28 @@ public class ParsedModel extends AbstractPersistable<Long> {
 //		path = "root" + path;
 		return stack;
 	}
+	
+	public List<Attribute> getAttributesDefaultsFirst() {
+		List<Attribute> arrangedList = new ArrayList<>();
+		for (Attribute att : this.attributes) {
+			Attribute newAtt = att;
+			
+			List<String> arrangedVals = new ArrayList<String>();
+			
+			if(att.getDefaultValue()!=null)
+			arrangedVals.add(att.getDefaultValue());
+			
+			for (String value : att.getValues()) {
+				if (!value.equals(att.getDefaultValue())) {
+					arrangedVals.add(value);
+				}
+			}
+			
+			newAtt.setValues(arrangedVals);
+			
+			arrangedList.add(newAtt);
+		}
+		
+		return arrangedList;
+	}
 }
