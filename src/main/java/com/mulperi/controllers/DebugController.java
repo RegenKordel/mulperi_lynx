@@ -92,7 +92,7 @@ public class DebugController {
     	return req;
     }
     
-    @RequestMapping(value = "/test4", method = RequestMethod.POST)
+    @RequestMapping(value = "/chocoTest", method = RequestMethod.POST)
     public String chocoTest(@RequestBody ParsedModel model) {
     	
     	KumbangModelGenerator generator = new KumbangModelGenerator();

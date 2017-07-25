@@ -28,15 +28,26 @@ public class ConfigurationController {
 	private Utils utils = new Utils();
 	
 	@Value("${mulperi.caasKumbAddress}")
-    private String caasAddress;
+    private String kumbAddress;
+	@Value("${mulperi.caasChocoAddress}")
+    private String chocoAddress;
+	
 	private CaasClient caasClient = new CaasClient();
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
-	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST, produces="application/xml")
-    public ResponseEntity<?> requestConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
-		
+	@RequestMapping(value = "/models/{model}/configurations/kumb", method = RequestMethod.POST, produces="application/xml")
+    public ResponseEntity<?> requestKumbConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+		return requestConfiguration(selections, modelName, kumbAddress);    	
+    }
+	
+	@RequestMapping(value = "/models/{model}/configurations/choco", method = RequestMethod.POST, produces="application/xml")
+    public ResponseEntity<?> requestChocoConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+		return requestConfiguration(selections, modelName, chocoAddress);
+    }
+	
+	public ResponseEntity<?> requestConfiguration(List<FeatureSelection> selections, String modelName, String caasAddress) {
 		String configurationRequest;
 		try {
 			configurationRequest = makeConfigurationRequest(selections, modelName);
@@ -50,8 +61,7 @@ public class ConfigurationController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-    	
-    }
+	}
 	
 	@RequestMapping(value = "/models/{model}/configurations/defaults", method = RequestMethod.POST, produces="application/xml")
     public ResponseEntity<?> requestConfigurationWithDefaults(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
@@ -65,14 +75,14 @@ public class ConfigurationController {
 		
     	try {
     		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
-    		String responseWithoutDefaults = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		String responseWithoutDefaults = caasClient.getConfiguration(configurationRequest, kumbAddress);
     		FeatureSelection response = this.transform.xmlToFeatureSelection(responseWithoutDefaults);
     		FeatureSelection request = this.transform.listOfFeatureSelectionsToOne(selections, model);
     		
     		this.utils.setDefaults(response, request, model);
     		
     		configurationRequest = makeConfigurationRequest(this.transform.featureSelectionToList(response), modelName);
-			return new ResponseEntity<>(caasClient.getConfiguration(configurationRequest, caasAddress), HttpStatus.OK);
+			return new ResponseEntity<>(caasClient.getConfiguration(configurationRequest, kumbAddress), HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -92,7 +102,7 @@ public class ConfigurationController {
     	
     	//Todo: all invalid configurations could return HTTP 400 to tell server errors and invalid configurations apart
     	try {
-    		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		String response = caasClient.getConfiguration(configurationRequest, kumbAddress);
     		
     		for(FeatureSelection selection : selections) { //TBD: do this nicer
     			if(!response.contains("\"" + selection.getType() + "\"")) {
@@ -126,8 +136,8 @@ public class ConfigurationController {
 		}
     	
     	try {
-    		String emptyResponse = caasClient.getConfiguration(emptyConfigurationRequest, caasAddress);
-    		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		String emptyResponse = caasClient.getConfiguration(emptyConfigurationRequest, kumbAddress);
+    		String response = caasClient.getConfiguration(configurationRequest, kumbAddress);
     		
     		FeatureSelection original = this.transform.xmlToFeatureSelection(emptyResponse);
     		FeatureSelection modified = this.transform.xmlToFeatureSelection(response);

@@ -47,7 +47,7 @@ public class ModelController {
         return parsedModelRepository.findAll();
     }
 	
-	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
+	@RequestMapping(value = "/mulson/kumb", method = RequestMethod.POST)
     public ResponseEntity<?> mulson(@RequestBody List<Requirement> requirements) {
 		
 		String name = generateName(requirements);
@@ -57,7 +57,7 @@ public class ModelController {
         return sendModelToCaasAndSave(pm, kumbAddress);
     }
 	
-	@RequestMapping(value = "/chocoMulson", method = RequestMethod.POST)
+	@RequestMapping(value = "/mulson/choco", method = RequestMethod.POST)
     public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 		
 		String name = generateName(requirements);
@@ -91,8 +91,10 @@ public class ModelController {
 		String kumbangModel = kumbangModelGenerator.generateKumbangModelString(pm);
 		CaasClient client = new CaasClient();
 		
+		String result = new String();
+		
 		try {
-			client.uploadConfigurationModel(pm.getModelName(), kumbangModel, caasAddress);
+			result = client.uploadConfigurationModel(pm.getModelName(), kumbangModel, caasAddress);
 		} catch(IntrospectionException e) {
             return new ResponseEntity<>("Impossible model\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch(DataFormatException e) {
@@ -104,7 +106,7 @@ public class ModelController {
 		//Save model to database if send successful
 		parsedModelRepository.save(pm);
 		
-		return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + kumbangModel, HttpStatus.CREATED);
+		return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + result, HttpStatus.CREATED);
 	}
 
 }
