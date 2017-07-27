@@ -1,6 +1,5 @@
 package com.mulperi.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mulperi.models.kumbang.Attribute;

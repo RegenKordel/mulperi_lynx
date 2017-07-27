@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mulperi.models.kumbang.ParsedModel;
@@ -54,6 +53,7 @@ public class ModelController {
 		
         ParsedModel pm = transform.parseMulson(name, requirements);
         
+        
         return sendModelToCaasAndSave(pm, kumbAddress);
     }
 	
@@ -88,6 +88,9 @@ public class ModelController {
 	}
 	
 	private ResponseEntity<?> sendModelToCaasAndSave(ParsedModel pm, String caasAddress) {
+		
+		pm.rolesForConstraints();
+		
 		String kumbangModel = kumbangModelGenerator.generateKumbangModelString(pm);
 		CaasClient client = new CaasClient();
 		

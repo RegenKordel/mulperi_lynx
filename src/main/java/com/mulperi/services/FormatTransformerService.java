@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import java.io.File;
 import java.io.StringReader;
 
 import org.w3c.dom.NodeList;
@@ -59,14 +58,15 @@ public class FormatTransformerService {
 			
 			//add constraints
 			for(String requiresId : req.getRequires()) {
-				Constraint constraint = new Constraint(req.getRequirementId().toLowerCase(), requiresId.toLowerCase());
+//				Constraint constraint = new Constraint(req.getRequirementId().toLowerCase(), requiresId.toLowerCase());
+				Constraint constraint = new Constraint(req.getRequirementId(), requiresId);
 				
 				//seek parent info if the other side of the constraint does not reside in this feature's subfeatures
-				Requirement requires = findRequirementFromList(requiresId, requirements);
-				if(requires != null && findRequirementsParent(requires.getRequirementId(), requirements) != null) {
-					constraint = new Constraint(req.getRequirementId().toLowerCase(), 
-							findRequirementsParent(requires.getRequirementId(), requirements).getRequirementId().toLowerCase() + "." + requiresId.toLowerCase());
-				}
+//				Requirement requires = findRequirementFromList(requiresId, requirements);
+//				if(requires != null && findRequirementsParent(requires.getRequirementId(), requirements) != null) {
+//					constraint = new Constraint(req.getRequirementId().toLowerCase(), 
+//							findRequirementsParent(requires.getRequirementId(), requirements).getRequirementId().toLowerCase() + "." + requiresId.toLowerCase());
+//				}
 				
 				if(findRequirementsParent(req.getRequirementId(), requirements) == null) { 
 					pm.getFeatures().get(0).addConstraint(constraint);

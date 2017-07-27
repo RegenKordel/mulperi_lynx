@@ -1,9 +1,6 @@
 package com.mulperi.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.kumbang.Constraint;
@@ -16,22 +13,9 @@ import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
 import com.mulperi.services.KumbangModelGenerator;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
