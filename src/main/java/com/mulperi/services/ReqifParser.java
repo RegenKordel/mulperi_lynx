@@ -22,6 +22,12 @@ import com.mulperi.models.reqif.Attribute;
 import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.reqif.SpecRelation;
 
+/**
+ * 
+ * Parsing reqif, could be useful at some point?
+ * 
+ *
+ */
 public class ReqifParser {
 
 	public HashMap<String, SpecObject> parse(String xml) throws Exception {

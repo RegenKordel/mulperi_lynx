@@ -32,11 +32,9 @@ public class ModelController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
 	private KumbangModelGenerator kumbangModelGenerator = new KumbangModelGenerator();
-	
-	@Value("${mulperi.caasKumbAddress}")
-    private String kumbAddress;
-	@Value("${mulperi.caasChocoAddress}")
-    private String chocoAddress;
+
+	@Value("${mulperi.caasAddress}")
+    private String caasAddress;
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
@@ -45,26 +43,14 @@ public class ModelController {
     public List<ParsedModel> modelList() {
         return parsedModelRepository.findAll();
     }
-	
-	@RequestMapping(value = "/mulson/kumb", method = RequestMethod.POST)
-    public ResponseEntity<?> mulson(@RequestBody List<Requirement> requirements) {
-		
-		String name = generateName(requirements);
-		
-        ParsedModel pm = transform.parseMulson(name, requirements);
-        
-        
-        return sendModelToCaasAndSave(pm, kumbAddress);
-    }
-	
-	@RequestMapping(value = "/mulson/choco", method = RequestMethod.POST)
+	@RequestMapping(value = "/mulson/", method = RequestMethod.POST)
     public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 		
 		String name = generateName(requirements);
 		
         ParsedModel pm = transform.parseMulson(name, requirements);
 		
-		return sendModelToCaasAndSave(pm, chocoAddress);
+		return sendModelToCaasAndSave(pm, caasAddress);
     }
 	
 	@RequestMapping(value = "/reqif", method = RequestMethod.POST, consumes="application/xml")
@@ -75,7 +61,7 @@ public class ModelController {
 		try {
 			Collection<SpecObject> specObjects = parser.parse(reqifXML).values();
 			ParsedModel pm = transform.parseReqif(name, specObjects);
-	        return sendModelToCaasAndSave(pm, kumbAddress);
+	        return sendModelToCaasAndSave(pm, caasAddress);
 		} catch (Exception e) { //ReqifParser error
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

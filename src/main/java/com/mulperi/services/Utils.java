@@ -8,10 +8,15 @@ import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.selections.AttributeSelection;
 import com.mulperi.models.selections.FeatureSelection;
 
+/**
+ * 
+ * Various utilities
+ *
+ */
 public class Utils {
 
 	/**
-	 * Transfer the features that exist in "modified" but not in "original" to "diff"
+	 * Transfers the features that exist in "modified" but not in "original" to "diff"
 	 * @param original
 	 * @param modified
 	 * @param diff
@@ -74,7 +79,7 @@ public class Utils {
 	}
 	
 	/**
-	 * Set default attribute values to response overriding any randomly set attributes
+	 * Sets default attribute values to response overriding any randomly set attributes
 	 * @param response might contain random attribute values
 	 * @param request attributes that were explicitly set
 	 * @param defaults model that contains the default values

@@ -36,6 +36,12 @@ import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
 import com.mulperi.models.mulson.Requirement;
 
+/**
+ * 
+ * Methods used in parsing Mulson and Reqif to ParsedModel
+ *
+ */
+
 @Service
 public class FormatTransformerService {
 
@@ -86,7 +92,7 @@ public class FormatTransformerService {
 	}
 
 	/**
-	 * Adds numbers to identical attribute names
+	 * Adds numbers to differentiate identical attribute names
 	 * 
 	 * @param requirements
 	 * @return
@@ -117,15 +123,6 @@ public class FormatTransformerService {
 
 		return newReqs;
 	}
-
-	// private Requirement findRequirementFromList(String needle, List<Requirement> haystack) {
-	// for(Requirement r : haystack) {
-	// if(r.getRequirementId().equals(needle)) {
-	// return r;
-	// }
-	// }
-	// return null;
-	// }
 
 	private Requirement findRequirementsParent(String needle, List<Requirement> haystack) {
 		for (Requirement r : haystack) {
@@ -268,7 +265,7 @@ public class FormatTransformerService {
 	}
 
 	/**
-	 * Add AttributeSelections as XML elements to a feature XML element
+	 * Adds AttributeSelections as XML elements to a feature XML element
 	 * 
 	 * @param doc
 	 * @param to
@@ -386,7 +383,7 @@ public class FormatTransformerService {
 	}
 
 	/**
-	 * Convert a list of individual FeatureSelection nodes into a FeatureSelection with a tree structure
+	 * Converts a list of individual FeatureSelection nodes into a FeatureSelection with a tree structure
 	 * 
 	 * @param selections
 	 * @return
@@ -438,7 +435,8 @@ public class FormatTransformerService {
 	}
 
 	/**
-	 * Convert a FeatureSelection with a tree structure to individual FeatureSelections. Only leaf nodes and features that have attributes
+	 * Converts a FeatureSelection with a tree structure to individual FeatureSelections. 
+	 * Only leaf nodes and features that have attributes.
 	 * 
 	 * @param selection
 	 * @return

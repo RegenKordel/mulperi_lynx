@@ -21,8 +21,21 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * 
+ * Client used in sending models and configurations to CaaS.
+ *
+ */
 public class CaasClient {
 	
+	/**
+	 * Sends the Kumbang model to the specified CaaS address
+	 * @param modelName
+	 * @param modelContent
+	 * @param caasAddress
+	 * @return response from the CaaS server (success or failure?)
+	 * @throws Exception
+	 */
 	public String uploadConfigurationModel(String modelName, String modelContent, String caasAddress) throws Exception {
 
 		RestTemplate rt = new RestTemplate();
@@ -51,9 +64,10 @@ public class CaasClient {
 	}
 
 	/**
-	 * 
+	 * Sends a request with configuration parameters to CaaS address
 	 * @param configurationRequest XML
-	 * @return
+	 * @param caasAddress
+	 * @return a working configuration if possible
 	 * @throws Exception
 	 */
 	public String getConfiguration(String configurationRequest, String caasAddress) throws Exception {
@@ -80,34 +94,6 @@ public class CaasClient {
 
 		return result;
 	}
-	
-	public String getConfiguration(String modelName, ArrayList<FeatureSelection> selections, String caasAddress) //DEPRECATED
-			throws Exception {
-
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_XML);
-
-		String xmlString = selectionsToXML(modelName, selections);
-
-		HttpEntity<String> entity = new HttpEntity<String>(xmlString, headers);
-
-		ResponseEntity<String> response = null;
-
-		System.out.println(entity);
-
-		try {
-			response = rt.postForEntity(caasAddress, entity, String.class);
-		} catch (HttpServerErrorException e) {
-			selectionErrorHandling(e);
-		}
-
-		String result = response.toString();
-		System.out.println(result.toString());
-
-		return result;
-	}
 
 	private String modelToXML(String modelName, String modelContent) throws XMLStreamException {
 		StringWriter stringWriter = new StringWriter();
@@ -125,44 +111,6 @@ public class CaasClient {
 		xMLStreamWriter.flush();
 		xMLStreamWriter.close();
 		return stringWriter.getBuffer().toString();
-	}
-
-	private String selectionsToXML(String modelName, ArrayList<FeatureSelection> selections) throws XMLStreamException {
-		StringWriter stringWriter = new StringWriter();
-		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
-		XMLStreamWriter xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
-
-		xMLStreamWriter.writeStartDocument();
-		xMLStreamWriter.writeStartElement("xml");
-		xMLStreamWriter.writeStartElement("model");
-		xMLStreamWriter.writeAttribute("name", modelName);
-		xMLStreamWriter.writeEndElement();
-		xMLStreamWriter.writeStartElement("configuration");
-		for (FeatureSelection featSel : selections) {
-			featureRecursion(featSel, xMLStreamWriter);
-		}
-		xMLStreamWriter.writeEndElement();
-		xMLStreamWriter.writeEndDocument();
-
-		xMLStreamWriter.flush();
-		xMLStreamWriter.close();
-		return stringWriter.getBuffer().toString();
-	}
-
-	private void featureRecursion(FeatureSelection featSel, XMLStreamWriter xMLStreamWriter) throws XMLStreamException {
-		xMLStreamWriter.writeStartElement("feature");
-		xMLStreamWriter.writeAttribute("name", featSel.getName());
-		xMLStreamWriter.writeAttribute("type", featSel.getType());
-		for (AttributeSelection attSel : featSel.getAttributes()) {
-			xMLStreamWriter.writeStartElement("attribute");
-			xMLStreamWriter.writeAttribute("name", attSel.getName());
-			xMLStreamWriter.writeCharacters(attSel.getValue());
-			xMLStreamWriter.writeEndElement();
-		}
-		for (FeatureSelection feats : featSel.getFeatures()) {
-			featureRecursion(feats, xMLStreamWriter);
-		}
-		xMLStreamWriter.writeEndElement();
 	}
 
 	private void modelErrorHandling(HttpServerErrorException e) throws Exception {

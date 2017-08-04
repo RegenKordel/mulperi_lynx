@@ -27,10 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RestController
 public class DebugController {
 	
-	@Value("${mulperi.caasKumbAddress}")
-    private String kumbAddress;
-	@Value("${mulperi.caasChocoAddress}")
-    private String chocoAddress;
+	@Value("${mulperi.caasAddress}")
+    private String caasAddress;
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
@@ -48,7 +46,7 @@ public class DebugController {
 		CaasClient client = new CaasClient();
 		
 		try {
-			client.uploadConfigurationModel(model.getModelName(), kumbangModel, kumbAddress);
+			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
 			parsedModelRepository.save(model);
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 
@@ -86,7 +84,7 @@ public class DebugController {
 		CaasClient client = new CaasClient();
 		
 		try {
-			client.uploadConfigurationModel(model.getModelName(), kumbangModel, chocoAddress);
+			client.uploadConfigurationModel(model.getModelName(), kumbangModel, caasAddress);
 			parsedModelRepository.save(model);
 		}	catch(Exception e) {
             return "Couldn't upload the configuration model\n\n" + e; 

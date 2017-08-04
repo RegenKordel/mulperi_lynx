@@ -74,6 +74,9 @@ public class SubFeature extends AbstractPersistable<Long> {
 		return "";
 	}
 	
+	/**
+	 * @return string with types, role and cardinality
+	 */
 	@Override
 	public String toString() {
 		String result = getTypeString();

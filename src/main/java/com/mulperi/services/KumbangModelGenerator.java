@@ -7,6 +7,11 @@ import com.mulperi.models.kumbang.Feature;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
 
+/**
+ * 
+ * Turns the ParsedModel into a Kumbang format string
+ *
+ */
 public class KumbangModelGenerator {
 
 	String kbm;

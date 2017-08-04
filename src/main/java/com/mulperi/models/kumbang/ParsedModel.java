@@ -11,6 +11,13 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * 
+ * A Java model representation of the Kumbang model, mainly used
+ * in parsing the Kumbang model to a string
+ *
+ */
+
 @Entity
 public class ParsedModel extends AbstractPersistable<Long> {
 
@@ -122,7 +129,7 @@ public class ParsedModel extends AbstractPersistable<Long> {
 	}
 
 	/**
-	 * Find feature of given type from the model
+	 * Finds feature of given type from the model
 	 * 
 	 * @param type
 	 * @return
@@ -136,20 +143,30 @@ public class ParsedModel extends AbstractPersistable<Long> {
 		return null;
 	}
 
+	/**
+	 * Finds the whole path of a feature 
+	 * through parents
+	 * 
+	 * @param type
+	 * @return
+	 */
 	public Stack<Feature> findPath(String type) {
 		Stack<Feature> stack = new Stack<Feature>();
 		Feature currentFeat = this.getFeature(type);
 
 		do {
 			stack.push(currentFeat);
-			// path = ".(" + currentFeat.getType() + ", " + currentFeat.getRoleNameInModel() + ")" + path;
 			currentFeat = currentFeat.getParent();
 		} while (currentFeat != null);
-
-		// path = "root" + path;
+		
 		return stack;
 	}
 
+	/**
+	 * Arranges the attributes so that the one set
+	 * as default value is first in the array
+	 * @return
+	 */
 	public List<Attribute> getAttributesDefaultsFirst() {
 		List<Attribute> arrangedList = new ArrayList<>();
 		for (Attribute att : this.attributes) {
@@ -174,6 +191,10 @@ public class ParsedModel extends AbstractPersistable<Long> {
 		return arrangedList;
 	}
 
+	/**
+	 * Replaces the types in constraints with roles
+	 * using findRoleForType
+	 */
 	public void rolesForConstraints() {
 		List<Feature> newFeatures = this.features;
 		for (Feature feat : newFeatures) {
@@ -191,6 +212,12 @@ public class ParsedModel extends AbstractPersistable<Long> {
 		this.features = newFeatures;
 	}
 
+	/**
+	 * Search ALL features for a type with typeName
+	 * and return its role
+	 * @param typeName
+	 * @return 
+	 */
 	private String findRoleForType(String typeName) {
 		for (Feature feat : this.features) {
 			for (SubFeature sub : feat.getSubFeatures()) {
