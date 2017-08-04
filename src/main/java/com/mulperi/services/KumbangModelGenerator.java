@@ -108,7 +108,7 @@ public class KumbangModelGenerator {
 		kbm += "\tattributes\n";
 
 		for (Attribute att : feat.getAttributes()) {
-				kbm += "\t\t" + att.getName() + " " + att.getName().toLowerCase() + ";"; 
+				kbm += "\t\t" + att.getName() + " " + att.getRole() + ";"; 
 				if (att.getDefaultValue()!=null) {
 					kbm += " //default = " + att.getDefaultValue();
 				}

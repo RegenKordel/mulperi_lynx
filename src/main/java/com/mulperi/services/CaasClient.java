@@ -44,7 +44,7 @@ public class CaasClient {
 			modelErrorHandling(e);
 		}
 
-		String result = response.toString();
+		String result = response.getBody();
 		System.out.println(result);
 		return result;
 
@@ -180,7 +180,7 @@ public class CaasClient {
 	}
 
 	private void selectionErrorHandling(HttpServerErrorException e) throws Exception {
-		if (e.getStatusCode() == HttpStatus.BAD_REQUEST || e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
+		if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
 			throw new Exception(e.getResponseBodyAsString());
 		}
 	}

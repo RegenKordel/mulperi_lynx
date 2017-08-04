@@ -95,6 +95,10 @@ public class ParsedModel extends AbstractPersistable<Long> {
 		attributes.add(attribute);
 	}
 
+	public void addAttributes(List<Attribute> newAttributes) {
+		this.attributes.addAll(newAttributes);
+	}
+	
 	public void addNewAttributes(List<Attribute> newAttributes) {
 		// first remove duplicates
 		this.attributes.removeAll(newAttributes);

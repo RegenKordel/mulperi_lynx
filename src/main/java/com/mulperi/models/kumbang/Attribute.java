@@ -13,6 +13,7 @@ public class Attribute  extends AbstractPersistable<Long> {
 	private static final long serialVersionUID = 8108228292152293692L;
 	
 	String name;
+	String role;
 	@ElementCollection
 	List<String> values;
 	String defaultValue;
@@ -20,14 +21,19 @@ public class Attribute  extends AbstractPersistable<Long> {
 	public Attribute() {
 	}
 	
-	public Attribute(String name, List<String> values, String defaultValue) {
+	public Attribute(String name, String role, List<String> values, String defaultValue) {
 		this.name = name;
+		this.role = role;
 		this.values = values;
 		this.defaultValue = defaultValue;
 	}
+	
+	public Attribute(String name, String role, List<String> values) {
+		this(name, role, values, null);
+	}
 
 	public Attribute(String name, List<String> values) {
-		this(name, values, null);
+		this(name, name.toLowerCase(), values, null);
 	}
 		
 	public String getName() {
@@ -35,6 +41,12 @@ public class Attribute  extends AbstractPersistable<Long> {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	public List<String> getValues() {
 		return values;
