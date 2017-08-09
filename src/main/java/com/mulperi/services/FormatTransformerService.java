@@ -62,7 +62,7 @@ public class FormatTransformerService {
 			// if the requirement is not part of anything, then it's a subfeature of root
 			if (findRequirementsParent(req.getRequirementId(), requirements) == null) {
 				pm.getFeatures().get(0).addSubFeature(new SubFeature(req.getRequirementId(),
-						req.getRequirementId().toLowerCase(), req.getCardinality()));
+						req.getRequirementId(), req.getCardinality()));
 			}
 
 			// add constraints

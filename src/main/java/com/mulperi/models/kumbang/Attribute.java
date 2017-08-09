@@ -41,12 +41,17 @@ public class Attribute  extends AbstractPersistable<Long> {
 	}
 	public void setName(String name) {
 		this.name = name;
+		if(this.role == null) {
+			this.role = name; //name is the default role name
+		}
 	}
 	public String getRole() {
 		return role;
 	}
 	public void setRole(String role) {
-		this.role = role;
+		if(role != null) {
+			this.role = role;
+		}
 	}
 	public List<String> getValues() {
 		return values;

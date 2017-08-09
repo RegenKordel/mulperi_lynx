@@ -43,7 +43,7 @@ public class ModelController {
     public List<ParsedModel> modelList() {
         return parsedModelRepository.findAll();
     }
-	@RequestMapping(value = "/mulson/", method = RequestMethod.POST)
+	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
     public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 		
 		String name = generateName(requirements);
