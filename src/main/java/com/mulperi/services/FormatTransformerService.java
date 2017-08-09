@@ -65,23 +65,15 @@ public class FormatTransformerService {
 						req.getRequirementId(), req.getCardinality()));
 			}
 
-			// add constraints
-			for (String requiresId : req.getRequires()) {
-				// Constraint constraint = new Constraint(req.getRequirementId().toLowerCase(), requiresId.toLowerCase());
+			// add requires-constraints
+			for (String requiresId : req.getRelationshipsOfType("requires")) {
 				Constraint constraint = new Constraint(req.getRequirementId(), requiresId);
-
-				// seek parent info if the other side of the constraint does not reside in this feature's subfeatures
-				// Requirement requires = findRequirementFromList(requiresId, requirements);
-				// if(requires != null && findRequirementsParent(requires.getRequirementId(), requirements) != null) {
-				// constraint = new Constraint(req.getRequirementId().toLowerCase(),
-				// findRequirementsParent(requires.getRequirementId(), requirements).getRequirementId().toLowerCase() + "." + requiresId.toLowerCase());
-				// }
-
-				if (findRequirementsParent(req.getRequirementId(), requirements) == null) {
-					pm.getFeatures().get(0).addConstraint(constraint);
-				} else {
-					feat.addConstraint(constraint);
-				}
+				addConstraintToParsedModel(requirements, pm, req, feat, constraint);
+			}
+			// add incompatible-constraints
+			for (String requiresId : req.getRelationshipsOfType("incompatible")) {
+				Constraint constraint = new Constraint(req.getRequirementId(), requiresId, true);
+				addConstraintToParsedModel(requirements, pm, req, feat, constraint);
 			}
 
 			// add attributes for feature
@@ -89,6 +81,15 @@ public class FormatTransformerService {
 		}
 
 		return pm;
+	}
+
+	private void addConstraintToParsedModel(List<Requirement> requirements, ParsedModel pm, Requirement req,
+			Feature feat, Constraint constraint) {
+		if (findRequirementsParent(req.getRequirementId(), requirements) == null) {
+			pm.getFeatures().get(0).addConstraint(constraint);
+		} else {
+			feat.addConstraint(constraint);
+		}
 	}
 
 	/**
