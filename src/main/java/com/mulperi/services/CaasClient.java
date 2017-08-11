@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,7 +54,7 @@ public class CaasClient {
 
 		try {
 			response = rt.postForEntity(caasAddress, entity, String.class);
-		} catch (HttpServerErrorException e) {
+		} catch (HttpClientErrorException e) {
 			modelErrorHandling(e);
 		}
 
@@ -113,7 +114,7 @@ public class CaasClient {
 		return stringWriter.getBuffer().toString();
 	}
 
-	private void modelErrorHandling(HttpServerErrorException e) throws Exception {
+	private void modelErrorHandling(HttpClientErrorException e) throws Exception {
 		if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR
 				&& e.getResponseBodyAsString().contains("There are no configurations that satisfy the given model.")) {
 			throw new IntrospectionException(e.getResponseBodyAsString());

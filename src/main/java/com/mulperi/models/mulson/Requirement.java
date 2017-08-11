@@ -98,13 +98,13 @@ public class Requirement extends AbstractPersistable<Long> {
 		return null;
 	}
 	
-	public List<String> getRequires() {
+	public List<String> getRelationshipsOfType(String type) {
 		List<String> requires = new ArrayList<>();
 		if(relationships == null) {
 			return requires;
 		}
 		for(Relationship rel : relationships) {
-			if(rel.getType().equals("requires")) {
+			if(rel.getType().equals(type)) {
 				requires.add(rel.getTargetId());
 			}
 		}

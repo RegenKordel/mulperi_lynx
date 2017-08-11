@@ -9,8 +9,9 @@ public class Constraint extends AbstractPersistable<Long> {
 	
 	private static final long serialVersionUID = -4884066864162001583L;
 	
-	String ifPresent;
-	String thenRequired;
+	private String ifPresent;
+	private String thenRequired;
+	private boolean negated;
 	
 	public Constraint() {
 		
@@ -19,6 +20,13 @@ public class Constraint extends AbstractPersistable<Long> {
 	public Constraint(String name1, String name2) {
 		ifPresent = name1;
 		thenRequired = name2;
+		negated = false;
+	}
+	
+	public Constraint(String ifPresent, String thenRequired, boolean negated) {
+		this.ifPresent = ifPresent;
+		this.thenRequired = thenRequired;
+		this.negated = negated;
 	}
 
 	public String getIfPresent() {
@@ -43,6 +51,10 @@ public class Constraint extends AbstractPersistable<Long> {
 	
 	@Override
 	public String toString() {
-		return "present(" + ifPresent + ") => present(" + thenRequired + ")";
+		String negation = "";
+		if(this.negated) {
+			negation = "not ";
+		}
+		return "present(" + ifPresent + ") => " + negation + "present(" + thenRequired + ")";
 	}
 }
