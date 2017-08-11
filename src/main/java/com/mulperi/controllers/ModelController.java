@@ -73,7 +73,7 @@ public class ModelController {
 		//replace - with _, since Kumbang doesn't like hyphens
 	}
 	
-	private ResponseEntity<?> sendModelToCaasAndSave(ParsedModel pm, String caasAddress) {
+	private ResponseEntity<String> sendModelToCaasAndSave(ParsedModel pm, String caasAddress) {
 		
 		pm.rolesForConstraints();
 		
