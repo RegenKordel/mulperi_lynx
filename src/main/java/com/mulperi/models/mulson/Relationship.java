@@ -16,12 +16,16 @@ public class Relationship extends AbstractPersistable<Long> {
 		return targetId;
 	}
 	public void setTargetId(String id) {
+		if (id!=null)
+			id = id.replaceAll(" ", "_").replaceAll("-", "_");
 		this.targetId = id;
 	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
+		if (type!=null)
+			type = type.replaceAll(" ", "_").replaceAll("-", "_");
 		this.type = type;
 	}
 	

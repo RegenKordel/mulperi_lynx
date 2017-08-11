@@ -19,6 +19,8 @@ public class AttributeSelection {
 	}
 	
 	public void setName(String name) {
+		if (name!=null)
+			name = name.replaceAll(" ", "_").replaceAll("-", "_");
 		this.name = name;
 	}
 	
@@ -27,6 +29,8 @@ public class AttributeSelection {
 	}
 	
 	public void setValue(String value) {
+		if (value!=null)
+			value = value.replaceAll(" ", "_").replaceAll("-", "_");
 		this.value = value;
 	}
 

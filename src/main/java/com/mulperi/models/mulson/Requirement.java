@@ -36,12 +36,16 @@ public class Requirement extends AbstractPersistable<Long> {
 		return requirementId;
 	}
 	public void setRequirementId(String requirementId) {
+		if (requirementId!=null)
+			requirementId = requirementId.replaceAll(" ", "_").replaceAll("-", "_");
 		this.requirementId = requirementId;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
+		if (name!=null)
+			name = name.replaceAll(" ", "_").replaceAll("-", "_");
 		this.name = name;
 	}
 	public List<Relationship> getRelationships() {

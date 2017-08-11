@@ -67,6 +67,8 @@ public class ParsedModel extends AbstractPersistable<Long> {
 	}
 
 	public void setModelName(String modelName) {
+		if (modelName != null)
+			modelName = modelName.replaceAll(" ", "_").replaceAll("-", "_");
 		this.modelName = modelName;
 	}
 
@@ -105,7 +107,7 @@ public class ParsedModel extends AbstractPersistable<Long> {
 	public void addAttributes(List<Attribute> newAttributes) {
 		this.attributes.addAll(newAttributes);
 	}
-	
+
 	public void addNewAttributes(List<Attribute> newAttributes) {
 		// first remove duplicates
 		this.attributes.removeAll(newAttributes);
@@ -158,7 +160,7 @@ public class ParsedModel extends AbstractPersistable<Long> {
 			stack.push(currentFeat);
 			currentFeat = currentFeat.getParent();
 		} while (currentFeat != null);
-		
+
 		return stack;
 	}
 

@@ -26,6 +26,8 @@ public class Constraint extends AbstractPersistable<Long> {
 	}
 
 	public void setIfPresent(String ifPresent) {
+		if (ifPresent!=null)
+			ifPresent = ifPresent.replaceAll(" ", "_").replaceAll("-", "_");
 		this.ifPresent = ifPresent;
 	}
 
@@ -34,6 +36,8 @@ public class Constraint extends AbstractPersistable<Long> {
 	}
 
 	public void setThenRequired(String thenRequired) {
+		if (thenRequired!=null)
+			thenRequired = thenRequired.replaceAll(" ", "_").replaceAll("-", "_");
 		this.thenRequired = thenRequired;
 	}
 	
