@@ -200,9 +200,11 @@ public class FormatTransformerService {
 		model.populateFeatureParentRelations();
 
 		ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
+		HashMap<String, Boolean> softMap = new HashMap<>();
 
 		for (FeatureSelection feature : features) {
 			featureStacks.add(model.findPath(feature.getType()));
+			softMap.put(feature.getName(), feature.getIsSoft());
 		}
 
 		HashMap<Feature, Element> processed = new HashMap<>();
@@ -234,12 +236,19 @@ public class FormatTransformerService {
 				processed.put(feature, featureElement);
 
 				Attr nameAttribute = doc.createAttribute("name");
-				nameAttribute.setValue(feature.getRoleNameInModel());
+				String featRoleName = feature.getRoleNameInModel();
+				nameAttribute.setValue(featRoleName);
 				featureElement.setAttributeNode(nameAttribute);
 
 				Attr typeAttribute = doc.createAttribute("type");
 				typeAttribute.setValue(feature.getType());
 				featureElement.setAttributeNode(typeAttribute);
+				
+				if (softMap.get(featRoleName)!=null && softMap.get(featRoleName)==true) {
+					Attr softAttribute = doc.createAttribute("soft");
+					softAttribute.setValue("true");
+					featureElement.setAttributeNode(softAttribute);
+				}
 
 				// Add this feature's attributes (all of them)
 				this.addAttributes(doc, featureElement, findFeaturesAttributes(features, feature.getType()));

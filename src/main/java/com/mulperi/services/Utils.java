@@ -21,27 +21,27 @@ public class Utils {
 	 * @param modified
 	 * @param diff
 	 */
-	public void diffFeatures(FeatureSelection original, FeatureSelection modified, FeatureSelection diff) {
-		for(FeatureSelection feat1 : modified.getFeatures()) {
-			FeatureSelection feat2 = null;
-			
-			if(original != null) {
-				feat2 = findFromThisLevel(original.getFeatures(), feat1);
-				
-				//if the feature exists in original and contains the same elements, then skip
-				if(feat2 != null && feat1.getFullContentString().equals(feat2.getFullContentString())) {
-					continue;
-				}
-			}
-			
-			FeatureSelection nodeOnly = new FeatureSelection();
-			nodeOnly.setName(feat1.getName());
-			nodeOnly.setType(feat1.getType());
-			nodeOnly.setAttributes(feat1.getAttributes()); //Note: makes a reference to array
-			diff.getFeatures().add(nodeOnly);
-			diffFeatures(feat2, feat1, nodeOnly);
-		}
-	}
+//	public void diffFeatures(FeatureSelection original, FeatureSelection modified, FeatureSelection diff) {
+//		for(FeatureSelection feat1 : modified.getFeatures()) {
+//			FeatureSelection feat2 = null;
+//			
+//			if(original != null) {
+//				feat2 = findFromThisLevel(original.getFeatures(), feat1);
+//				
+//				//if the feature exists in original and contains the same elements, then skip
+//				if(feat2 != null && feat1.getFullContentString().equals(feat2.getFullContentString())) {
+//					continue;
+//				}
+//			}
+//			
+//			FeatureSelection nodeOnly = new FeatureSelection();
+//			nodeOnly.setName(feat1.getName());
+//			nodeOnly.setType(feat1.getType());
+//			nodeOnly.setAttributes(feat1.getAttributes()); //Note: makes a reference to array
+//			diff.getFeatures().add(nodeOnly);
+//			diffFeatures(feat2, feat1, nodeOnly);
+//		}
+//	}
 	
 	/**
 	 * Finds a reference to a FeatureSelection that is equal to needle (same name and type)
