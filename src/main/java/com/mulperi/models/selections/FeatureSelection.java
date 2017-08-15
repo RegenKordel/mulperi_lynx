@@ -3,6 +3,8 @@ package com.mulperi.models.selections;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class FeatureSelection {
 
 	private String name;
@@ -55,6 +57,7 @@ public class FeatureSelection {
 	 * Forms a string of the feature's attributes and all subfeatures for nested comparison
 	 * @return
 	 */
+	@JsonIgnore
 	public String getFullContentString() {
 		String content = "(" + name + "," + type;
 		if (attributes != null) {

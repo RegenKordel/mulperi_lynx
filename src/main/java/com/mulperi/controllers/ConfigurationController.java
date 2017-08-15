@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,8 @@ public class ConfigurationController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
-	
-	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST, produces="application/xml")
+	@CrossOrigin
+	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST)
     public ResponseEntity<?> requestChocoConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 		return requestConfiguration(selections, modelName, caasAddress);
     }
@@ -49,7 +50,9 @@ public class ConfigurationController {
 		}
 		
     	try {
-			return new ResponseEntity<>(caasClient.getConfiguration(configurationRequest, caasAddress), HttpStatus.OK);
+    		String configurationXml = caasClient.getConfiguration(configurationRequest, caasAddress);
+    		FeatureSelection response = this.transform.xmlToFeatureSelection(configurationXml);
+			return new ResponseEntity<>(response, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
