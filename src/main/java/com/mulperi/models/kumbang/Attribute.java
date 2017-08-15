@@ -68,6 +68,23 @@ public class Attribute extends AbstractPersistable<Long> {
 	public List<String> getValues() {
 		return values;
 	}
+	
+	public List<String> getValuesDefaultFirst() {
+		List<String> arrangedVals = new ArrayList<String>();
+
+		if (this.defaultValue != null) {
+			arrangedVals.add(this.defaultValue);
+		} else {
+			return values;
+		}
+
+		for (String value : this.values) {
+			if (!value.equals(this.defaultValue)) {
+				arrangedVals.add(value);
+			}
+		}
+		return arrangedVals;
+	}
 
 	public void setValues(List<String> values) {
 		List<String> newValues = new ArrayList<>();
