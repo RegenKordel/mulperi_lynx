@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,6 +45,25 @@ public class ModelController {
     public List<ParsedModel> modelList() {
         return parsedModelRepository.findAll();
     }
+	
+	/**
+	 * Get single model as FeatureSelection for selecting features
+	 * @param modelName
+	 * @return
+	 */
+	@CrossOrigin
+	@RequestMapping(value = "/{model}", method = RequestMethod.GET)
+    public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {
+		
+		ParsedModel model = this.parsedModelRepository.findFirstByModelName(modelName);
+		
+		if(model == null) {
+			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
+    }
+	
 	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
     public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 		
@@ -66,7 +87,7 @@ public class ModelController {
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
     }
-
+	
 	private String generateName(Object object) {
 		int hashCode = object.hashCode();
 		return "ID" + (hashCode > 0 ? hashCode : "_" + Math.abs(hashCode)); 

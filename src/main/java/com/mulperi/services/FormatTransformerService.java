@@ -471,4 +471,33 @@ public class FormatTransformerService {
 			}
 		}
 	}
+	
+	public FeatureSelection parsedModelToFeatureSelection(ParsedModel model) {
+		model.populateFeatureParentRelations();
+		FeatureSelection result = new FeatureSelection();
+		
+		//feature 0 is the feature root
+		featureToFeatureSelection(model, result, model.getFeatures().get(0));
+		
+		return result;
+	}
+
+	private void featureToFeatureSelection(ParsedModel model, FeatureSelection parent, Feature feature) {
+		FeatureSelection newFeature = featureSelectionFromParsedFeature(parent, feature);
+		
+		for(SubFeature subfeat : feature.getSubFeatures()) {
+			for(String type : subfeat.getTypes()) {
+				Feature newSubfeature = model.getFeature(type);
+				featureToFeatureSelection(model, newFeature, newSubfeature);
+			}
+		}
+	}
+
+	private FeatureSelection featureSelectionFromParsedFeature(FeatureSelection parent, Feature feature) {
+		FeatureSelection blankFeat = new FeatureSelection();
+		parent.getFeatures().add(blankFeat);
+		blankFeat.setName(feature.getRoleNameInModel());
+		blankFeat.setType(feature.getType());
+		return blankFeat;
+	}
 }
