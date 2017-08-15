@@ -498,6 +498,16 @@ public class FormatTransformerService {
 		parent.getFeatures().add(blankFeat);
 		blankFeat.setName(feature.getRoleNameInModel());
 		blankFeat.setType(feature.getType());
+		
+		for(Attribute attribute : feature.getAttributes()) {
+			for(String possibleValue : attribute.getValuesDefaultFirst()) {
+				AttributeSelection blankAttr = new AttributeSelection();
+				blankAttr.setName(attribute.getRole());
+				blankAttr.setValue(possibleValue);
+				blankFeat.getAttributes().add(blankAttr);
+			}
+		}
+		
 		return blankFeat;
 	}
 }
