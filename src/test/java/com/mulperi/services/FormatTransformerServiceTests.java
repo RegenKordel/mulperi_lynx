@@ -64,6 +64,32 @@ public class FormatTransformerServiceTests {
 	}
 	
 	@Test
+	public void someIllegalSymbolsToUnderScores() {
+		
+		ArrayList<Requirement> requirements = new ArrayList<>();
+		Requirement req = new Requirement();
+		req.setRequirementId("T-1 special");
+		Relationship rel = new Relationship();
+		rel.setTargetId("R2 -extra-");
+		rel.setType("owns");
+		List<Relationship> relationships = new ArrayList<Relationship>();
+		relationships.add(rel);
+		req.setRelationships(relationships);
+		requirements.add(req);
+		
+		req = new Requirement();
+		req.setRequirementId("R2 -extra-");
+		requirements.add(req);
+		
+		ParsedModel pm = transform.parseMulson("Test", requirements);
+		
+		String kbString = kumbangModelGenerator.generateKumbangModelString(pm);
+		
+		assertTrue(kbString.contains("T_1_special"));
+		assertTrue(kbString.contains("R2__extra_"));
+	}
+	
+	@Test
 	public void sameNameAttributesRenamed() {
 		ArrayList<Requirement> requirements = new ArrayList<>();
 		

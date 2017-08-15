@@ -95,7 +95,8 @@ public class ModelController {
 		//Save model to database if send successful
 		parsedModelRepository.save(pm);
 		
-		return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + result, HttpStatus.CREATED);
+		//return new ResponseEntity<>("Configuration model upload successful.\n\n - - - \n\n" + result, HttpStatus.CREATED);
+		return new ResponseEntity<>(result, HttpStatus.CREATED);
 	}
 
 }

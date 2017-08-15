@@ -11,6 +11,7 @@ public class FeatureSelection {
 	private String type;
 	private List<AttributeSelection> attributes;
 	private List<FeatureSelection> features;
+	private boolean isSoft;
 
 	public FeatureSelection() {
 		this.attributes = new ArrayList<>();
@@ -51,6 +52,14 @@ public class FeatureSelection {
 
 	public void setFeatures(List<FeatureSelection> features) {
 		this.features = features;
+	}
+	
+	public boolean getIsSoft() {
+		return isSoft;
+	}
+
+	public void setIsSoft(boolean isSoft) {
+		this.isSoft = isSoft;
 	}
 
 	/**

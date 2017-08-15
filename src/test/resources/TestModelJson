@@ -1,0 +1,136 @@
+[
+   {
+  	"requirementId": "MapAppFeature",
+  	"name": "MapApplication",
+  	"subfeatures": [
+     	{
+        	"types": ["R1"],
+        	"role": "r1",
+        	"cardinality": "1-1"
+     	},
+     	{
+        	"types": ["R3a", "R3b"],
+        	"role": "r3_navitech",
+        	"cardinality": "0-2"
+     	},
+     	{
+        	"types": ["R4"],
+        	"role": "r4",
+        	"cardinality": "0-1"
+     	},
+	{
+		"types": ["R5"],
+		"role": "r5",
+		"cardinality": "0-1"
+	}
+  	]
+   },
+   {
+  	"requirementId": "R1",
+  	"name": "ShowMap",
+  	"subfeatures": [
+     	{
+        	"types": ["R2"],
+        	"role": "r2",
+        	"cardinality": "0-1"
+     	}
+  	],
+  	"attributes": [
+     	{    
+        	"name": "Priority",
+        	"role": "priority",
+        	"values": ["1", "2", "3"],
+            "defaultValue": "1"
+     	},
+     	{    
+        	"name": "MapSource",
+        	"role": "mapsource",
+        	"values": ["Google", "OpenStreetMap"],
+            "defaultValue": "OpenStreetMap"
+     	}
+  	]
+   },
+   {
+  	"requirementId": "R2",
+  	"name": "CacheMap",
+  	"attributes": [
+     	{    
+         	"name": "Priority",
+         	"role": "priority",
+         	"values": ["1", "2", "3"]
+     	}
+  	]
+   },
+   {
+   	"requirementId": "R3a",
+   	"name": "ShowLocation using GPS",
+   	"relationships": [
+      	{
+         	"targetId": "R2",
+         	"type": "requires"
+      	}
+   	],
+   	"attributes": [
+      	{    
+         	"name": "Priority",
+         	"role": "priority",
+         	"values": ["1", "2", "3"],
+            "defaultValue": "1"
+      	}
+   	]
+   },
+   {
+   	"requirementId": "R3b",
+   	"name": "ShowLocation using GLONASS",
+   	"relationships": [
+      	{
+         	"targetId": "R2",
+         	"type": "requires"
+      	}
+   	],
+   	"attributes": [
+   		{    
+        	"name": "MapSource",
+        	"role": "mapsource",
+        	"values": ["Google", "OpenStreetMap"],
+            "defaultValue": "OpenStreetMap"
+     	},
+      	{    
+         	"name": "Priority",
+         	"role": "priority",
+         	"values": ["1", "2", "3"],
+            "defaultValue": "2"
+      	}
+   	]
+   },
+   {
+   	"requirementId": "R4",
+   	"name": "Navigate",
+   	"relationships": [
+      	{
+         	"targetId": "R3a",
+         	"type": "requires"
+      	}
+   	],
+   	"attributes": [
+      	{    
+         	"name": "Priority",
+         	"role": "priority",
+         	"values": ["1", "2", "3"]
+      	}
+   	]
+   },
+   {
+   	"requirementId": "R5",
+   	"name": "r5",
+   	"relationships": [
+      	{
+         	"targetId": "R4",
+         	"type": "incompatible"
+      	}
+   	],
+   	"attributes": []
+   }
+
+]
+

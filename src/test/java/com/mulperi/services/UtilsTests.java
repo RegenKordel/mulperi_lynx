@@ -21,24 +21,24 @@ public class UtilsTests {
 	private FormatTransformerService transform = new FormatTransformerService();
 	private Utils utils = new Utils();
 	
-	@Test
-	public void testDiffFeatures() throws FileNotFoundException {
-		Scanner scanner = new Scanner( new File("src/test/resources/configuration1.xml") );
-		String text = scanner.useDelimiter("\\A").next();
-		
-		FeatureSelection root1 = transform.xmlToFeatureSelection(text);
-		
-		scanner = new Scanner( new File("src/test/resources/configuration2.xml") );
-		text = scanner.useDelimiter("\\A").next();
-		
-		FeatureSelection root2 = transform.xmlToFeatureSelection(text);
-		
-		FeatureSelection diff = new FeatureSelection();
-		
-		utils.diffFeatures(root1, root2, diff);
-		
-		assertEquals("(null,null)/(root,Car1234-testatt=second)/(motor,Motor-enginetype=Gasoline)/(gearbox,Gearbox)/(geartype,Manual)/", diff.getFullContentString());
-	}
+//	@Test
+//	public void testDiffFeatures() throws FileNotFoundException {
+//		Scanner scanner = new Scanner( new File("src/test/resources/configuration1.xml") );
+//		String text = scanner.useDelimiter("\\A").next();
+//		
+//		FeatureSelection root1 = transform.xmlToFeatureSelection(text);
+//		
+//		scanner = new Scanner( new File("src/test/resources/configuration2.xml") );
+//		text = scanner.useDelimiter("\\A").next();
+//		
+//		FeatureSelection root2 = transform.xmlToFeatureSelection(text);
+//		
+//		FeatureSelection diff = new FeatureSelection();
+//		
+//		utils.diffFeatures(root1, root2, diff);
+//		
+//		assertEquals("(null,null)/(root,Car1234-testatt=second)/(motor,Motor-enginetype=Gasoline)/(gearbox,Gearbox)/(geartype,Manual)/", diff.getFullContentString());
+//	}
 
 	@Test
 	public void testSetDefaults() throws FileNotFoundException {
