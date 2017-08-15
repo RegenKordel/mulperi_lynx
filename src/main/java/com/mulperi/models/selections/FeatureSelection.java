@@ -5,8 +5,8 @@ import java.util.List;
 
 public class FeatureSelection {
 
-	private String name;
 	private String type;
+	private String name;
 	private List<AttributeSelection> attributes;
 	private List<FeatureSelection> features;
 	private boolean isSoft;
@@ -17,13 +17,13 @@ public class FeatureSelection {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
-		if (name != null)
-			name = name.replaceAll(" ", "_").replaceAll("-", "_");
-		this.name = name;
+	public void setName(String role) {
+		if (role != null)
+			role = role.replaceAll(" ", "_").replaceAll("-", "_");
+		this.name = role;
 	}
 
 	public String getType() {

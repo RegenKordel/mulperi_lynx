@@ -13,7 +13,7 @@ public class Attribute extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = 8108228292152293692L;
 
-	String name;
+	String type;
 	String role;
 	@ElementCollection
 	List<String> values;
@@ -23,7 +23,7 @@ public class Attribute extends AbstractPersistable<Long> {
 	}
 
 	public Attribute(String name, String role, List<String> values, String defaultValue) {
-		this.name = name;
+		this.type = name;
 		this.role = role;
 		this.values = values;
 		this.defaultValue = defaultValue;
@@ -41,16 +41,16 @@ public class Attribute extends AbstractPersistable<Long> {
 		this(name, role, null, null);
 	}
 
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		if (this.name != null)
+	public void setType(String name) {
+		if (this.type != null)
 			name = name.replaceAll(" ", "_").replaceAll("-", "_");
-		this.name = name;
+		this.type = name;
 		if (this.role == null) {
-			this.role = name; //name is the default role name
+			this.role = name; //type is the default role type
 		}
 	}
 
@@ -97,10 +97,10 @@ public class Attribute extends AbstractPersistable<Long> {
 		if (!(obj instanceof Attribute))
 			return false;
 		Attribute other = (Attribute) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (type == null) {
+			if (other.type != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!type.equals(other.type))
 			return false;
 		return true;
 	}
@@ -109,14 +109,14 @@ public class Attribute extends AbstractPersistable<Long> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((values == null) ? 0 : values.hashCode());
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "Attribute [name=" + name + ", values=" + values + ", defaultValue=" + defaultValue + "]";
+		return "Attribute [type=" + type + ", values=" + values + ", defaultValue=" + defaultValue + "]";
 	}
 
 }

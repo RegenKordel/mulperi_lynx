@@ -56,8 +56,8 @@ public class KumbangModelGenerator {
 		for (Feature feat : model.getFeatures()) {
 			kbm += "feature type " + feat.getType() + " {\n";
 
-			if (feat.getName() != null) {
-				kbm += "//" + feat.getName() + "\n";
+			if (feat.getComment() != null) {
+				kbm += "//" + feat.getComment() + "\n";
 			}
 
 			if (!feat.getSubFeatures().isEmpty()) {
@@ -80,7 +80,7 @@ public class KumbangModelGenerator {
 		kbm += "//---attributes-----\n\n";
 
 		for (Attribute att : model.getAttributesDefaultsFirst()) {
-			kbm += "attribute type " + att.getName() + " = {\n";
+			kbm += "attribute type " + att.getType() + " = {\n";
 			for (String val : att.getValues()) {
 				kbm += "\t" + val;
 				if (!val.equals(att.getValues().get(att.getValues().size() - 1))) {
@@ -113,7 +113,7 @@ public class KumbangModelGenerator {
 		kbm += "\tattributes\n";
 
 		for (Attribute att : feat.getAttributes()) {
-				kbm += "\t\t" + att.getName() + " " + att.getRole() + ";"; 
+				kbm += "\t\t" + att.getType() + " " + att.getRole() + ";"; 
 				if (att.getDefaultValue()!=null) {
 					kbm += " //default = " + att.getDefaultValue();
 				}

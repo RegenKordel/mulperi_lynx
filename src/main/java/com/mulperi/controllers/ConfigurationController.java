@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.selections.FeatureSelection;
+import com.mulperi.models.selections.Selections;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
@@ -34,13 +35,12 @@ public class ConfigurationController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
-	
 	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST, produces="application/xml")
-    public ResponseEntity<?> requestChocoConfiguration(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+    public ResponseEntity<?> requestChocoConfiguration(@RequestBody Selections selections, @PathVariable("model") String modelName) {
 		return requestConfiguration(selections, modelName, caasAddress);
     }
 	
-	public ResponseEntity<?> requestConfiguration(List<FeatureSelection> selections, String modelName, String caasAddress) {
+	public ResponseEntity<?> requestConfiguration(Selections selections, String modelName, String caasAddress) {
 		String configurationRequest;
 		try {
 			configurationRequest = makeConfigurationRequest(selections, modelName);
@@ -84,7 +84,7 @@ public class ConfigurationController {
 //    }
 	
 	@RequestMapping(value = "/models/{model}/configurations/isconsistent", method = RequestMethod.POST)
-    public ResponseEntity<?> isConsistent(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
+    public ResponseEntity<?> isConsistent(@RequestBody Selections selections, @PathVariable("model") String modelName) {
 		
 		String configurationRequest;
 		try {
@@ -97,8 +97,10 @@ public class ConfigurationController {
     	try {
     		String response = caasClient.getConfiguration(configurationRequest, caasAddress);
     		
-    		for(FeatureSelection selection : selections) { //TBD: do this nicer
-    			if(!response.contains("\"" + selection.getType() + "\"")) {
+    		List<FeatureSelection> features = selections.getFeatureSelections();
+    		
+    		for(FeatureSelection feat : features) { //TBD: do this nicer
+    			if(!response.contains("\"" + feat.getType() + "\"")) {
     				return new ResponseEntity<>("no", HttpStatus.OK);
     			}
     		}
@@ -112,7 +114,7 @@ public class ConfigurationController {
     }
 	
 	@RequestMapping(value = "/models/{model}/configurations/consequences", method = RequestMethod.POST)
-    public ResponseEntity<?> findDirectConsequences(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) throws Exception {
+    public ResponseEntity<?> findDirectConsequences(@RequestBody Selections selections, @PathVariable("model") String modelName) throws Exception {
 		
 		String configurationRequest;
 		try {
@@ -150,7 +152,7 @@ public class ConfigurationController {
     }
 	
 
-	private String makeConfigurationRequest(List<FeatureSelection> selections, String modelName) throws Exception {
+	private String makeConfigurationRequest(Selections selections, String modelName) throws Exception {
 		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
 		
 		if(model == null) {

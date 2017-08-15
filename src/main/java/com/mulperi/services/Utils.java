@@ -95,17 +95,17 @@ public class Utils {
 					continue;
 				}
 				//find if this attribute is set in request - skip if is
-				if(request.getAttribute(possibleAttribute.getName()) != null) {
+				if(request.getAttribute(possibleAttribute.getType()) != null) {
 					continue;
 				}
 				//set value to default in response
-				AttributeSelection attribute = response.getAttribute(possibleAttribute.getName());
+				AttributeSelection attribute = response.getAttribute(possibleAttribute.getType());
 				if(attribute != null) {
 					attribute.setValue(possibleAttribute.getDefaultValue());
 					continue;
 				}
 				//attribute not found in response - add new
-				attribute = new AttributeSelection(possibleAttribute.getName(), possibleAttribute.getDefaultValue());
+				attribute = new AttributeSelection(possibleAttribute.getType(), possibleAttribute.getDefaultValue());
 				response.getAttributes().add(attribute);
 			}
 		}

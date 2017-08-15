@@ -15,7 +15,7 @@ public class Feature extends AbstractPersistable<Long> {
 	private static final long serialVersionUID = -5144125345854141995L;
 
 	private String type;
-	private String name;
+	private String comment;
 	@OneToMany(cascade = { CascadeType.ALL })
 	private List<SubFeature> subFeatures;
 	@OneToMany(cascade = { CascadeType.ALL })
@@ -33,7 +33,7 @@ public class Feature extends AbstractPersistable<Long> {
 	public Feature(String type, String comment) {
 		this();
 		this.type = type;
-		this.name = comment;
+		this.comment = comment;
 	}
 
 	public Feature(String type) {
@@ -74,12 +74,12 @@ public class Feature extends AbstractPersistable<Long> {
 		this.attributes = attributes;
 	}
 
-	public String getName() {
-		return name;
+	public String getComment() {
+		return this.comment;
 	}
 
-	public void setName(String comment) {
-		this.name = comment;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public Feature getParent() {
@@ -104,7 +104,7 @@ public class Feature extends AbstractPersistable<Long> {
 
 	/**
 	 * Populate parent relations of model first 
-	 * @return name of the role the feature participates in
+	 * @return type of the role the feature participates in
 	 */
 	public String getRoleNameInModel() {
 		if (this.parent == null) {
@@ -126,7 +126,7 @@ public class Feature extends AbstractPersistable<Long> {
 
 	@Override
 	public String toString() {
-		return "Feature [type=" + type + ", name=" + name + "]";
+		return "Feature [type=" + type + ", //" + comment + "]";
 	}
 
 }

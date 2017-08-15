@@ -28,7 +28,9 @@ import org.w3c.dom.Element;
 
 import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.selections.AttributeSelection;
+import com.mulperi.models.selections.CalculationConstraint;
 import com.mulperi.models.selections.FeatureSelection;
+import com.mulperi.models.selections.Selections;
 import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.kumbang.Constraint;
 import com.mulperi.models.kumbang.Feature;
@@ -61,8 +63,8 @@ public class FormatTransformerService {
 
 			// if the requirement is not part of anything, then it's a subfeature of root
 			if (findRequirementsParent(req.getRequirementId(), requirements) == null) {
-				pm.getFeatures().get(0).addSubFeature(new SubFeature(req.getRequirementId(),
-						req.getRequirementId(), req.getCardinality()));
+				pm.getFeatures().get(0).addSubFeature(
+						new SubFeature(req.getRequirementId(), req.getRequirementId(), req.getCardinality()));
 			}
 
 			// add requires-constraints
@@ -106,15 +108,15 @@ public class FormatTransformerService {
 			Requirement newReq = req;
 			List<Attribute> newAttList = new ArrayList<Attribute>();
 			for (Attribute att : req.getAttributes()) {
-				String attName = att.getName();
+				String attType = att.getType();
 				Attribute newAtt = att;
-				if (usedNames.containsKey(attName)) {
-					int amount = usedNames.get(attName) + 1;
-					usedNames.put(attName, amount);
-					attName += amount;
-					newAtt.setName(attName);
+				if (usedNames.containsKey(attType)) {
+					int amount = usedNames.get(attType) + 1;
+					usedNames.put(attType, amount);
+					attType += amount;
+					newAtt.setType(attType);
 				} else {
-					usedNames.put(attName, 1);
+					usedNames.put(attType, 1);
 				}
 				newAttList.add(newAtt);
 			}
@@ -196,16 +198,12 @@ public class FormatTransformerService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String featuresToConfigurationRequest(List<FeatureSelection> features, ParsedModel model) throws Exception {
+	public String featuresToConfigurationRequest(Selections selections, ParsedModel model) throws Exception {
+
+		List<FeatureSelection> features = selections.getFeatureSelections();
+		List<CalculationConstraint> calculations = selections.getCalculationConstraints();
+
 		model.populateFeatureParentRelations();
-
-		ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
-		HashMap<String, Boolean> softMap = new HashMap<>();
-
-		for (FeatureSelection feature : features) {
-			featureStacks.add(model.findPath(feature.getType()));
-			softMap.put(feature.getName(), feature.getIsSoft());
-		}
 
 		HashMap<Feature, Element> processed = new HashMap<>();
 
@@ -225,42 +223,70 @@ public class FormatTransformerService {
 		Element confRoot = doc.createElement("configuration");
 		xmlRoot.appendChild(confRoot);
 
-		for (Stack<Feature> setOfFeatures : featureStacks) {
-			while (!setOfFeatures.isEmpty()) {
-				Feature feature = setOfFeatures.pop();
-				if (processed.containsKey(feature)) { // this element already exists
-					continue;
-				}
+		if (calculations != null) {
+			for (CalculationConstraint calc : calculations) {
+				Element calcElement = doc.createElement("calculation");
 
-				Element featureElement = doc.createElement("feature");
-				processed.put(feature, featureElement);
+				Attr nameAttribute = doc.createAttribute("attribute");
+				nameAttribute.setValue(calc.getAttName());
+				calcElement.setAttributeNode(nameAttribute);
 
-				Attr nameAttribute = doc.createAttribute("name");
-				String featRoleName = feature.getRoleNameInModel();
-				nameAttribute.setValue(featRoleName);
-				featureElement.setAttributeNode(nameAttribute);
+				Attr operatorAttribute = doc.createAttribute("operator");
+				operatorAttribute.setValue(calc.getOperator());
+				calcElement.setAttributeNode(operatorAttribute);
 
-				Attr typeAttribute = doc.createAttribute("type");
-				typeAttribute.setValue(feature.getType());
-				featureElement.setAttributeNode(typeAttribute);
-				
-				if (softMap.get(featRoleName)!=null && softMap.get(featRoleName)==true) {
-					Attr softAttribute = doc.createAttribute("soft");
-					softAttribute.setValue("true");
-					featureElement.setAttributeNode(softAttribute);
-				}
-
-				// Add this feature's attributes (all of them)
-				this.addAttributes(doc, featureElement, findFeaturesAttributes(features, feature.getType()));
-
-				if (feature.getParent() == null) { // child of root
-					confRoot.appendChild(featureElement);
-				} else { // child of another element
-					Element parentElement = processed.get(feature.getParent());
-					parentElement.appendChild(featureElement);
-				}
+				calcElement.appendChild(doc.createTextNode(calc.getValue()));
+				confRoot.appendChild(calcElement);
 			}
 
+		}
+
+		if (features != null) {
+			ArrayList<Stack<Feature>> featureStacks = new ArrayList<>();
+			HashMap<String, Boolean> softMap = new HashMap<>();
+
+			for (FeatureSelection feature : features) {
+				featureStacks.add(model.findPath(feature.getType()));
+				softMap.put(feature.getName(), feature.getIsSoft());
+			}
+
+			for (Stack<Feature> setOfFeatures : featureStacks) {
+				while (!setOfFeatures.isEmpty()) {
+					Feature feature = setOfFeatures.pop();
+					if (processed.containsKey(feature)) { // this element already exists
+						continue;
+					}
+
+					Element featureElement = doc.createElement("feature");
+					processed.put(feature, featureElement);
+
+					Attr nameAttribute = doc.createAttribute("name");
+					String featRoleName = feature.getRoleNameInModel();
+					nameAttribute.setValue(featRoleName);
+					featureElement.setAttributeNode(nameAttribute);
+
+					Attr typeAttribute = doc.createAttribute("type");
+					typeAttribute.setValue(feature.getType());
+					featureElement.setAttributeNode(typeAttribute);
+
+					if (softMap.get(featRoleName) != null && softMap.get(featRoleName) == true) {
+						Attr softAttribute = doc.createAttribute("soft");
+						softAttribute.setValue("true");
+						featureElement.setAttributeNode(softAttribute);
+					}
+
+					// Add this feature's attributes (all of them)
+					this.addAttributes(doc, featureElement, findFeaturesAttributes(features, feature.getType()));
+
+					if (feature.getParent() == null) { // child of root
+						confRoot.appendChild(featureElement);
+					} else { // child of another element
+						Element parentElement = processed.get(feature.getParent());
+						parentElement.appendChild(featureElement);
+					}
+				}
+
+			}
 		}
 
 		// Output to console for testing
@@ -422,7 +448,7 @@ public class FormatTransformerService {
 				FeatureSelection selection = new FeatureSelection();
 				processed.put(feature, selection);
 
-				selection.setName(feature.getName());
+				selection.setName(feature.getRoleNameInModel());
 				selection.setType(feature.getType());
 
 				// Add this selection's attributes

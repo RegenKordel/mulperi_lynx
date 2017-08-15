@@ -12,6 +12,10 @@ import com.mulperi.models.kumbang.Attribute;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.mulson.Relationship;
 import com.mulperi.models.mulson.Requirement;
+import com.mulperi.models.selections.AttributeSelection;
+import com.mulperi.models.selections.CalculationConstraint;
+import com.mulperi.models.selections.FeatureSelection;
+import com.mulperi.models.selections.Selections;
 import com.mulperi.services.FormatTransformerService;
 
 public class FormatTransformerServiceTests {
@@ -87,6 +91,31 @@ public class FormatTransformerServiceTests {
 		
 		assertTrue(kbString.contains("T_1_special"));
 		assertTrue(kbString.contains("R2__extra_"));
+	}
+	
+	@Test
+	public void notPresentWorks() {
+		
+		ArrayList<Requirement> requirements = new ArrayList<>();
+		Requirement req = new Requirement();
+		req.setRequirementId("R1");
+		Relationship rel = new Relationship();
+		rel.setTargetId("R2");
+		rel.setType("incompatible");
+		List<Relationship> relationships = new ArrayList<Relationship>();
+		relationships.add(rel);
+		req.setRelationships(relationships);
+		requirements.add(req);
+		
+		req = new Requirement();
+		req.setRequirementId("R2");
+		requirements.add(req);
+		
+		ParsedModel pm = transform.parseMulson("Test", requirements);
+		
+		String kbString = kumbangModelGenerator.generateKumbangModelString(pm);
+		
+		assertTrue(kbString.contains("present(R1) => not present(R2);"));
 	}
 	
 	@Test
@@ -171,5 +200,45 @@ public class FormatTransformerServiceTests {
 		assertTrue(kbString.contains("attribute type Test = {\n\t2,"));
 	}
 	
+	@Test
+	public void calculationSelectionInConfiguration() throws Exception {
+		Selections selections = new Selections();
+		
+		List<CalculationConstraint> calcCstrs = new ArrayList<>();
+		CalculationConstraint cstr = new CalculationConstraint();
+		cstr.setAttName("testatt");
+		cstr.setOperator("=");
+		cstr.setValue("3");
+		calcCstrs.add(cstr);
+		selections.setCalculationConstraints(calcCstrs);
+		
+		String configString = transform.featuresToConfigurationRequest(selections, new ParsedModel());
+		
+		assertTrue(configString.contains("<calculation attribute=\"testatt\" operator=\"=\">3</calculation>"));
+	}
+	
+	@Test
+	public void softSelectionInConfiguration() throws Exception {
+		List<Requirement> requirements = new ArrayList<Requirement>();
+		Requirement req = new Requirement();
+		req.setRequirementId("R1");
+		requirements.add(req);
+		
+		ParsedModel pm = transform.parseMulson("Test", requirements);
+		
+		List<FeatureSelection> featSels = new ArrayList<FeatureSelection>();
+		FeatureSelection selection = new FeatureSelection();
+		selection.setType("R1");
+		selection.setName("R1");
+		selection.setIsSoft(true);
+		featSels.add(selection);
+		
+		Selections selections = new Selections();
+		selections.setFeatureSelections(featSels);
+		
+		String configString = transform.featuresToConfigurationRequest(selections, pm);
+		
+		assertTrue(configString.contains("<feature name=\"R1\" soft=\"true\" type=\"R1\"/>"));
+	}
 	
 }
