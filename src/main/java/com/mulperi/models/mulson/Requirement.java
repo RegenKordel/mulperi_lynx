@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import com.mulperi.models.kumbang.Attribute;
+import com.mulperi.models.mulson.Attribute;
 import com.mulperi.models.kumbang.SubFeature;
 
 @Entity

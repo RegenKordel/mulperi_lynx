@@ -46,18 +46,22 @@ import com.mulperi.models.mulson.Requirement;
 
 @Service
 public class FormatTransformerService {
+	
+	private HashMap<String, Integer> usedNames;
 
 	public ParsedModel parseMulson(String modelName, List<Requirement> requirements) {
 
 		ParsedModel pm = new ParsedModel(modelName);
-
-		requirements = attributeRenamingOperation(requirements);
+		
+		this.usedNames = new HashMap<>();
 
 		for (Requirement req : requirements) {
 			Feature feat = new Feature(req.getRequirementId());
+			List<Attribute> attributes = reqAttributesToKumbAttributes(req.getAttributes());
+			
 			pm.addFeature(feat);
 
-			pm.addAttributes(req.getAttributes());
+			pm.addAttributes(attributes);
 
 			feat.setSubFeatures(req.getSubfeatures());
 
@@ -79,7 +83,7 @@ public class FormatTransformerService {
 			}
 
 			// add attributes for feature
-			feat.setAttributes(req.getAttributes());
+			feat.setAttributes(attributes);
 		}
 
 		return pm;
@@ -100,32 +104,31 @@ public class FormatTransformerService {
 	 * @param requirements
 	 * @return
 	 */
-	private List<Requirement> attributeRenamingOperation(List<Requirement> requirements) {
-		HashMap<String, Integer> usedNames = new HashMap<String, Integer>();
-
-		List<Requirement> newReqs = new ArrayList<Requirement>();
-		for (Requirement req : requirements) {
-			Requirement newReq = req;
-			List<Attribute> newAttList = new ArrayList<Attribute>();
-			for (Attribute att : req.getAttributes()) {
-				String attType = att.getType();
-				Attribute newAtt = att;
-				if (usedNames.containsKey(attType)) {
-					int amount = usedNames.get(attType) + 1;
-					usedNames.put(attType, amount);
-					attType += amount;
-					newAtt.setType(attType);
-				} else {
-					usedNames.put(attType, 1);
-				}
-				newAttList.add(newAtt);
-			}
-			newReq.setAttributes(newAttList);
-			newReqs.add(newReq);
-		}
-
-		return newReqs;
-	}
+//	private List<Requirement> attributeRenamingOperation(List<Requirement> requirements) {
+//		List<Requirement> newReqs = new ArrayList<Requirement>();
+//		for (Requirement req : requirements) {
+//			Requirement newReq = req;
+//			List<Attribute> newAttList = new ArrayList<Attribute>();
+//			List<Attribute> attributes = reqAttrsToKumbAttrs(req.getReqAttributes(), usedNames);
+//			for (Attribute att : attributes) {
+//				String attType = att.getType();
+//				Attribute newAtt = att;
+//				if (usedNames.containsKey(attType)) {
+//					int amount = usedNames.get(attType) + 1;
+//					usedNames.put(attType, amount);
+//					attType += amount;
+//					newAtt.setType(attType);
+//				} else {
+//					usedNames.put(attType, 1);
+//				}
+//				newAttList.add(newAtt);
+//			}
+//			newReq.setAttributes(newAttList);
+//			newReqs.add(newReq);
+//		}
+//
+//		return newReqs;
+//	}
 
 	private Requirement findRequirementsParent(String needle, List<Requirement> haystack) {
 		for (Requirement r : haystack) {
@@ -188,6 +191,25 @@ public class FormatTransformerService {
 		}
 
 		return pm;
+	}
+	
+	private List<Attribute> reqAttributesToKumbAttributes(List<com.mulperi.models.mulson.Attribute> reqAtts) {
+		List<Attribute> atts = new ArrayList<>();
+		for (com.mulperi.models.mulson.Attribute reqAtt : reqAtts) {
+			Attribute newAtt = new Attribute(reqAtt.getName(), reqAtt.getValues(), reqAtt.getDefaultValue());
+			String attName = reqAtt.getName();
+			if (usedNames.containsKey(attName)) {
+				int amount = usedNames.get(attName) + 1;
+				usedNames.put(attName, amount);
+				attName += amount;
+				newAtt.setType(attName);
+			} else {
+				usedNames.put(attName, 1);
+			}
+			atts.add(newAtt);
+		}
+		return atts;
+		
 	}
 
 	/**

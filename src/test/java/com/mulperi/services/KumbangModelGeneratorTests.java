@@ -70,7 +70,7 @@ public class KumbangModelGeneratorTests {
 				+ "Motor motor;\n\t\tNavigator navigator[0-1];\n\t\t"
 				+ "Gearbox gearbox;\n\tconstraints\n\t\tpresent(Motor) "
 				+ "=> present(Gearbox);\n\tattributes\n\t\tTestAtt "
-				+ "testatt;\n}"));
+				+ "TestAtt;\n}"));
 	}
 	
 	@Test

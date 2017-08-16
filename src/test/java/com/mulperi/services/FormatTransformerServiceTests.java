@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mulperi.models.kumbang.Attribute;
+import com.mulperi.models.mulson.Attribute;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.mulson.Relationship;
 import com.mulperi.models.mulson.Requirement;
@@ -125,7 +125,7 @@ public class FormatTransformerServiceTests {
 		Requirement req = new Requirement();
 		req.setRequirementId("T1");	
 		List<Attribute> attList = new ArrayList<>();
-		Attribute att = new Attribute("Test", "test");
+		Attribute att = new Attribute("Test");
 		List<String> attValues = new ArrayList<>();
 		attValues.addAll(Arrays.asList("1", "2", "3"));
 		att.setValues(attValues);
@@ -136,7 +136,7 @@ public class FormatTransformerServiceTests {
 		req = new Requirement();
 		req.setRequirementId("T2");
 		attList = new ArrayList<>();
-		att = new Attribute("Test", "test");
+		att = new Attribute("Test");
 		attValues = new ArrayList<>();
 		attValues.addAll(Arrays.asList("1", "2", "3"));
 		att.setValues(attValues);
@@ -147,7 +147,7 @@ public class FormatTransformerServiceTests {
 		req = new Requirement();
 		req.setRequirementId("T3");
 		attList = new ArrayList<>();
-		att = new Attribute("Test", "test");
+		att = new Attribute("Test");
 		attValues = new ArrayList<>();
 		attValues.addAll(Arrays.asList("1", "2", "3"));
 		att.setValues(attValues);
@@ -159,11 +159,11 @@ public class FormatTransformerServiceTests {
 		
 		String kbString = kumbangModelGenerator.generateKumbangModelString(pm);
 		assertTrue(kbString.contains("feature type T1 {\n\tattributes\n\t\t"
-				+ "Test test;"));
+				+ "Test Test;"));
 		assertTrue(kbString.contains("feature type T2 {\n\tattributes\n\t\t"
-				+ "Test2 test;"));
+				+ "Test2 Test;"));
 		assertTrue(kbString.contains("feature type T3 {\n\tattributes\n\t\t"
-				+ "Test3 test;"));
+				+ "Test3 Test;"));
 	}
 	
 	@Test
@@ -172,7 +172,7 @@ public class FormatTransformerServiceTests {
 		Requirement req = new Requirement();
 		req.setRequirementId("T1");
 		List<Attribute> attList = new ArrayList<>();
-		Attribute att = new Attribute("Test", "test");
+		Attribute att = new Attribute("Test");
 		List<String> attValues = new ArrayList<>();
 		attValues.addAll(Arrays.asList("1", "2", "3"));
 		att.setValues(attValues);

@@ -1,4 +1,4 @@
-package com.mulperi.models.kumbang;
+package com.mulperi.models.mulson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,7 @@ public class Attribute extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = 8108228292152293692L;
 
-	String type;
-	String role;
+	String name;
 	@ElementCollection
 	List<String> values;
 	String defaultValue;
@@ -22,50 +21,30 @@ public class Attribute extends AbstractPersistable<Long> {
 	public Attribute() {
 	}
 
-	public Attribute(String type, String role, List<String> values, String defaultValue) {
-		this.type = type;
-		this.role = role;
+	public Attribute(String name, List<String> values, String defaultValue) {
+		this.name = name;
 		this.values = values;
 		this.defaultValue = defaultValue;
 	}
 
-	public Attribute(String type, String role, List<String> values) {
-		this(type, role, values, null);
+	public Attribute(String name, List<String> values) {
+		this(name, values, null);
+	}
+
+	public Attribute(String name) {
+		this(name, null, null);
 	}
 	
-	public Attribute(String type, List<String> values, String defaultValue) {
-		this(type, type, values, defaultValue);
+	public String getName() {
+		return this.name;
 	}
 
-	public Attribute(String type, List<String> values) {
-		this(type, type, values, null);
-	}
-
-	public Attribute(String type, String role) {
-		this(type, role, null, null);
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String name) {
-		if (this.type != null)
+	public void setName(String name) {
+		if (this.name != null)
 			name = name.replaceAll(" ", "_").replaceAll("-", "_");
-		this.type = name;
-		if (this.role == null) {
-			this.role = name; //type is the default role type
-		}
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		if (role != null) {
-			role = role.replaceAll(" ", "_").replaceAll("-", "_").replaceAll("-", "_");
-			this.role = role;
+		this.name = name;
+		if (this.name == null) {
+			this.name = name; //type is the default role type
 		}
 	}
 
@@ -118,10 +97,10 @@ public class Attribute extends AbstractPersistable<Long> {
 		if (!(obj instanceof Attribute))
 			return false;
 		Attribute other = (Attribute) obj;
-		if (type == null) {
-			if (other.type != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
@@ -130,14 +109,14 @@ public class Attribute extends AbstractPersistable<Long> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((values == null) ? 0 : values.hashCode());
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "Attribute [type=" + type + ", values=" + values + ", defaultValue=" + defaultValue + "]";
+		return "Attribute [name=" + name + ", values=" + values + ", defaultValue=" + defaultValue + "]";
 	}
 
 }
