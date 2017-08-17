@@ -98,38 +98,6 @@ public class FormatTransformerService {
 		}
 	}
 
-	/**
-	 * Adds numbers to differentiate identical attribute names
-	 * 
-	 * @param requirements
-	 * @return
-	 */
-//	private List<Requirement> attributeRenamingOperation(List<Requirement> requirements) {
-//		List<Requirement> newReqs = new ArrayList<Requirement>();
-//		for (Requirement req : requirements) {
-//			Requirement newReq = req;
-//			List<Attribute> newAttList = new ArrayList<Attribute>();
-//			List<Attribute> attributes = reqAttrsToKumbAttrs(req.getReqAttributes(), usedNames);
-//			for (Attribute att : attributes) {
-//				String attType = att.getType();
-//				Attribute newAtt = att;
-//				if (usedNames.containsKey(attType)) {
-//					int amount = usedNames.get(attType) + 1;
-//					usedNames.put(attType, amount);
-//					attType += amount;
-//					newAtt.setType(attType);
-//				} else {
-//					usedNames.put(attType, 1);
-//				}
-//				newAttList.add(newAtt);
-//			}
-//			newReq.setAttributes(newAttList);
-//			newReqs.add(newReq);
-//		}
-//
-//		return newReqs;
-//	}
-
 	private Requirement findRequirementsParent(String needle, List<Requirement> haystack) {
 		for (Requirement r : haystack) {
 			for (SubFeature subfeature : r.getSubfeatures()) {

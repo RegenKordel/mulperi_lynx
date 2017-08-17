@@ -1,7 +1,6 @@
 [
    {
   	"requirementId": "MapAppFeature",
-  	"name": "MapApplication",
   	"subfeatures": [
      	{
         	"types": ["R1"],
@@ -27,7 +26,6 @@
    },
    {
   	"requirementId": "R1",
-  	"name": "ShowMap",
   	"subfeatures": [
      	{
         	"types": ["R2"],
@@ -37,14 +35,12 @@
   	],
   	"attributes": [
      	{    
-        	"name": "Priority",
-        	"role": "priority",
+        	"name":"priority",
         	"values": ["1", "2", "3"],
             "defaultValue": "1"
      	},
      	{    
-        	"name": "MapSource",
-        	"role": "mapsource",
+        	"name": "mapsource",
         	"values": ["Google", "OpenStreetMap"],
             "defaultValue": "OpenStreetMap"
      	}
@@ -52,18 +48,15 @@
    },
    {
   	"requirementId": "R2",
-  	"name": "CacheMap",
   	"attributes": [
      	{    
-         	"name": "Priority",
-         	"role": "priority",
+         	"name":"priority",
          	"values": ["1", "2", "3"]
      	}
   	]
    },
    {
    	"requirementId": "R3a",
-   	"name": "ShowLocation using GPS",
    	"relationships": [
       	{
          	"targetId": "R2",
@@ -72,8 +65,7 @@
    	],
    	"attributes": [
       	{    
-         	"name": "Priority",
-         	"role": "priority",
+         	"name":"priority",
          	"values": ["1", "2", "3"],
             "defaultValue": "1"
       	}
@@ -90,14 +82,12 @@
    	],
    	"attributes": [
    		{    
-        	"name": "MapSource",
-        	"role": "mapsource",
+        	"name":"mapsource",
         	"values": ["Google", "OpenStreetMap"],
             "defaultValue": "OpenStreetMap"
      	},
       	{    
-         	"name": "Priority",
-         	"role": "priority",
+         	"name":"priority",
          	"values": ["1", "2", "3"],
             "defaultValue": "2"
       	}
@@ -105,7 +95,6 @@
    },
    {
    	"requirementId": "R4",
-   	"name": "Navigate",
    	"relationships": [
       	{
          	"targetId": "R3a",
@@ -114,15 +103,13 @@
    	],
    	"attributes": [
       	{    
-         	"name": "Priority",
-         	"role": "priority",
+        	"name":"priority",
          	"values": ["1", "2", "3"]
       	}
    	]
    },
    {
    	"requirementId": "R5",
-   	"name": "r5",
    	"relationships": [
       	{
          	"targetId": "R4",
@@ -133,4 +120,5 @@
    }
 
 ]
+
 
