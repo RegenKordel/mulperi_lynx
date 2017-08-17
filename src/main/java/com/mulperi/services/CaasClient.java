@@ -86,8 +86,8 @@ public class CaasClient {
 
 		try {
 			response = rt.postForEntity(caasAddress, entity, String.class);
-		} catch (HttpServerErrorException e) {
-			selectionErrorHandling(e);
+		} catch (HttpClientErrorException e) {
+			throw new Exception(e.getResponseBodyAsString());
 		}
 
 		String result = response.getBody();
@@ -124,12 +124,6 @@ public class CaasClient {
 			throw new DataFormatException(e.getResponseBodyAsString());
 		}
 		if (e.getStatusCode() != HttpStatus.CREATED) {
-			throw new Exception(e.getResponseBodyAsString());
-		}
-	}
-
-	private void selectionErrorHandling(HttpServerErrorException e) throws Exception {
-		if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
 			throw new Exception(e.getResponseBodyAsString());
 		}
 	}
