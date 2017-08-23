@@ -60,6 +60,7 @@ public class ConfigurationController {
 		}
 	}
 	
+	// The old way of handling defaults with Smodels - make a second round with default attributes set in Mulperi
 //	@RequestMapping(value = "/models/{model}/configurations/defaults", method = RequestMethod.POST, produces="application/xml")
 //    public ResponseEntity<?> requestConfigurationWithDefaults(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) {
 //		
@@ -103,7 +104,7 @@ public class ConfigurationController {
     		
     		List<FeatureSelection> features = selections.getFeatureSelections();
     		
-    		for(FeatureSelection feat : features) { //TBD: do this nicer
+    		for(FeatureSelection feat : features) { //TBD: do this nicer - check if even necessary with Choco
     			if(!response.contains("\"" + feat.getType() + "\"")) {
     				return new ResponseEntity<>("no", HttpStatus.OK);
     			}
@@ -118,11 +119,13 @@ public class ConfigurationController {
     }
 	
 	@RequestMapping(value = "/models/{model}/configurations/consequences", method = RequestMethod.POST)
-    public ResponseEntity<?> findDirectConsequences(@RequestBody Selections selections, @PathVariable("model") String modelName) throws Exception {
+    public ResponseEntity<?> findDirectConsequences(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) throws Exception {
 		
 		String configurationRequest;
 		try {
-			configurationRequest = makeConfigurationRequest(selections, modelName);
+			Selections selectionsObject = new Selections();
+			selectionsObject.setFeatureSelections(selections);
+			configurationRequest = makeConfigurationRequest(selectionsObject, modelName);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -164,7 +167,7 @@ public class ConfigurationController {
 		}
 		
     	try {
-    		return transform.featuresToConfigurationRequest(selections, model);
+    		return transform.slectionsToConfigurationRequest(selections, model);
 		} catch (Exception e) {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}

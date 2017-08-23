@@ -182,13 +182,13 @@ public class FormatTransformerService {
 
 	/**
 	 * 
-	 * @param features
+	 * @param selections
 	 *            Note: populate only the type and attributes of each FeatureSelection object
 	 * @param model
 	 * @return
 	 * @throws Exception
 	 */
-	public String featuresToConfigurationRequest(Selections selections, ParsedModel model) throws Exception {
+	public String slectionsToConfigurationRequest(Selections selections, ParsedModel model) throws Exception {
 
 		List<FeatureSelection> features = selections.getFeatureSelections();
 		List<CalculationConstraint> calculations = selections.getCalculationConstraints();
@@ -280,7 +280,6 @@ public class FormatTransformerService {
 		}
 
 		// Output to console for testing
-		// System.out.println("KOE");
 		// TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		// Transformer transformer = transformerFactory.newTransformer();
 		// DOMSource source = new DOMSource(doc);
@@ -412,6 +411,7 @@ public class FormatTransformerService {
 	 * Converts a list of individual FeatureSelection nodes into a FeatureSelection with a tree structure
 	 * 
 	 * @param selections
+	 * @param model
 	 * @return
 	 */
 	public FeatureSelection listOfFeatureSelectionsToOne(List<FeatureSelection> selections, ParsedModel model) {
