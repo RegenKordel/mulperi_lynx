@@ -53,8 +53,7 @@ public class FeatureSelection {
 	public void setFeatures(List<FeatureSelection> features) {
 		this.features = features;
 	}
-	
-	@JsonIgnore
+
 	public boolean getIsSoft() {
 		return isSoft;
 	}
