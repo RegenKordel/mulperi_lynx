@@ -1,8 +1,10 @@
 com.mulperi
-com.mulperi.controllers
-com.mulperi.models.kumbang
-com.mulperi.models.mulson
-com.mulperi.models.reqif
-com.mulperi.models.selections
-com.mulperi.repositories
 com.mulperi.services
+eu.openreq.mulperi
+eu.openreq.mulperi.controllers
+eu.openreq.mulperi.models.kumbang
+eu.openreq.mulperi.models.mulson
+eu.openreq.mulperi.models.reqif
+eu.openreq.mulperi.models.selections
+eu.openreq.mulperi.repositories
+eu.openreq.mulperi.services

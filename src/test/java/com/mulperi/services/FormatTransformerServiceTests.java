@@ -8,15 +8,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mulperi.models.mulson.Attribute;
-import com.mulperi.models.kumbang.ParsedModel;
-import com.mulperi.models.mulson.Relationship;
-import com.mulperi.models.mulson.Requirement;
-import com.mulperi.models.selections.AttributeSelection;
-import com.mulperi.models.selections.CalculationConstraint;
-import com.mulperi.models.selections.FeatureSelection;
-import com.mulperi.models.selections.Selections;
-import com.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.models.kumbang.ParsedModel;
+import eu.openreq.mulperi.models.mulson.Attribute;
+import eu.openreq.mulperi.models.mulson.Relationship;
+import eu.openreq.mulperi.models.mulson.Requirement;
+import eu.openreq.mulperi.models.selections.AttributeSelection;
+import eu.openreq.mulperi.models.selections.CalculationConstraint;
+import eu.openreq.mulperi.models.selections.FeatureSelection;
+import eu.openreq.mulperi.models.selections.Selections;
+import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.KumbangModelGenerator;
 
 public class FormatTransformerServiceTests {
 	

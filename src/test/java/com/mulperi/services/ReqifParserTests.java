@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import org.junit.Test;
-import com.mulperi.models.reqif.SpecObject;
+
+import eu.openreq.mulperi.models.reqif.SpecObject;
+import eu.openreq.mulperi.services.ReqifParser;
 
 public class ReqifParserTests {
 	

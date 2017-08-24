@@ -9,12 +9,14 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-import com.mulperi.models.kumbang.Attribute;
-import com.mulperi.models.kumbang.Constraint;
-import com.mulperi.models.kumbang.Feature;
-import com.mulperi.models.kumbang.ParsedModel;
-import com.mulperi.models.kumbang.SubFeature;
-import com.mulperi.models.selections.FeatureSelection;
+import eu.openreq.mulperi.models.kumbang.Attribute;
+import eu.openreq.mulperi.models.kumbang.Constraint;
+import eu.openreq.mulperi.models.kumbang.Feature;
+import eu.openreq.mulperi.models.kumbang.ParsedModel;
+import eu.openreq.mulperi.models.kumbang.SubFeature;
+import eu.openreq.mulperi.models.selections.FeatureSelection;
+import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.Utils;
 
 public class UtilsTests {
 
