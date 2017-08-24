@@ -27,8 +27,8 @@ public class SwaggerConfig {
     
     private ApiInfo metaData() {
       return new ApiInfoBuilder()
-              .title("Spring REST Sample with Swagger")
-              .description("Spring REST Sample with Swagger")
+              .title("Mulperi")
+              .description("Easy to use REST API with JSON for configuring models")
               .build();
   }
 }
