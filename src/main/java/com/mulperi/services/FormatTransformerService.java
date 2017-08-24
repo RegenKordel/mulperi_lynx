@@ -39,11 +39,11 @@ import com.mulperi.models.kumbang.SubFeature;
 import com.mulperi.models.mulson.Requirement;
 
 /**
+ * Methods used to convert between formats (MulSON, ReqIF, configuration)
  * 
- * Methods used in parsing Mulson and Reqif to ParsedModel
- *
+ * @author iivorait
+ * @author tlaurinen
  */
-
 @Service
 public class FormatTransformerService {
 	

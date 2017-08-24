@@ -23,10 +23,10 @@ import com.mulperi.models.reqif.SpecObject;
 import com.mulperi.models.reqif.SpecRelation;
 
 /**
+ * Parse ReqIF XML to Mulperi's ReqIF Java objects
  * 
- * Parsing reqif, could be useful at some point?
- * 
- *
+ * @author iivorait
+ * @author tlaurinen
  */
 public class ReqifParser {
 

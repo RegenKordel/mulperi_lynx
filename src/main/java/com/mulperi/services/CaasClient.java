@@ -23,9 +23,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Client used to send models and configurations to CaaS
  * 
- * Client used in sending models and configurations to CaaS.
- *
+ * @author iivorait
+ * @author tlaurinen
  */
 public class CaasClient {
 	

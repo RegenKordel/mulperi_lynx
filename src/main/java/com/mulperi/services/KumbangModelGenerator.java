@@ -8,9 +8,10 @@ import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.kumbang.SubFeature;
 
 /**
- * 
- * Turns the ParsedModel into a Kumbang format string
+ * Turns a ParsedModel object into a Kumbang format string
  *
+ * @author iivorait
+ * @author tlaurinen
  */
 public class KumbangModelGenerator {
 

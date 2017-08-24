@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mulperi.models.kumbang.ParsedModel;
 import com.mulperi.models.mulson.Requirement;
 import com.mulperi.models.reqif.SpecObject;
+import com.mulperi.models.selections.FeatureSelection;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
@@ -26,6 +27,14 @@ import java.util.List;
 import java.util.zip.DataFormatException;
 
 import javax.management.IntrospectionException;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @SpringBootApplication
 @RestController
@@ -51,6 +60,12 @@ public class ModelController {
 	 * @param modelName
 	 * @return
 	 */
+	@ApiOperation(value = "Get the structure of a model",
+		    notes = "Get single model as FeatureSelection for selecting features",
+		    response = FeatureSelection.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 500, message = "Failure")}) 
 	@CrossOrigin
 	@RequestMapping(value = "/{model}", method = RequestMethod.GET)
     public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {

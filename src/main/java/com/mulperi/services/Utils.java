@@ -9,18 +9,19 @@ import com.mulperi.models.selections.AttributeSelection;
 import com.mulperi.models.selections.FeatureSelection;
 
 /**
- * 
  * Various utilities
  *
+ * @author iivorait
+ * @author tlaurinen
  */
 public class Utils {
 
-	/**
-	 * Transfers the features that exist in "modified" but not in "original" to "diff"
-	 * @param original
-	 * @param modified
-	 * @param diff
-	 */
+//	/**
+//	 * Transfers the features that exist in "modified" but not in "original" to "diff"
+//	 * @param original
+//	 * @param modified
+//	 * @param diff
+//	 */
 //	public void diffFeatures(FeatureSelection original, FeatureSelection modified, FeatureSelection diff) {
 //		for(FeatureSelection feat1 : modified.getFeatures()) {
 //			FeatureSelection feat2 = null;
