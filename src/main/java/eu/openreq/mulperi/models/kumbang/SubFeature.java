@@ -105,4 +105,48 @@ public class SubFeature extends AbstractPersistable<Long> {
 		return result;
 	}
 
+	/**
+	 * Automatically generated with Eclipse
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((cardinality == null) ? 0 : cardinality.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((types == null) ? 0 : types.hashCode());
+		return result;
+	}
+
+	/**
+	 * Automatically generated with Eclipse
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SubFeature other = (SubFeature) obj;
+		if (cardinality == null) {
+			if (other.cardinality != null)
+				return false;
+		} else if (!cardinality.equals(other.cardinality))
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (types == null) {
+			if (other.types != null)
+				return false;
+		} else if (!types.equals(other.types))
+			return false;
+		return true;
+	}
+
+	
 }

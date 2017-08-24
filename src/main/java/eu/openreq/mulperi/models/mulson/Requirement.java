@@ -121,5 +121,60 @@ public class Requirement extends AbstractPersistable<Long> {
 		}
 		return "0-1"; //Defaults to optional 
 	}
+
+	/**
+	 * Automatically generated with Eclipse, used in ModelController's generateName method
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((relationships == null) ? 0 : relationships.hashCode());
+		result = prime * result + ((requirementId == null) ? 0 : requirementId.hashCode());
+		result = prime * result + ((subfeatures == null) ? 0 : subfeatures.hashCode());
+		return result;
+	}
+
+	/**
+	 * Automatically generated with Eclipse
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Requirement other = (Requirement) obj;
+		if (attributes == null) {
+			if (other.attributes != null)
+				return false;
+		} else if (!attributes.equals(other.attributes))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (relationships == null) {
+			if (other.relationships != null)
+				return false;
+		} else if (!relationships.equals(other.relationships))
+			return false;
+		if (requirementId == null) {
+			if (other.requirementId != null)
+				return false;
+		} else if (!requirementId.equals(other.requirementId))
+			return false;
+		if (subfeatures == null) {
+			if (other.subfeatures != null)
+				return false;
+		} else if (!subfeatures.equals(other.subfeatures))
+			return false;
+		return true;
+	}
 	
 }

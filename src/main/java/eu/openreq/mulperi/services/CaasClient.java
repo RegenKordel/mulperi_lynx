@@ -1,7 +1,6 @@
 package eu.openreq.mulperi.services;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 import javax.management.IntrospectionException;
@@ -12,11 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import eu.openreq.mulperi.models.selections.AttributeSelection;
-import eu.openreq.mulperi.models.selections.FeatureSelection;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;

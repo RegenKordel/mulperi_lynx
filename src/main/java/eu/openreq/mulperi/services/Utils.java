@@ -44,15 +44,15 @@ public class Utils {
 //		}
 //	}
 	
-	/**
-	 * Finds a reference to a FeatureSelection that is equal to needle (same name and type)
-	 * @param haystack
-	 * @param needle
-	 * @return
-	 */
-	private FeatureSelection findFromThisLevel(List<FeatureSelection> haystack, FeatureSelection needle) {
-		return this.findFromThisLevel(haystack, needle, false);
-	}
+//	/**
+//	 * Finds a reference to a FeatureSelection that is equal to needle (same name and type)
+//	 * @param haystack
+//	 * @param needle
+//	 * @return
+//	 */
+//	private FeatureSelection findFromThisLevel(List<FeatureSelection> haystack, FeatureSelection needle) {
+//		return this.findFromThisLevel(haystack, needle, false);
+//	}
 	
 	/**
 	 * 
