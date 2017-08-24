@@ -50,6 +50,15 @@ public class ModelController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
+	/**
+	 * Get all saved models
+	 * @return
+	 */
+	@ApiOperation(value = "Get saved models",
+		    notes = "Get all saved models",
+		    response = ParsedModel.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success")}) 
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public List<ParsedModel> modelList() {
         return parsedModelRepository.findAll();
@@ -65,7 +74,7 @@ public class ModelController {
 		    response = FeatureSelection.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 500, message = "Failure")}) 
+			@ApiResponse(code = 400, message = "Failure, ex. model not found")}) 
 	@CrossOrigin
 	@RequestMapping(value = "/{model}", method = RequestMethod.GET)
     public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {
@@ -79,6 +88,18 @@ public class ModelController {
 		return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
     }
 	
+	/**
+	 * Import a model in MulSON format
+	 * @param requirements
+	 * @return
+	 */
+	@ApiOperation(value = "Import MulSON model",
+		    notes = "Import a model in MulSON format",
+		    response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Success, returns the ID of the generated model"),
+			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
+			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
 	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
     public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 		
@@ -89,6 +110,18 @@ public class ModelController {
 		return sendModelToCaasAndSave(pm, caasAddress);
     }
 	
+	/**
+	 * Import a model in ReqIF format
+	 * @param reqifXML
+	 * @return
+	 */
+	@ApiOperation(value = "Import ReqIF model",
+		    notes = "Import a model in ReqIF format",
+		    response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Success, returns the ID of the generated model"),
+			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
+			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
 	@RequestMapping(value = "/reqif", method = RequestMethod.POST, consumes="application/xml")
     public ResponseEntity<?> reqif(@RequestBody String reqifXML) {
 		ReqifParser parser = new ReqifParser();
@@ -121,7 +154,7 @@ public class ModelController {
 		try {
 			result = client.uploadConfigurationModel(pm.getModelName(), kumbangModel, caasAddress);
 		} catch(IntrospectionException e) {
-            return new ResponseEntity<>("Impossible model\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Impossible model\n\n" + e.getMessage(), HttpStatus.CONFLICT);
 		} catch(DataFormatException e) {
             return new ResponseEntity<>("Syntax error\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch(Exception e) {

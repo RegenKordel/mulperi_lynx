@@ -17,16 +17,16 @@ import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
-import eu.openreq.mulperi.services.Utils;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class ConfigurationController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
-	private Utils utils = new Utils();
 	
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;
@@ -36,13 +36,22 @@ public class ConfigurationController {
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
 	
+	/**
+	 * Get a configuration of a model
+	 * @param selections optional selected features
+	 * @param modelName ID of the model
+	 * @return
+	 */
+	@ApiOperation(value = "Get configuration",
+		    notes = "Get a configuration of a model with optional selections",
+		    response = FeatureSelection.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"),
+			@ApiResponse(code = 409, message = "Failure, configuration with selected features is impossible")}) 
 	@CrossOrigin
 	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST)
-    public ResponseEntity<?> requestChocoConfiguration(@RequestBody Selections selections, @PathVariable("model") String modelName) {
-		return requestConfiguration(selections, modelName, caasAddress);
-    }
-	
-	public ResponseEntity<?> requestConfiguration(Selections selections, String modelName, String caasAddress) {
+    public ResponseEntity<?> requestConfiguration(@RequestBody Selections selections, @PathVariable("model") String modelName) {
 		String configurationRequest;
 		try {
 			configurationRequest = makeConfigurationRequest(selections, modelName);
@@ -88,6 +97,18 @@ public class ConfigurationController {
 //    	
 //    }
 	
+	/**
+	 * Check whether a configuration is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return "yes" or "no"
+	 */
+	@ApiOperation(value = "Is configuration consistent",
+		    notes = "Check whether a configuration is consistent",
+		    response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns \"yes\" or \"no\""),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found")}) 
 	@RequestMapping(value = "/models/{model}/configurations/isconsistent", method = RequestMethod.POST)
     public ResponseEntity<?> isConsistent(@RequestBody Selections selections, @PathVariable("model") String modelName) {
 		
@@ -104,7 +125,7 @@ public class ConfigurationController {
     		
     		List<FeatureSelection> features = selections.getFeatureSelections();
     		
-    		for(FeatureSelection feat : features) { //TBD: do this nicer - check if even necessary with Choco
+    		for(FeatureSelection feat : features) { //TBD: do this nicer - check if even necessary with Choco (Smodels version might silently drop a feature)
     			if(!response.contains("\"" + feat.getType() + "\"")) {
     				return new ResponseEntity<>("no", HttpStatus.OK);
     			}
@@ -118,6 +139,20 @@ public class ConfigurationController {
     	
     }
 	
+	/**
+	 * Find out the consequences of selecting some features, i.e. which additional features get selected
+	 * @param selections The base features
+	 * @param modelName
+	 * @return
+	 * @throws Exception
+	 */
+	@ApiOperation(value = "Find consequences",
+		    notes = "Find out the consequences of selecting some features, i.e. which additional features get selected",
+		    response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, TODO final return format"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"),
+			@ApiResponse(code = 409, message = "Failure, configuration with selected features is impossible")}) 
 	@RequestMapping(value = "/models/{model}/configurations/consequences", method = RequestMethod.POST)
     public ResponseEntity<?> findDirectConsequences(@RequestBody List<FeatureSelection> selections, @PathVariable("model") String modelName) throws Exception {
 		

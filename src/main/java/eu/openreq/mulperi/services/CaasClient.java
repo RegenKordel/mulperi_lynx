@@ -111,11 +111,11 @@ public class CaasClient {
 	}
 
 	private void modelErrorHandling(HttpClientErrorException e) throws Exception {
-		if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR
+		if (e.getStatusCode() == HttpStatus.CONFLICT
 				&& e.getResponseBodyAsString().contains("There are no configurations that satisfy the given model.")) {
 			throw new IntrospectionException(e.getResponseBodyAsString());
 		}
-		if (e.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR
+		if (e.getStatusCode() == HttpStatus.BAD_REQUEST
 				&& e.getResponseBodyAsString().contains("Parsing of model failed.")) {
 			throw new DataFormatException(e.getResponseBodyAsString());
 		}
