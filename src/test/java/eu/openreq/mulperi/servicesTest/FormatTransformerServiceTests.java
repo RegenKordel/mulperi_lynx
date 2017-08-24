@@ -1,4 +1,4 @@
-package com.mulperi.services;
+package eu.openreq.mulperi.servicesTest;
 
 import static org.junit.Assert.*;
 

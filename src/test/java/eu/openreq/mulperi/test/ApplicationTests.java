@@ -1,4 +1,4 @@
-package com.mulperi;
+package eu.openreq.mulperi.test;
 
 
 import org.junit.Test;
