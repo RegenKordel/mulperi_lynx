@@ -1,10 +1,12 @@
 package com.mulperi.services;
 
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 import javax.management.IntrospectionException;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,13 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.mulperi.models.selections.AttributeSelection;
-import com.mulperi.models.selections.FeatureSelection;
-
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * 

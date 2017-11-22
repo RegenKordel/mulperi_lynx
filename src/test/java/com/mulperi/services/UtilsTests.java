@@ -84,5 +84,7 @@ public class UtilsTests {
 		this.utils.setDefaults(response, request, model);
 		
 		assertEquals("(null,null)/(root,Car1234-testatt=second)/(motor,Motor-enginetype=Diesel)/(gearbox,Gearbox)/(geartype,Manual)/", response.getFullContentString());
+		
+		scanner.close();
 	}
 }

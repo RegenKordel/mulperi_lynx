@@ -49,6 +49,7 @@ public class Utils {
 	 * @param needle
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private FeatureSelection findFromThisLevel(List<FeatureSelection> haystack, FeatureSelection needle) {
 		return this.findFromThisLevel(haystack, needle, false);
 	}

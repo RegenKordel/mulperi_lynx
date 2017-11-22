@@ -1,5 +1,7 @@
 package com.mulperi.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,16 +19,12 @@ import com.mulperi.models.selections.Selections;
 import com.mulperi.repositories.ParsedModelRepository;
 import com.mulperi.services.CaasClient;
 import com.mulperi.services.FormatTransformerService;
-import com.mulperi.services.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class ConfigurationController {
 
 	private FormatTransformerService transform = new FormatTransformerService();
-	private Utils utils = new Utils();
+//	private Utils utils = new Utils();
 	
 	@Value("${mulperi.caasAddress}")
     private String caasAddress;

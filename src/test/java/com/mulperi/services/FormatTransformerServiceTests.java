@@ -1,6 +1,8 @@
 package com.mulperi.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,15 +10,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mulperi.models.mulson.Attribute;
 import com.mulperi.models.kumbang.ParsedModel;
+import com.mulperi.models.mulson.Attribute;
 import com.mulperi.models.mulson.Relationship;
 import com.mulperi.models.mulson.Requirement;
-import com.mulperi.models.selections.AttributeSelection;
 import com.mulperi.models.selections.CalculationConstraint;
 import com.mulperi.models.selections.FeatureSelection;
 import com.mulperi.models.selections.Selections;
-import com.mulperi.services.FormatTransformerService;
 
 public class FormatTransformerServiceTests {
 	
