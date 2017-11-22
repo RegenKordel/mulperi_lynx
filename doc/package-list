@@ -1,0 +1,10 @@
+eu.openreq.mulperi
+eu.openreq.mulperi.controllers
+eu.openreq.mulperi.models.kumbang
+eu.openreq.mulperi.models.mulson
+eu.openreq.mulperi.models.reqif
+eu.openreq.mulperi.models.selections
+eu.openreq.mulperi.repositories
+eu.openreq.mulperi.services
+eu.openreq.mulperi.servicesTest
+eu.openreq.mulperi.test
