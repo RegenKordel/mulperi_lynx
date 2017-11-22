@@ -1,5 +1,11 @@
 package eu.openreq.mulperi.controllers;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.zip.DataFormatException;
+
+import javax.management.IntrospectionException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,20 +27,9 @@ import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.KumbangModelGenerator;
 import eu.openreq.mulperi.services.ReqifParser;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.zip.DataFormatException;
-
-import javax.management.IntrospectionException;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ResponseHeader;
 
 @SpringBootApplication
 @RestController

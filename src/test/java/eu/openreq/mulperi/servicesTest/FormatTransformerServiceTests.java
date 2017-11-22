@@ -14,7 +14,6 @@ import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.mulson.Attribute;
 import eu.openreq.mulperi.models.mulson.Relationship;
 import eu.openreq.mulperi.models.mulson.Requirement;
-import eu.openreq.mulperi.models.selections.AttributeSelection;
 import eu.openreq.mulperi.models.selections.CalculationConstraint;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
