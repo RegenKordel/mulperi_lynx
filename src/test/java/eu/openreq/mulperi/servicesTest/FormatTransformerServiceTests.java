@@ -214,7 +214,7 @@ public class FormatTransformerServiceTests {
 		calcCstrs.add(cstr);
 		selections.setCalculationConstraints(calcCstrs);
 		
-		String configString = transform.slectionsToConfigurationRequest(selections, new ParsedModel());
+		String configString = transform.selectionsToConfigurationRequest(selections, new ParsedModel());
 		
 		assertTrue(configString.contains("<calculation attribute=\"testatt\" operator=\"=\">3</calculation>"));
 	}
@@ -238,7 +238,7 @@ public class FormatTransformerServiceTests {
 		Selections selections = new Selections();
 		selections.setFeatureSelections(featSels);
 		
-		String configString = transform.slectionsToConfigurationRequest(selections, pm);
+		String configString = transform.selectionsToConfigurationRequest(selections, pm);
 		
 		assertTrue(configString.contains("<feature name=\"R1\" soft=\"true\" type=\"R1\"/>"));
 	}
