@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -188,7 +189,7 @@ public class FormatTransformerService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String slectionsToConfigurationRequest(Selections selections, ParsedModel model) throws Exception {
+	public String selectionsToConfigurationRequest(Selections selections, ParsedModel model) throws Exception {
 
 		List<FeatureSelection> features = selections.getFeatureSelections();
 		List<CalculationConstraint> calculations = selections.getCalculationConstraints();
@@ -526,4 +527,34 @@ public class FormatTransformerService {
 		
 		return blankFeat;
 	}
+	
+	public String generateProjectXMLResponse(boolean isCOnsistent, String explanationStr) {
+		 try {
+	         DocumentBuilderFactory dbFactory =
+	         DocumentBuilderFactory.newInstance();
+	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	         Document doc = dBuilder.newDocument();
+	         
+	         // root element
+	         Element rootElement = doc.createElement("response");
+	         doc.appendChild(rootElement);
+
+	         // consistent element
+	         Element consistent = doc.createElement("consistent");
+	         consistent.appendChild(doc.createTextNode(
+	        		 isCOnsistent? "true" : "false"));
+	         rootElement.appendChild(consistent);
+
+	         // explanation element
+	         Element explanation = doc.createElement("explanation");
+	         explanation.appendChild(doc.createTextNode(explanationStr));
+	         rootElement.appendChild(explanation);
+
+	         return documentToString(doc);
+		 }
+		 catch (ParserConfigurationException ex) {
+			 return null;
+		 }
+	}
+	
 }

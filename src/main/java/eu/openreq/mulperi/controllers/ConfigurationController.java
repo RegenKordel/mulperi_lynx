@@ -1,5 +1,6 @@
 package eu.openreq.mulperi.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
+import eu.openreq.mulperi.models.release.ReleasePlan;
+import eu.openreq.mulperi.models.release.ReleasePlanException;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.ReleaseXMLParser;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -35,6 +39,9 @@ public class ConfigurationController {
 	
 	@Autowired
 	private ParsedModelRepository parsedModelRepository;
+	
+	@Autowired
+	private ModelController modelsService;
 	
 	/**
 	 * Get a configuration of a model
@@ -140,6 +147,106 @@ public class ConfigurationController {
     }
 	
 	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return "yes" or "no"
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+		    notes = "Check whether a release plan is consistent",
+		    response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns \"yes\" or \"no\""),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency")}) 
+	@RequestMapping(value = "/projects/checkForConsistency", method = RequestMethod.POST)
+    public ResponseEntity<?> checkForConsistency(@RequestBody String projectXML) {
+		
+		ReleasePlan releasePlan = null;
+		try {
+			releasePlan
+				= ReleaseXMLParser.parseProjectXML(projectXML);
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty())
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+		} 
+		catch (ReleasePlanException ex) {
+			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
+					(ex.getMessage() == null ? "":	ex.getMessage()) +
+					(ex.getCause() == null ? "" : ex.getCause().toString()),
+					HttpStatus.BAD_REQUEST);
+		}
+		
+		ParsedModel model = null;
+		try {
+			
+			ResponseEntity<?> resp = modelsService.projectToKumbang(projectXML);
+			switch (resp.getStatusCode()) {
+			case CREATED: //201
+				String modelName =(String) (resp.getBody());
+				System.out.println("modelName=" + modelName);
+				model = this.parsedModelRepository.findFirstByModelName(modelName);
+				if(model == null) {
+					return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
+				}
+
+				break;
+			default:
+				return resp;
+			}
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>("no", HttpStatus.BAD_REQUEST);
+		}
+		
+		FeatureSelection featSel = null;
+    	ResponseEntity<?> modelsRresponse = modelsService.getModel(model.getModelName());
+		switch (modelsRresponse.getStatusCode()) {
+		case OK: //200
+			featSel=(FeatureSelection) (modelsRresponse.getBody());
+			System.out.println("featSel=" + featSel);
+			if(featSel == null) {
+				return new ResponseEntity<>("Selections not found", HttpStatus.BAD_REQUEST);
+			}
+
+			break;
+		default:
+			return modelsRresponse;
+		}
+		Selections selections = new Selections();
+		FormatTransformerService transform = new FormatTransformerService();
+		selections.setFeatureSelections(transform.featureSelectionToList(featSel));
+		selections.setCalculationConstraints(
+				releasePlan.getEffortCalculationConstraints());
+		
+		ResponseEntity<?> isConsistentRresponse =
+				isConsistent(selections, model.getModelName());
+		switch (isConsistentRresponse.getStatusCode()) {
+		case OK: //200
+			String replyStatus =(String) (isConsistentRresponse.getBody());
+			if ("yes".equals(replyStatus.toLowerCase())) {
+				return new ResponseEntity<>(
+						transform.generateProjectXMLResponse(true, "Consistent"),
+						HttpStatus.OK);
+
+			}
+			else
+				if ("no".equals(replyStatus.toLowerCase())) {
+					return new ResponseEntity<>(
+							transform.generateProjectXMLResponse(false, "Diagnosis TBD"),
+							HttpStatus.CONFLICT);
+
+				}
+			return new ResponseEntity<>("Consistency detection failure. Internal error?, expected yes/no from caas", HttpStatus.BAD_REQUEST);
+			
+			default:
+					return modelsRresponse;
+		}
+	}
+		
+
+	
+	/**
 	 * Find out the consequences of selecting some features, i.e. which additional features get selected
 	 * @param selections The base features
 	 * @param modelName
@@ -202,7 +309,7 @@ public class ConfigurationController {
 		}
 		
     	try {
-    		return transform.slectionsToConfigurationRequest(selections, model);
+    		return transform.selectionsToConfigurationRequest(selections, model);
 		} catch (Exception e) {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}
