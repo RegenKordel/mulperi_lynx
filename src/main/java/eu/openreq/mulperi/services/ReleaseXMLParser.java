@@ -261,6 +261,7 @@ public class ReleaseXMLParser {
 
 	public static Element stringToXmlObject(String xmlString) throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		//factory.setValidating(false); //does not help to 'isStandalone = "yes"' causing problems 
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
 		Document dataDom = docBuilder.parse(new InputSource(new StringReader(xmlString)));
 		Element root = dataDom.getDocumentElement();
