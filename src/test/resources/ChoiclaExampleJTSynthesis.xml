@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<project>
+	<name>ChoiclaWeb</name>
+	<version>v1</version>
+	<id>ChoiclaId</id>
+
+	<requirements>
+		<requirement>
+			<id>R1</id>
+			<effort>254</effort>
+			<assignedRelease>1</assignedRelease>
+			<dependencies>  
+				<requiresDependency>R3</requiresDependency>
+				<requiresDependency>R8</requiresDependency>
+			</dependencies>
+		</requirement>
+	
+		<requirement>
+			<id>R2</id>
+			<effort>18</effort>
+			<assignedRelease>1</assignedRelease>
+		</requirement>
+	
+		<requirement>
+			<id>R3</id>
+			<effort>28</effort>
+			<assignedRelease>1</assignedRelease>
+		</requirement>
+	
+		<requirement>
+		<id>R8</id>
+		<effort>10</effort>
+			<assignedRelease>1</assignedRelease>
+		</requirement>
+	</requirements>
+
+	<releases>
+		<release>
+		<id>1</id>
+		<maxCapacity>300</maxCapacity>
+		</release>
+	</releases>
+</project>
+</xml>

@@ -1,6 +1,8 @@
 package eu.openreq.mulperi.servicesTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +14,6 @@ import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.mulson.Attribute;
 import eu.openreq.mulperi.models.mulson.Relationship;
 import eu.openreq.mulperi.models.mulson.Requirement;
-import eu.openreq.mulperi.models.selections.AttributeSelection;
 import eu.openreq.mulperi.models.selections.CalculationConstraint;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
@@ -213,7 +214,7 @@ public class FormatTransformerServiceTests {
 		calcCstrs.add(cstr);
 		selections.setCalculationConstraints(calcCstrs);
 		
-		String configString = transform.slectionsToConfigurationRequest(selections, new ParsedModel());
+		String configString = transform.selectionsToConfigurationRequest(selections, new ParsedModel());
 		
 		assertTrue(configString.contains("<calculation attribute=\"testatt\" operator=\"=\">3</calculation>"));
 	}
@@ -237,7 +238,7 @@ public class FormatTransformerServiceTests {
 		Selections selections = new Selections();
 		selections.setFeatureSelections(featSels);
 		
-		String configString = transform.slectionsToConfigurationRequest(selections, pm);
+		String configString = transform.selectionsToConfigurationRequest(selections, pm);
 		
 		assertTrue(configString.contains("<feature name=\"R1\" soft=\"true\" type=\"R1\"/>"));
 	}
