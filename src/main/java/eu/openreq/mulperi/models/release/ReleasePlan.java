@@ -1,6 +1,7 @@
 package eu.openreq.mulperi.models.release;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -17,13 +18,13 @@ import eu.openreq.mulperi.models.kumbang.SubFeature;
 import eu.openreq.mulperi.models.selections.CalculationConstraint;
 
 public class ReleasePlan {
-	Project project = null;
-	TreeMap<Integer, Release> releases = new TreeMap<>();
-	LinkedHashMap<String, Requirement> requirements = new LinkedHashMap<>();
-	ParsedModel parsedModel;
-	LinkedHashMap<String, String> modelNameToId= new LinkedHashMap<>();
-	LinkedHashMap<String, String> idToModelName= new LinkedHashMap<>();
-	ArrayList<Feature> releaseRootFeatures = new ArrayList<>();
+	private Project project = null;
+	private TreeMap<Integer, Release> releases = new TreeMap<>();
+	private LinkedHashMap<String, Requirement> requirements = new LinkedHashMap<>();
+	private ParsedModel parsedModel;
+	private LinkedHashMap<String, String> modelNameToId= new LinkedHashMap<>();
+	private LinkedHashMap<String, String> idToModelName= new LinkedHashMap<>();
+	private ArrayList<Feature> releaseRootFeatures = new ArrayList<>();
 	
 
 
@@ -210,6 +211,14 @@ public class ReleasePlan {
 
 	public Release getRelease(Integer release) {
 		return releases.get(release);
+	}
+
+	public Collection<Release> getReleases() {
+		return releases.values();
+	}
+
+	public Collection<Requirement> getRequirements() {
+		return requirements.values();
 	}
 
 	public Release addRelease(Release release) {

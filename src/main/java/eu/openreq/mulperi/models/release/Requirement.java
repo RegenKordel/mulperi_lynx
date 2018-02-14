@@ -40,7 +40,7 @@ public class Requirement {
 		return requiresDependencies.add(id);
 	}
 	
-	final List<String> getRequiresDependencies() {
+	public final List<String> getRequiresDependencies() {
 		return requiresDependencies;
 	}
 	

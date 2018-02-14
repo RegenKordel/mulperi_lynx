@@ -21,6 +21,7 @@ import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.ReleaseCSPPlanner;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -257,14 +258,14 @@ public class ConfigurationController {
 	 *		</response>
 	 */
 	@ApiOperation(value = "Is release plan consistent",
-			notes = "Check whether a release plan is consistent. Provide diagnosis if not",
+			notes = "OLD: Single release: Check whether a release plan is consistent. Provide diagnosis if not",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success, returns XML <response><consistent>true</consistent><explanation>Consistent</explanation></response>"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
-	@RequestMapping(value = "/projects/checkForConsistency", method = RequestMethod.POST)
-	public ResponseEntity<?> checkForConsistency(@RequestBody String projectXML) {
+	@RequestMapping(value = "/projects/checkForConsistencySingleReleaseCaas", method = RequestMethod.POST)
+	public ResponseEntity<?> checkForConsistencySingleReleaseCaas(@RequestBody String projectXML) {
 
 		ReleasePlan releasePlan = null;
 		try {
@@ -347,6 +348,57 @@ public class ConfigurationController {
 		catch (Exception ex) {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}
+
+
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return XML response
+	 * 		<response>
+	 *		<consistent>true / false</consistent>
+	 *		<explanation>Consistent / Diagnosis: conflicts</explanation>
+	 *		</response>
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+			notes = "Check whether a release plan is consistent. Provide diagnosis if not",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns XML <response><consistent>true</consistent><explanation>Consistent</explanation></response>"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
+	@RequestMapping(value = "/projects/checkForConsistency", method = RequestMethod.POST)
+	public ResponseEntity<?> checkForConsistency(@RequestBody String projectXML) {
+
+		ReleasePlan releasePlan = null;
+		try {
+			releasePlan
+			= ReleaseXMLParser.parseProjectXML(projectXML);
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty())
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+		} 
+		catch (ReleasePlanException ex) {
+			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
+					(ex.getMessage() == null ? "":	ex.getMessage()) +
+					(ex.getCause() == null ? "" : ex.getCause().toString()),
+					HttpStatus.BAD_REQUEST);
+		}
+		
+		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(releasePlan);
+		rcspGen.generateCSP();
+		
+		boolean isConsistent = rcspGen.isReleasePlanConsistent();
+		if (isConsistent)
+			return new ResponseEntity<>(
+				transform.generateProjectXMLResponse(true, "Consistent"),
+				HttpStatus.OK);
+		
+		String diagnosis = rcspGen.getDiagnosis();
+		return new ResponseEntity<>(
+				transform.generateProjectXMLResponse(false, diagnosis),
+				HttpStatus.CONFLICT);
 	}
 
 
