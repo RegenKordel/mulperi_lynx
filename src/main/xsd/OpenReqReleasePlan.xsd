@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- targetNamespace="http://openreq.eu/xsd/release" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="0.1-SNAPSHOT" xmlns:pt="http://openreq.eu/xsd/release"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.1"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
+	
+	<!-- relies heavily on the following defaults of the 'all' element maxOccurs 
+		Optional. Specifies the maximum number of times the element can occur. The 
+		value must be 1. minOccurs Optional. Specifies the minimum number of times 
+		the element can occur. The value can be 0 or 1. Default value is 1 -->
+
+	<xs:simpleType name="id">
+		<xs:restriction base="xs:long" />
+	</xs:simpleType>
+
+	<xs:simpleType name="collpsedString">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="operator">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="LOWER_THAN" />
+				<xs:enumeration value="LOWER_EQUAL_THAN" />
+				<xs:enumeration value="EQUAL" />
+				<xs:enumeration value="NOT_EQUAL" />
+				<xs:enumeration value="GREATER_THAN" />
+				<xs:enumeration value="GREATER_EQUAL_THAN" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+
+	<xs:complexType name="releaseReleaseConstraint">
+		<xs:annotation>
+			<xs:documentation>Release release constraints. If Requirement
+				leftReqId is assigned to a release in the release plan, Requirement
+				rightReqId must be the assigned to a release and the assigned
+				releases must be in relation specified by theoperator
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="operator" />
+			<xs:element name="leftReqId" type="id" />
+			<xs:element name="rightReqId" type="id" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+
+	<xs:complexType name="releaseNumericConstraint">
+		<xs:annotation>
+			<xs:documentation>Release numeric constraints</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="operator" />
+			<xs:element type="id" name="leftReqId" />
+			<xs:element type="xs:integer" name="rightReleaseNr">
+				<xs:annotation>
+					<xs:documentation>If Requirement leftReqId is assigned to a release
+						in the release plan, then it's assigned release must be as
+						specified by the fixed release number (integer).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="excludesGlobalConstraint">
+		<xs:annotation>
+			<xs:documentation>Same operator types for ReleaseNumericConstraint
+				than for ReleaseReleaseConstraint Excludes constraint
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element type="id" name="leftReqId" />
+			<xs:element name="rightIds">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="id" name="id" maxOccurs="unbounded"
+							minOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="orConstraint">
+		<xs:annotation>
+			<xs:documentation>OR constraint</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element type="id" name="leftReqId" />
+			<xs:element name="rightids">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="id" name="id" maxOccurs="unbounded"
+							minOccurs="2" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="sameReleaseConstraint">
+		<xs:sequence>
+			<xs:element name="ids">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="id" name="id" maxOccurs="unbounded"
+							minOccurs="2" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="constraintType">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="releaseReleaseConstraint" type="releaseReleaseConstraint" />
+				<xs:element name="releaseNumericConstraint" type="releaseNumericConstraint" />
+				<xs:element name="excludesGlobalConstraint" type="excludesGlobalConstraint" />
+				<xs:element name="orConstraint" type="orConstraint" />
+				<xs:element name="sameReleaseConstraint" type="sameReleaseConstraint" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="constraint">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" />
+				<xs:element type="xs:boolean" name="diagnosable" default="false">
+					<xs:annotation>
+						<xs:documentation>diagnosable specifies if the constraint can be
+							considered for removal when determining diagnosis.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="constraintType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="diagnosisSpec">
+		<xs:annotation>
+			<xs:documentation>Diagnosis identifies a set of requirements to
+				remove (or modify) in case of an inconsistent
+				release plan.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element type="xs:boolean" name="enabled" default="true">
+					<xs:annotation>
+						<xs:documentation>If diagnosis should be performed or not.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:boolean" name="preferred" default="false"
+					minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Preferred specifies that slower and more
+							advanced mode should be used.
+							Implies mautRank usage in
+							determining preferred diagnosis
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="autocompletionSpec">
+		<xs:annotation>
+			<xs:documentation>Autocompletion tries to assign unassigned
+				requirements into a consistent release plan. Autocompletion
+				options.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:boolean" name="enabled" default="false">
+					<xs:annotation>
+						<xs:documentation>If autocompletion should be performed or not.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:boolean" name="preferred" default="false"
+					minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Preferred specifies thatslower and more
+							advanced
+							mode should be used.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:boolean" name="allowPartial"
+					default="false">
+					<xs:annotation>
+						<xs:documentation>allowPartial specifies that if the total
+							effort
+							consumption of
+							requirements is over the maximum effort,
+							assign as
+							many
+							requirements as possible and do not fail
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="repairSpec">
+		<xs:annotation>
+			<xs:documentation>Release planner can repair an inconsistent
+				release
+				plan by removing requirements or by moving them to other
+				releases.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:boolean" name="enabled" default="false">
+					<xs:annotation>
+						<xs:documentation>If repair of an inconsistent release plan
+							should
+							be performed or not.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:boolean" name="preferred" default="false"
+					minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Preferred specifies that slower and more
+							advanced mode should be used.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="requirement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" />
+				<xs:element type="xs:integer" name="effort">
+					<xs:annotation>
+						<xs:documentation>effort in hours
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:integer" name="assignedReleaseMin">
+					<xs:annotation>
+						<xs:documentation>Assigned release minimum.
+							If a specific release
+							then min == max.
+							If Unassigned, min==max == 0.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:integer" name="assignedReleaseMax">
+					<xs:annotation>
+						<xs:documentation>Assigned release maximum.
+							If a specific release
+							then min == max.
+							If Unassigned, min==max == 0.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:positiveInteger" name="mautRank">
+					<xs:annotation>
+						<xs:documentation>Positive integer based on MAUT ranking
+							Positive
+							integer based on MAUT ranking
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="title" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>optional requirement title
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="text" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>optional textual description of requirement
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="release">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:positiveInteger" name="id">
+					<xs:annotation>
+						<xs:documentation>release id’s are 1, 2, 3, etc. (positive
+							integer, not database Id)
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:positiveInteger" name="maxCapacity">
+					<xs:annotation>
+						<xs:documentation>maximum capacity of release in hours
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dimension">
+		<xs:annotation>
+			<xs:documentation>Dimension is an attribute of a requirement. Usually
+				used by MAUT, but can be other characteristic. Integer only.
+				Currently only min .. max with interval (step) is supported.
+				Enumeration would be easy to add.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" />
+				<xs:element type="xs:string" name="name" />
+				<xs:element type="xs:nonNegativeInteger" name="weight"
+					default="0">
+					<xs:annotation>
+						<xs:documentation>MAUT weight. Specify 0 if to be excluded from
+							MAUT
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:nonNegativeInteger" name="minRange">
+					<xs:annotation>
+						<xs:documentation>Minimum value e.g. 0</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:positiveInteger" name="maxRange">
+					<xs:annotation>
+						<xs:documentation>Maximum value e.g. 10</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:positiveInteger" name="interval"
+					default="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Interval (step), 0, 2, 4, … 10
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="stakeholder">
+		<xs:annotation>
+			<xs:documentation>Individual stakeholder, Relevant via MAUT
+				participation for advanced diagnostics.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" />
+				<xs:element type="collpsedString" name="name" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="rating">
+		<xs:annotation>
+			<xs:documentation>Rating of (an unspecified) stakeholder for a
+				requirement with respect to a dimension.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:nonNegativeInteger" name="ratingValue">
+					<xs:annotation>
+						<xs:documentation>Rating given by an individual stakeholder
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element type="id" name="dimensionId">
+					<xs:annotation>
+						<xs:documentation>Dimension for which the rating was specified
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="id" name="reqId">
+					<xs:annotation>
+						<xs:documentation>Requirement for which the rating was specified
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="participation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:integer" name="stakeholderWeight" />
+				<xs:element type="id" name="stakeholderId" />
+				<xs:element name="ratings">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rating" maxOccurs="unbounded"
+								minOccurs="0">
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="project">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="projectId">
+					<xs:annotation>
+						<xs:documentation>Project identifier
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="version">
+					<xs:annotation>
+						<xs:documentation>Project version
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="name" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Project name
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			
+				<xs:element type="xs:integer" name="maxProjectEffort" />
+				<xs:element ref="diagnosisSpec" />
+				<xs:element ref="autocompletionSpec" />
+				<xs:element ref="repairSpec" />
+				<xs:element name="requirements">
+					<xs:annotation>
+						<xs:documentation>Sequence of Requirement</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="requirement" maxOccurs="unbounded"
+								minOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="releases">
+					<xs:annotation>
+						<xs:documentation>Sequence of Release</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="release" maxOccurs="unbounded"
+								minOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="constraints">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="constraint" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="dimensions">
+					<xs:annotation>
+						<xs:documentation>MAUT and other dimensions, attributes of
+							requirements. Integer only
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="dimension" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="stakeholders">
+					<xs:annotation>
+						<xs:documentation>Individual stakeholders. Relevant via MAUT
+							participation for advanced diagnostics. Note that stakeholder
+							weight is not global!
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="stakeholder" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="participations">
+					<xs:annotation>
+						<xs:documentation>Participation of stakeholder to evaluation of
+							requirements on the dimensions
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="participation" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="usedCapacityInRelease">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:positiveInteger" name="releaseNr" />
+				<xs:element type="xs:nonNegativeInteger" name="usedCapacity" />
+				<xs:element type="xs:nonNegativeInteger" name="maximumCapacity" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="usedCapacityInReleases">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="usedCapacityInRelease" minOccurs="1"
+					maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="violatedConstraintIds">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="releaseStatusInformation">
+		<xs:annotation>
+			<xs:documentation>releaseStatusInformation shows capacity use by
+				relase
+				and the violated constraints
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="usedCapacityInReleases" />
+				<xs:element ref="violatedConstraintIds" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="autoCompletedAssignments">
+		<xs:annotation>
+			<xs:documentation>Includes the requirements that have been
+				assigned by
+				autocompletion to a release (optional part, exists
+				iff autocompletion
+				was requested!)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" maxOccurs="unbounded"
+					minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute type="xs:boolean" name="complete" />
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="diagnosis">
+		<xs:annotation>
+			<xs:documentation>A list of removed requirements and a list of
+				violated diagnosable constraints of a release that are solved by the
+				diagnosis.
+				The list refers to the (typed and parameterised)
+				constraints with their id
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id">
+					<xs:annotation>
+						<xs:documentation>Diagnosis has an id. Same diagnosis can be
+							shared with a number of repairs
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="removedRequirements">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="id" name="id" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="removedConstraints">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="id" name="id" maxOccurs="unbounded"
+								minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="releaseStatusInformation">
+					<xs:annotation>
+						<xs:documentation>releaseStatusInformation within diagnosis
+							shows
+							capacity use by relase after diagnosis.
+							The list of violated
+							constraints will be empty
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="reassignedRequirements">
+		<xs:annotation>
+			<xs:documentation>A set of moved requirements to another release
+				List
+				of requirement ids
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="id" maxOccurs="unbounded"
+					minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="repair">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="diagnosisid" minOccurs="1"
+					maxOccurs="1"></xs:element>
+				<xs:element ref="reassignedRequirements" />
+				<xs:element ref="releaseStatusInformation">
+					<xs:annotation>
+						<xs:documentation>releaseStatusInformation within repair
+							shows
+							capacity use by relase after repair.
+							The list of violated
+							constraints will be empty
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="releaseResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="id" name="projectId">
+					<xs:annotation>
+						<xs:documentation>Project identifier
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="version">
+					<xs:annotation>
+						<xs:documentation>Project version
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="collpsedString" name="name" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Project name
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element type="xs:boolean" name="inputConsistency">
+					<xs:annotation>
+						<xs:documentation>If the given project is consistent without
+							any
+							repairs
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element ref="releaseStatusInformation">
+					<xs:annotation>
+						<xs:documentation>StatusInformation shows capacity use by relase
+							response after autocompletion if any).
+							Diagnosis and repairs
+							include their own.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="requirements">
+					<xs:annotation>
+						<xs:documentation>A complete list of Requirements.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="requirement" minOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element ref="autoCompletedAssignments" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Includes the requirements that have been
+							assigned by autocompletion to a release (optional part, exists
+							iff autocompletion was requested!)
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="diagnoses" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="diagnosis" minOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+
+				<xs:element name="repairs" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>repairs is included iff a repair is requested.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="repair" minOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+</xs:schema>
