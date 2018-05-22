@@ -137,7 +137,7 @@ public class MulperiController {
 		String result = new String();
 
 		try {
-			result = client.uploadConfigurationModel(pm.getModelName(), kumbangModel, caasAddress);
+			result = client.uploadConfigurationModel(pm.getModelName(), kumbangModel, caasAddress+"/generateModel");
 		} catch(IntrospectionException e) {
 			return new ResponseEntity<>("Impossible model\n\n" + e.getMessage(), HttpStatus.CONFLICT);
 		} catch(DataFormatException e) {
