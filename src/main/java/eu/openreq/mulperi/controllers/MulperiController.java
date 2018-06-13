@@ -73,7 +73,7 @@ public class MulperiController {
 			@ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found")}) 
 	@CrossOrigin
-	@RequestMapping(value = "/{model}", method = RequestMethod.GET)
+	@RequestMapping(value = "{model}", method = RequestMethod.GET)
 	public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {
 
 		ParsedModel model = this.parsedModelRepository.findFirstByModelName(modelName);
@@ -97,7 +97,7 @@ public class MulperiController {
 			@ApiResponse(code = 201, message = "Success, returns the ID of the generated model"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
-	@RequestMapping(value = "/mulson", method = RequestMethod.POST)
+	@RequestMapping(value = "mulson", method = RequestMethod.POST)
 	public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
 
 		String name = generateName(requirements);
