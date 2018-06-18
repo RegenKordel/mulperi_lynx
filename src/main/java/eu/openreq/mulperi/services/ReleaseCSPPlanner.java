@@ -1,3 +1,5 @@
+// Chocon ruoan käsittelyä (CSP)
+
 package eu.openreq.mulperi.services;
 
 import java.util.ArrayList;
@@ -34,16 +36,14 @@ public class ReleaseCSPPlanner {
 		nRequirements= releasePlan.getRequirements().size();
 		reqID2Index = new LinkedHashMap<>(nRequirements);
 		index2reqID = new LinkedHashMap<>(nRequirements);
-		int ndx=0;
+		int index1 = 0;
+		// Why the heck the ++??
 		for (Requirement requirement : releasePlan.getRequirements()) {
-			Integer ndxI = Integer.valueOf(ndx++);
-			reqID2Index.put(requirement.getId(), ndxI);
-			index2reqID.put(ndxI,requirement.getId());
+			Integer index2 = Integer.valueOf(index1++);
+			reqID2Index.put(requirement.getId(), index2);
+			index2reqID.put(index2,requirement.getId());
 		}
-
 	}
-
-
 
 	public final int getNReleases() {
 		return nReleases;
@@ -57,9 +57,8 @@ public class ReleaseCSPPlanner {
 		model = new Model("ReleasePlanner");
 		this.reqCSPs = new Req4Csp[nRequirements];
 		for (Requirement requirement : releasePlan.getRequirements()) {
-			Req4Csp req4csp= new Req4Csp(requirement, this, model);
+			Req4Csp req4csp = new Req4Csp(requirement, this, model);
 			reqCSPs[reqID2Index.get(requirement.getId()).intValue()] = req4csp;
-
 		}		
 
 		//constraints for ensuring enough effort per release
@@ -95,30 +94,17 @@ public class ReleaseCSPPlanner {
 	}
 
 	public boolean isReleasePlanConsistent() {
-		for (int ndx =0; ndx < nRequirements; ndx++)
+		for (int ndx = 0; ndx < nRequirements; ndx++)
 			reqCSPs[ndx].require(true);
 		model.getSolver().reset();
-		return model.getSolver().solve();
-		//		int n=0;
-		//		//System.out.println(model);
-		//		while(model.getSolver().solve() && n++ < 100) {
-		//			System.out.print(n + ": ");
-		//			for (int ndx =0; ndx < nRequirements; ndx++)
-		//				System.out.print(reqCSPs[ndx].getIsIncluded() +",  ");
-		//			System.out.println();
-		//
-		//			//			System.out.print(n + ": ");
-		//			//			for (int ndx =0; ndx < nRequirements; ndx++) {
-		//			//				for (int rel=0; rel < nReleases; rel++)
-		//			//				System.out.print(reqCSPs[ndx].getEfforOfRelease(rel) +" ");
-		//			//				System.out.println();
-		//			//			}
-		//
+		
+		Solver solver = model.getSolver();
+		return solver.solve();
 	}
 	
 	public String getDiagnosis() {
 		List<Req4Csp> allReqs = new ArrayList<>();
-		for (int req =0; req < nRequirements; req++)
+		for (int req = 0; req < nRequirements; req++)
 			allReqs.add(reqCSPs[req]);
 
 		List<Req4Csp> diagnosis = 
@@ -166,7 +152,7 @@ public class ReleaseCSPPlanner {
 			else
 				assignedRelease = model.intVar(requirement.getId()+ "_assignedTo", requirement.getAssignedRelease() -1);
 
-			//create choco variables for representin eeffort in each release
+			//create choco variables for representin effort in each release
 			effortInRelease = new IntVar[rcg.getNReleases()];
 			int [] effortDomain = new int[2];
 			effortDomain[0] = 0;

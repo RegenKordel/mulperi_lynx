@@ -35,7 +35,8 @@ import io.swagger.annotations.ApiResponses;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("uh/mulperi/models")
+@RequestMapping("models")
+//@RequestMapping("uh/mulperi/models")
 public class MulperiController {
 	
 	private FormatTransformerService transform = new FormatTransformerService();

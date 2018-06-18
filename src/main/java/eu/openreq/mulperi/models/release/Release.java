@@ -1,13 +1,16 @@
 package eu.openreq.mulperi.models.release;
 
+import java.util.List;
+
 public class Release {
 	final int id; 
-	int maxCapacity;
+	int capacity;
+	List<String> requirements;
 	
-	public Release(int id, int maxCapacity) {
+	public Release(int id, int capacity) {
 		super();
 		this.id = id;
-		this.maxCapacity = maxCapacity;
+		this.capacity = capacity;
 	}
 
 	public int getId() {
@@ -15,11 +18,18 @@ public class Release {
 	}
 
 	public int getMaxCapacity() {
-		return maxCapacity;
+		return capacity;
 	}
 
-	public void setMaxCapacity(int maxCapacity) {
-		this.maxCapacity = maxCapacity;
+	public void setMaxCapacity(int capacity) {
+		this.capacity = capacity;
 	}
-
+	
+	public void setRequirements(List<String> req) {
+		this.requirements = req;
+	}
+	
+	public List<String> getRequirements() {
+		return requirements;
+	}
 }

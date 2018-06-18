@@ -49,7 +49,7 @@ public class ReleasePlan {
 
 		String modelName = makeModelName();
 		if ((modelName == null) || modelName.isEmpty()) {
-			problems.add("Project does not have identifying information. All Id, version, and nme are empty");
+			problems.add("Project does not have identifying information. All Id, version, and name are empty");
 			return problems;
 		}
 		parsedModel.setModelName(modelName);
@@ -70,7 +70,7 @@ public class ReleasePlan {
 			Feature releaseRootFeature = new Feature(featureName);
 			
 			List<String> capacity = new LinkedList<>();
-			capacity.add(Integer.toString(release.maxCapacity));
+			capacity.add(Integer.toString(release.getMaxCapacity()));
 			String attributeValueTypeName = "capacity_" + releaseNum.toString();
 			Attribute releaseCapacity = new Attribute(attributeValueTypeName, "maxCapacity", capacity);
 			releaseRootFeature.addAttribute(releaseCapacity);
@@ -222,8 +222,7 @@ public class ReleasePlan {
 	}
 
 	public Release addRelease(Release release) {
-		return 
-				releases.put(Integer.valueOf(release.getId()) , release);
+		return releases.put(release.getId(), release);
 	}
 
 	public Requirement getRequirement(String requirement) {
@@ -241,9 +240,10 @@ public class ReleasePlan {
 			sb.append(project.getId());
 			sb.append("_");
 		}
-		if (project.getVersion() != null) { 
-			sb.append(project.getVersion());
-		}
+//		OpenReqJSON contains no info about the version
+//		if (project.getVersion() != null) { 
+//			sb.append(project.getVersion());
+//		}
 
 		if (sb.length() == 0 )
 			if (project.getName() != null) 

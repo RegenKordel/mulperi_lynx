@@ -1,8 +1,12 @@
 package eu.openreq.mulperi.controllers;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -24,6 +28,7 @@ import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.ReleaseCSPPlanner;
+import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
 import eu.openreq.mulperi.services.ReqifParser;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +36,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class TestingController {
+public class TestingController { 
 
 	private FormatTransformerService transform = new FormatTransformerService();
 
@@ -260,6 +265,9 @@ public class TestingController {
 	 *		<consistent>true / false</consistent>
 	 *		<explanation>Consistent / Diagnosis: conflicts</explanation>
 	 *		</response>
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Is release plan consistent",
 			notes = "OLD: Single release: Check whether a release plan is consistent. Provide diagnosis if not",
@@ -269,12 +277,12 @@ public class TestingController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
 	@RequestMapping(value = "/projects/checkForConsistencySingleReleaseCaas", method = RequestMethod.POST)
-	public ResponseEntity<?> checkForConsistencySingleReleaseCaas(@RequestBody String projectXML) {
+	public ResponseEntity<?> checkForConsistencySingleReleaseCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 
 		ReleasePlan releasePlan = null;
 		try {
 			releasePlan
-			= ReleaseXMLParser.parseProjectXML(projectXML);
+			= ReleaseJSONParser.parseProjectJSON(jsonString);
 			List<String> problems = releasePlan.generateParsedModel(); 
 			if (!problems.isEmpty())
 				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
@@ -289,7 +297,7 @@ public class TestingController {
 		ParsedModel model = null;
 		try {
 
-			ResponseEntity<?> resp = projectToKumbang(projectXML);
+			ResponseEntity<?> resp = projectToKumbang(jsonString);
 			switch (resp.getStatusCode()) {
 			case CREATED: //201
 				String modelName =(String) (resp.getBody());
@@ -364,6 +372,9 @@ public class TestingController {
 	 *		<consistent>true / false</consistent>
 	 *		<explanation>Consistent / Diagnosis: conflicts</explanation>
 	 *		</response>
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Is release plan consistent",
 			notes = "Check whether a release plan is consistent. Provide diagnosis if not",
@@ -372,13 +383,13 @@ public class TestingController {
 			@ApiResponse(code = 200, message = "Success, returns XML <response><consistent>true</consistent><explanation>Consistent</explanation></response>"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
-	@RequestMapping(value = "/projects/checkForConsistency", method = RequestMethod.POST)
-	public ResponseEntity<?> checkForConsistency(@RequestBody String projectXML) {
+	@RequestMapping(value = "/projects/checkForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
+	public ResponseEntity<?> checkForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 
 		ReleasePlan releasePlan = null;
 		try {
 			releasePlan
-			= ReleaseXMLParser.parseProjectXML(projectXML);
+			= ReleaseJSONParser.parseProjectJSON(jsonString);
 			List<String> problems = releasePlan.generateParsedModel(); 
 			if (!problems.isEmpty())
 				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
@@ -398,7 +409,6 @@ public class TestingController {
 			return new ResponseEntity<>(
 				transform.generateProjectXMLResponse(true, "Consistent"),
 				HttpStatus.OK);
-		
 		String diagnosis = rcspGen.getDiagnosis();
 		return new ResponseEntity<>(
 				transform.generateProjectXMLResponse(false, diagnosis),
@@ -465,6 +475,9 @@ public class TestingController {
 	 * Import a model in checkForConsistency(Project) XML format for release planning
 	 * @param projectXML
 	 * @return
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
 	 */
 	@ApiOperation(value = " Import a model in checkForConsistency(Project) XML format for release planning",
 			notes = " Import a model in checkForConsistency(Project) XML format for release planning",
@@ -474,11 +487,11 @@ public class TestingController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
 	@RequestMapping(value = "/project", method = RequestMethod.POST)
-	public ResponseEntity<?> projectToKumbang(@RequestBody String projectXML) {
+	public ResponseEntity<?> projectToKumbang(@RequestBody String projectXML) throws JSONException, IOException, ParserConfigurationException {
 		ReleasePlan releasePlan= null;
 		try {
 			releasePlan 
-			= ReleaseXMLParser.parseProjectXML(projectXML);
+			= ReleaseJSONParser.parseProjectJSON(projectXML);
 			List<String> problems = releasePlan.generateParsedModel(); 
 			if (!problems.isEmpty())
 				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
