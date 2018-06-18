@@ -93,9 +93,9 @@ public class ReleaseXMLParser {
 			if (id != null)
 				project.setId(id.trim());
 
-			String version = getUniqueChildValue(projectElement, "version");
-			if (version != null)
-				project.setVersion(version.trim());
+//			String version = getUniqueChildValue(projectElement, "version");
+//			if (version != null)
+//				project.setVersion(version.trim());
 
 		}
 		else if (projectNode.getLength() > 1) {

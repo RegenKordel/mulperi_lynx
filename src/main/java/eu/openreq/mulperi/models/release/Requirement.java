@@ -8,7 +8,7 @@ public class Requirement {
 	
 	int effort = 0;
 	int assignedRelease = 0;
-	LinkedList<String> requiresDependencies = new LinkedList<>();
+	LinkedList<String> requiresDependencies;
 	final String id;
 	
 	public Requirement(String id) {
@@ -42,6 +42,10 @@ public class Requirement {
 	
 	public final List<String> getRequiresDependencies() {
 		return requiresDependencies;
+	}
+	
+	public void setRequiresDependencies() {
+		this.requiresDependencies = new LinkedList<>();
 	}
 	
 
