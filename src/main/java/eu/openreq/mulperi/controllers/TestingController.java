@@ -405,13 +405,16 @@ public class TestingController {
 		rcspGen.generateCSP();
 		
 		boolean isConsistent = rcspGen.isReleasePlanConsistent();
-		if (isConsistent)
+		if (isConsistent) {
 			return new ResponseEntity<>(
-				transform.generateProjectXMLResponse(true, "Consistent"),
+				transform.generateProjectJsonResponse(true, "Consistent"),
 				HttpStatus.OK);
+		}
+		
 		String diagnosis = rcspGen.getDiagnosis();
+		
 		return new ResponseEntity<>(
-				transform.generateProjectXMLResponse(false, diagnosis),
+				transform.generateProjectJsonResponse(false, diagnosis),
 				HttpStatus.CONFLICT);
 	}
 

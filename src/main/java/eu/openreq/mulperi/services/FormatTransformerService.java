@@ -11,6 +11,14 @@ import java.io.StringReader;
 
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -553,6 +561,45 @@ public class FormatTransformerService {
 	         return documentToString(doc);
 		 }
 		 catch (ParserConfigurationException ex) {
+			 return null;
+		 }
+	}
+	
+	/**
+	 * Generate response (consistency and diagnosis) as JSON String
+	 * @param isCOnsistent
+	 * @param explanationStr
+	 * @return
+	 */
+	public String generateProjectJsonResponse(boolean isCOnsistent, String explanationStr) {
+		 try {
+			 JsonObject responseObject = new JsonObject();
+			 
+			 JsonObject diagnosis = new JsonObject();
+			 diagnosis.addProperty("consistent", isCOnsistent);
+			 
+			 String[] parts = explanationStr.split(",");
+			 
+			 if(!isCOnsistent) {
+				 JsonArray allArrays = new JsonArray();
+				 for (int i = 0; i < parts.length; i++) {
+					JsonArray reqArray = new JsonArray();
+					JsonObject part = new JsonObject();
+					part.addProperty("requirement", parts[i]);
+					reqArray.add(part);
+					allArrays.add(reqArray);
+				}
+				 diagnosis.add("diagnosis", allArrays);
+			 }
+			 
+			 responseObject.add("response", diagnosis);
+			 
+			 Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		     String prettyResponseJson = gson.toJson(responseObject);
+
+	         return prettyResponseJson;
+		 }
+		 catch (Exception ex) {
 			 return null;
 		 }
 	}

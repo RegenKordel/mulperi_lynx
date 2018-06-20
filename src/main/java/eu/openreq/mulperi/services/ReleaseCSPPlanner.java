@@ -102,6 +102,10 @@ public class ReleaseCSPPlanner {
 		return solver.solve();
 	}
 	
+	/**
+	 * Get problematic Requirement IDs as a String (Requirements that have been diagnosed as breaking the consistency of the model)
+	 * @return
+	 */
 	public String getDiagnosis() {
 		List<Req4Csp> allReqs = new ArrayList<>();
 		for (int req = 0; req < nRequirements; req++)
@@ -113,16 +117,41 @@ public class ReleaseCSPPlanner {
 		if(diagnosis.isEmpty())
 			sb.append("(No Diagnosis found.)");
 		else {
-			sb.append("Diagnosis: ");
-			for (Req4Csp reqB: diagnosis) {
-
+			for(int i = 0; i< diagnosis.size(); i++) {
+				Req4Csp reqB = diagnosis.get(i);
 				String reqId= reqB.getId();
 				sb.append(reqId);
-				sb.append(" ");
+				if(diagnosis.size()>1 && i<diagnosis.size()-1) {
+					sb.append(",");
+				}
 			}
 		}
 		return sb.toString();
 	}
+	
+	
+	//Old XML-version
+//	public String getDiagnosis() {
+//		List<Req4Csp> allReqs = new ArrayList<>();
+//		for (int req = 0; req < nRequirements; req++)
+//			allReqs.add(reqCSPs[req]);
+//
+//		List<Req4Csp> diagnosis = 
+//				fastDiag(allReqs, allReqs);
+//		StringBuffer sb = new StringBuffer();
+//		if(diagnosis.isEmpty())
+//			sb.append("(No Diagnosis found.)");
+//		else {
+//			sb.append("Diagnosis: ");
+//			for (Req4Csp reqB: diagnosis) {
+//
+//				String reqId= reqB.getId();
+//				sb.append(reqId);
+//				sb.append(" ");
+//			}
+//		}
+//		return sb.toString();
+//	}
 
 
 	public static class Req4Csp  {
