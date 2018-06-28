@@ -361,8 +361,9 @@ public class TestingController {
 			return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
-
+	
+	
+	
 	/**
 	 * Check whether a project is consistent
 	 * @param selections checked selections
@@ -383,8 +384,8 @@ public class TestingController {
 			@ApiResponse(code = 200, message = "Success, returns XML <response><consistent>true</consistent><explanation>Consistent</explanation></response>"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
-	@RequestMapping(value = "/projects/checkForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
-	public ResponseEntity<?> checkForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 
 		ReleasePlan releasePlan = null;
 		try {
@@ -407,14 +408,69 @@ public class TestingController {
 		boolean isConsistent = rcspGen.isReleasePlanConsistent();
 		if (isConsistent) {
 			return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(true, "Consistent"),
+				transform.generateProjectJsonResponse(true, "Consistent", false),
+				HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(false, "Not consistent", false),
+				HttpStatus.CONFLICT);
+	}
+	
+
+
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return XML response
+	 * 		<response>
+	 *		<consistent>true / false</consistent>
+	 *		<explanation>Consistent / Diagnosis: conflicts</explanation>
+	 *		</response>
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+			notes = "Check whether a release plan is consistent. Provide diagnosis if not",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns XML <response><consistent>true</consistent><explanation>Consistent</explanation></response>"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns XML <response><consistent>false</consistent><explanation>Plain text Diagnosis</explanation></response>")}) 
+	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+
+		ReleasePlan releasePlan = null;
+		try {
+			releasePlan
+			= ReleaseJSONParser.parseProjectJSON(jsonString);
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty())
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+		} 
+		catch (ReleasePlanException ex) {
+			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
+					(ex.getMessage() == null ? "":	ex.getMessage()) +
+					(ex.getCause() == null ? "" : ex.getCause().toString()),
+					HttpStatus.BAD_REQUEST);
+		}
+		
+		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(releasePlan);
+		rcspGen.generateCSP();
+		
+		boolean isConsistent = rcspGen.isReleasePlanConsistent();
+		if (isConsistent) {
+			return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(true, "Consistent", true),
 				HttpStatus.OK);
 		}
 		
 		String diagnosis = rcspGen.getDiagnosis();
 		
 		return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(false, diagnosis),
+				transform.generateProjectJsonResponse(false, diagnosis, true),
 				HttpStatus.CONFLICT);
 	}
 
