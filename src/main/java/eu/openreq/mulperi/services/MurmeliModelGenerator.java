@@ -46,4 +46,8 @@ public class MurmeliModelGenerator {
 		
 		return relationship;
 	}
+	
+	private Element mapElement(Requirement req) {
+        return null;
+    }
 }
