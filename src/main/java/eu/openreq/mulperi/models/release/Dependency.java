@@ -2,19 +2,19 @@ package eu.openreq.mulperi.models.release;
 
 public class Dependency {
 	String dependency_type;
-	String from;
-	String to;
+	String fromId;
+	String toId;
 	
 	public String getDependencyType() {
 		return dependency_type;
 	}
 	
 	public String getFrom() {
-		return from;
+		return fromId;
 	}
 	
 	public String getTo() {
-		return to;	
+		return toId;	
 	}
 	
 	public void setDependencyType(String dt) {
@@ -22,10 +22,10 @@ public class Dependency {
 	}
 	
 	public void setFrom(String from) {
-		this.from = from;
+		this.fromId = from;
 	}
 	
 	public void setTo(String to) {
-		this.to = to;
+		this.toId = to;
 	}
 }

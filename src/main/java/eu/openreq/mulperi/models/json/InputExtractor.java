@@ -1,8 +1,8 @@
-package eu.openreq.mulperi.models.release;
+package eu.openreq.mulperi.models.json;
 
 import java.util.List;
 
-// This class extracts models from the input Json
+//This class extracts models from the input Json
 
 public class InputExtractor {
 	Project project;
@@ -69,5 +69,3 @@ public class InputExtractor {
 		return null;
 	}
 }
-
-

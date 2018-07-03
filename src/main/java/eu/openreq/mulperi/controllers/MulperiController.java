@@ -1,10 +1,15 @@
 package eu.openreq.mulperi.controllers;
 
+//import eu.openreq.mulperi.models.json.*;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
 import javax.management.IntrospectionException;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,14 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.openreq.mulperi.models.kumbang.Feature;
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.mulson.Requirement;
-import eu.openreq.mulperi.models.release.ReleasePlan;
-import eu.openreq.mulperi.models.release.ReleasePlanException;
+import eu.openreq.mulperi.models.release.*;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.KumbangModelGenerator;
+import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -90,6 +96,10 @@ public class MulperiController {
 	 * Import a model in MulSON format
 	 * @param requirements
 	 * @return
+	 * @throws JSONException 
+	 * @throws ReleasePlanException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Import MulSON model",
 			notes = "Import a model in MulSON format",
@@ -99,11 +109,13 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
 	@RequestMapping(value = "mulson", method = RequestMethod.POST)
-	public ResponseEntity<?> chocoMulson(@RequestBody List<Requirement> requirements) {
-
-		String name = generateName(requirements);
-
-		ParsedModel pm = transform.parseMulson(name, requirements);
+	public ResponseEntity<?> chocoMulson(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
+		
+		//String name = generateName(requirements);
+		System.out.println("Requirements received from Milla");
+		
+		//ParsedModel pm = transform.parseMulson(name, requirements);
+		ParsedModel pm = new ParsedModel();
 
 		return sendModelToCaasAndSave(pm, caasAddress);
 	}
