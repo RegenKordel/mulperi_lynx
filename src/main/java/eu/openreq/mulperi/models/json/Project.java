@@ -48,7 +48,7 @@ public class Project {
 	*/
 	@SerializedName("specifiedRequirements")
 	@Expose
-	private List<Requirement> specifiedRequirements = null;
+	private List<String> specifiedRequirements = null;
 	
 	public String getId() {
 	return id;
@@ -82,11 +82,11 @@ public class Project {
 	this.modified_at = modified_at;
 	}
 	
-	public List<Requirement> getSpecifiedRequirements() {
+	public List<String> getSpecifiedRequirements() {
 	return specifiedRequirements;
 	}
 	
-	public void setSpecifiedRequirements(List<Requirement> specifiedRequirements) {
+	public void setSpecifiedRequirements(List<String> specifiedRequirements) {
 	this.specifiedRequirements = specifiedRequirements;
 	}
 }

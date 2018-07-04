@@ -39,8 +39,8 @@ public class MurmeliModelGenerator {
 			break;
 		}
 		
-		Element from = mapElement(dep.getFrom());
-		Element to = mapElement(dep.getTo());
+		Element from = mapElement(dep.getFromId());
+		Element to = mapElement(dep.getToId());
 		
 		RelationshipType relationship = new RelationshipType(type, from, to);
 		
