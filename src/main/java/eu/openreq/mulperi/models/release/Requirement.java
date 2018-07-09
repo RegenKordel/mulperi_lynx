@@ -9,6 +9,7 @@ public class Requirement {
 	int effort = 0;
 	int assignedRelease = 0;
 	LinkedList<String> requiresDependencies;
+	LinkedList<String> excludesDependencies;
 	final String id;
 	
 	public Requirement(String id) {
@@ -40,6 +41,10 @@ public class Requirement {
 		return requiresDependencies.add(id);
 	}
 	
+	public boolean addExcludesDependency(String id) {
+		return excludesDependencies.add(id);
+	}
+	
 	public final List<String> getRequiresDependencies() {
 		return requiresDependencies;
 	}
@@ -47,6 +52,13 @@ public class Requirement {
 	public void setRequiresDependencies() {
 		this.requiresDependencies = new LinkedList<>();
 	}
-	
 
+	public final List<String> getExcludesDependencies() {
+		return excludesDependencies;
+	}
+
+	public void setExcludesDependencies() {
+		this.excludesDependencies = new LinkedList<>();
+	}
+	
 }

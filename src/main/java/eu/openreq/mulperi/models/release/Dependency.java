@@ -9,11 +9,11 @@ public class Dependency {
 		return dependency_type;
 	}
 	
-	public String getFrom() {
+	public String getFromId() {
 		return fromId;
 	}
 	
-	public String getTo() {
+	public String getToId() {
 		return toId;	
 	}
 	
@@ -21,11 +21,11 @@ public class Dependency {
 		this.dependency_type = dt;
 	}
 	
-	public void setFrom(String from) {
-		this.fromId = from;
+	public void setFromId(String fromId) {
+		this.fromId = fromId;
 	}
 	
-	public void setTo(String to) {
-		this.toId = to;
+	public void setToId(String toId) {
+		this.toId = toId;
 	}
 }
