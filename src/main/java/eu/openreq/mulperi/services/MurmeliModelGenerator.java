@@ -1,5 +1,7 @@
 package eu.openreq.mulperi.services;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -435,6 +437,10 @@ public class MurmeliModelGenerator {
 	
 	public Container initializeRootContainer() {
 		
+		if (this.rootContainer != null) {
+			return this.rootContainer;
+		}
+		
 		Container root = new Container("root");
 		
 		for (Element elmnt : this.elements.values()) {
@@ -444,7 +450,7 @@ public class MurmeliModelGenerator {
 		return root;
 	}
 	
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases) {
 		
 		ElementModel model = new ElementModel();
 		
@@ -462,6 +468,10 @@ public class MurmeliModelGenerator {
 		
 		this.initializeRootContainer();
 		
+		for (Release release : releases) {
+			this.rootContainer.addChild(mapRelease(release));
+		}
+		
 		model.setConstraints(this.constraints);
 		model.setElements(this.elements);
 		model.setElementTypes(this.elementTypes);
@@ -470,6 +480,21 @@ public class MurmeliModelGenerator {
 		model.setValueTypes(this.valueTypes);
 		
 		return model;
+	}
+	
+	private Container mapRelease(Release release) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
+		
+		initializeRootContainer();
+		
+		Container dummy = new Container("dummy");
+		this.rootContainer.addChild(dummy);
+		
+		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());
 	}
 	
 	public ElementModel initializeElementModel(List<Requirement> requirements, List<Dependency> dependencies) {

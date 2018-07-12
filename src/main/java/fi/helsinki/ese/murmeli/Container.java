@@ -53,7 +53,7 @@ public class Container {
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private List<AttributeValueType> attributes = new ArrayList();
+	private List<AttributeValue> attributes = new ArrayList();
 	
 	private static int hid = 0;
 	
@@ -87,7 +87,7 @@ public class Container {
 		this.elements.add(el);
 	}
 	
-	public void addAttribute(AttributeValueType value) {
+	public void addAttribute(AttributeValue value) {
 
 		this.attributes.add(value);
 	}
@@ -162,7 +162,7 @@ public class Container {
 	* Attributes describing this container
 	*
 	*/
-	public List<AttributeValueType> getAttributes() {
+	public List<AttributeValue> getAttributes() {
 		return attributes;
 	}
 	
@@ -170,7 +170,7 @@ public class Container {
 	* Attributes describing this container
 	*
 	*/
-	public void setAttributes(List<AttributeValueType> attributes) {
+	public void setAttributes(List<AttributeValue> attributes) {
 		this.attributes = attributes;
 	}
 	
@@ -196,8 +196,8 @@ public class Container {
 		
 		lel.append(";");
 		
-		for (AttributeValueType a : this.attributes) {
-			lel.append(a.getValues().toString() + ",");
+		for (AttributeValue a : this.attributes) {
+			lel.append(a.getValue().toString() + ",");
 		}
 		
 		return lel.toString();
