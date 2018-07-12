@@ -39,4 +39,30 @@ public class AttributeDefinition {
 		
 		this(null, type);
 	}
+
+	public AttributeValue getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(AttributeValue defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public AttributeValueType getValueType() {
+		return valueType;
+	}
+
+	public void setValueType(AttributeValueType valueType) {
+		this.valueType = valueType;
+	}
+
+	public Optionality getOptionality() {
+		return optionality;
+	}
+
+	public void setOptionality(Optionality optionality) {
+		this.optionality = optionality;
+	}
+	
+	
 }

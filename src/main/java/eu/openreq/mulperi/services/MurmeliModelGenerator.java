@@ -82,6 +82,10 @@ public class MurmeliModelGenerator {
 		requirement.addAttributeDefinition(priorityDefinition);
 		requirement.addAttributeDefinition(statusDefinition);
 		
+		ElementType mock = new ElementType("mock");
+		mock.addAttributeDefinition(priorityDefinition);
+		mock.addAttributeDefinition(statusDefinition);
+		
 		this.elementTypes.put("bug", bug);
 		this.elementTypes.put("task", task);
 		this.elementTypes.put("initiative", initiative);
@@ -91,6 +95,7 @@ public class MurmeliModelGenerator {
 		this.elementTypes.put("functinal", functional);
 		this.elementTypes.put("non-functional", nonFunctional);
 		this.elementTypes.put("prose", prose);
+		this.elementTypes.put("mock", mock);
 		
 		initializePotentialParts();
 	}
@@ -278,6 +283,15 @@ public class MurmeliModelGenerator {
 			element.setType(this.elementTypes.get("user-story"));
 			break;
 		default:
+			ElementType mock = this.elementTypes.get("mock");
+			element.setType(mock);
+			
+			for (AttributeDefinition def : mock.getAttributeDefinitions()) {
+				element.addAttribute(def.getDefaultValue());
+			}
+			
+			element.setNameID(element.getNameID() + "-mock");
+			
 			break;
 		}
 		
