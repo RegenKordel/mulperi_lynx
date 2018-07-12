@@ -19,7 +19,9 @@ public class RelationshipType {
         INCOMPATIBLE,
         SIMILAR,
         DUPLICATES,
-        REPLACES
+        REPLACES,
+        DAMAGES,
+        CONTRIBUTES
 	}
 	
 	@SerializedName("id")
@@ -40,32 +42,36 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	@SerializedName("from")
+	@SerializedName("fromID")
 	@Expose
-	private Element from;
+	private Element fromID;
 	
 	/**
 	*
 	* (Required)
 	*
 	*/
-	@SerializedName("to")
+	@SerializedName("toID")
 	@Expose
-	private Element to;
+	private Element toID;
+	
+	@SerializedName("power")
+	@Expose
+	private int power = 0;
 	
 	private static int hid = 0;
 	
 	public RelationshipType(NameType nameType, Element from, Element to, int id) {
 		this.nameType = nameType;
-		this.from = from;
-		this.to = to;
+		this.fromID = from;
+		this.toID = to;
 		this.id = id;
 	}
 	
 	public RelationshipType(NameType nameType, Element from, Element to) {
 		this.nameType = nameType;
-		this.from = from;
-		this.to = to;
+		this.fromID = from;
+		this.toID = to;
 		this.id = hid;
 		hid++;
 	}
@@ -98,7 +104,7 @@ public class RelationshipType {
 	*
 	*/
 	public Element getFrom() {
-		return from;
+		return fromID;
 	}
 	
 	/**
@@ -107,7 +113,7 @@ public class RelationshipType {
 	*
 	*/
 	public void setFrom(Element from) {
-		this.from = from;
+		this.fromID = from;
 	}
 	
 	/**
@@ -116,7 +122,7 @@ public class RelationshipType {
 	*
 	*/
 	public Element getTo() {
-		return to;
+		return toID;
 	}
 	
 	/**
@@ -125,7 +131,7 @@ public class RelationshipType {
 	*
 	*/
 	public void setTo(Element to) {
-		this.to = to;
+		this.toID = to;
 	}
 	
 }

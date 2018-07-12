@@ -31,7 +31,8 @@ public class AttributeValueType {
 	
 	public enum Bound {
 		EMUM,
-		UNBOUND
+		UNBOUND,
+		RANGE
 	}
 
 	@SerializedName("id")
@@ -44,7 +45,7 @@ public class AttributeValueType {
 	
 	@SerializedName("values")
 	@Expose
-	private List<AttributeValue> values;
+	private List<AttributeValue> values = null;
 	
 	@SerializedName("baseType")
 	@Expose
@@ -57,6 +58,10 @@ public class AttributeValueType {
 	@SerializedName("bound")
 	@Expose
 	private Bound bound;
+	
+	@SerializedName("range")
+	@Expose
+	private int[] range;
 	
 	private static int hid = 0;
 
@@ -82,6 +87,34 @@ public class AttributeValueType {
 	public AttributeValueType(BaseType baseType, Cardinality cardinality) {
 		
 		this(baseType, cardinality, "");
+	}
+	
+	public AttributeValueType(Cardinality cardinality, String nameID, int id, int min, int max) {
+		
+		this.cardinality = cardinality;
+		this.baseType = BaseType.INT;
+		this.nameID = nameID;
+		this.id = id;
+		this.range = new int[2];
+		range[0] = min;
+		range[1] = max;
+		this.bound = Bound.RANGE;
+	}
+	
+	public AttributeValueType(Cardinality cardinality, String nameID, int min, int max) {
+		
+		this(cardinality, nameID, hid, min, max);
+		hid++;
+	}
+	
+	public AttributeValueType(Cardinality cardinality, int min, int max) {
+		
+		this(cardinality, "", min, max);
+	}
+	
+	public AttributeValueType(int min, int max) {
+		
+		this(Cardinality.SINGLE, min, max);
 	}
 	
 	public Bound getBound() {

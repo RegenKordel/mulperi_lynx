@@ -46,12 +46,11 @@ public class AttributeValue<T> {
 	@Expose
 	Source source = Source.DEFAULT;
 	
-	enum Source {
+	public enum Source {
 		FIXED,
 		USER,
 		DEFAULT,
-		INFERRED
-		
+		INFERRED	
 	}
 	
 	private AttributeValueType type;

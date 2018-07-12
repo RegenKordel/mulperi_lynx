@@ -11,6 +11,6 @@ public enum Requirement_status {
 	PLANNED,
 	COMPLETED,
 	REJECTED,
-	RECOMMENDED
-	
+	RECOMMENDED,
+	IN_PROGRESS
 }

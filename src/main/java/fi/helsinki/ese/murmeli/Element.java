@@ -1,6 +1,7 @@
 package fi.helsinki.ese.murmeli;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -19,7 +20,7 @@ public class Element {
 	final private int id;
 
 	/**
-	* The name of the elementType
+	* The name of the element
 	* (Required)
 	*
 	*/
@@ -33,11 +34,11 @@ public class Element {
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private List<AttributeValue> attributes;
+	private HashMap<String, AttributeValue> attributes;
 	
 	@SerializedName("partDefinitions")
 	@Expose
-	private List<PartDefinition> partDefinitions;
+	private List<Parts> parts;
 	
 	/**
 	* Required interfaces
@@ -59,45 +60,52 @@ public class Element {
 	* Required interfaces
 	*
 	*/
-	@SerializedName("constraints")
+	
+	@SerializedName("type")
 	@Expose
-	private List<Constraint> constraints;
+	private ElementType type;
 	
 	private static int hid = 0;
 	
 	public Element(String nameID, int id) {
 		this.nameID = nameID;
-		this.attributes = new ArrayList();
+		this.attributes = new HashMap();
 		this.requiredInterfaces = new ArrayList();
 		this.providedInterfaces = new ArrayList();
-		this.partDefinitions = new ArrayList();
-		this.constraints = new ArrayList();
+		this.parts = new ArrayList();
 		this.id = id;
 	}
 	
 	public Element(String nameID) {
 		this.nameID = nameID;
-		this.attributes = new ArrayList();
+		this.attributes = new HashMap();
 		this.requiredInterfaces = new ArrayList();
 		this.providedInterfaces = new ArrayList();
-		this.partDefinitions = new ArrayList();
-		this.constraints = new ArrayList();
+		this.parts = new ArrayList();
 		this.id = hid;
 		hid++;
 	}
 	
+	public ElementType getType() {
+		return type;
+	}
+
+	public void setType(ElementType type) {
+		this.type = type;
+	}
+
 	public int getID() {
 		return this.id;
 	}
 	
 	public void addAttribute(AttributeValue attribute) {
 		
-		this.attributes.add(attribute);
+		this.attributes.put(attribute.getNameID(), attribute);
 	}
 	
-	public void addPart(PartDefinition part) {
+	public void addPart(Parts part) {
 
-		this.partDefinitions.add(part);
+		this.parts.add(part);
 	}
 	
 	public void addRequiredInterface(Interface required) {
@@ -132,7 +140,7 @@ public class Element {
 	* Attributes related to element
 	*
 	*/
-	public List<AttributeValue> getAttributes() {
+	public HashMap<String, AttributeValue> getAttributes() {
 		return attributes;
 	}
 	
@@ -140,16 +148,23 @@ public class Element {
 	* Attributes related to element
 	*
 	*/
-	public void setAttributes(List<AttributeValue> attributes) {
+	public void setAttributes(HashMap<String, AttributeValue> attributes) {
 		this.attributes = attributes;
 	}
 	
-	public List<PartDefinition> getPartDefinitions() {
-		return partDefinitions;
+	public void setAttributes(List<AttributeValue> attributes) {
+		
+		for (AttributeValue atr : attributes) {
+			this.attributes.put(atr.getNameID(), atr);
+		}
 	}
 	
-	public void setPartDefinitions(List<PartDefinition> partDefinitions) {
-		this.partDefinitions = partDefinitions;
+	public List<Parts> getParts() {
+		return parts;
+	}
+	
+	public void setPartDefinitions(List<Parts> parts) {
+		this.parts = parts;
 	}
 	
 	/**
@@ -182,17 +197,5 @@ public class Element {
 	*/
 	public void setProvidedInterfaces(List<Interface> providedInterfaces) {
 		this.providedInterfaces = providedInterfaces;
-	}
-	
-	public List<Constraint> getConstraints() {
-		return this.constraints;
-	}
-	
-	public void setConstraints(List<Constraint> cons) {
-		this.constraints = cons;
-	}
-	
-	public void addConstraint(Constraint constraint) {
-		this.constraints.add(constraint);
 	}
 }

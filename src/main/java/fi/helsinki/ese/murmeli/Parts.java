@@ -46,7 +46,7 @@ public class Parts {
 	@Expose
 	private String role;
 	
-	@SerializedName("type")
+	@SerializedName("parts")
 	@Expose
 	private List<Element> parts = null;
 	

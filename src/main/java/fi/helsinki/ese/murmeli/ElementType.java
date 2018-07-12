@@ -18,12 +18,22 @@ public class ElementType {
 	
 	@SerializedName("potentialParts")
 	@Expose
-	private List<PartDefinition> potentialParts = new ArrayList();
+	private List<PartDefinition> potentialParts = new ArrayList<PartDefinition>();
 	
 	public ElementType(String nameID, List<AttributeDefinition> attributeDefinitions) {
 		
 		this.nameID = nameID;
 		this.attributeDefinitions = attributeDefinitions;
+	}
+	
+	public ElementType(String nameID) {
+		
+		this(nameID, new ArrayList<AttributeDefinition>());
+	}
+	
+	public ElementType(List<AttributeDefinition> attributeDefinitions) {
+		
+		this("", attributeDefinitions);
 	}
 	
 	public String getNameID() {
@@ -42,16 +52,6 @@ public class ElementType {
 		this.attributeDefinitions = attributeDefinitions;
 	}
 
-	public ElementType(String nameID) {
-		
-		this(nameID, new ArrayList<AttributeDefinition>());
-	}
-	
-	public ElementType(List<AttributeDefinition> attributeDefinitions) {
-		
-		this("", attributeDefinitions);
-	}
-	
 	public void addAttributeDefinition(AttributeDefinition def) {
 		
 		this.attributeDefinitions.add(def);
