@@ -15,60 +15,65 @@ public class ReleaseJSONParser {
 	static List<Dependency> dependencies;
 	static InputExtractor input;
 
-	public static ReleasePlan parseProjectJSON(String jsonString) 
-			throws ReleasePlanException, JSONException {
-		
-			JSONParser.parseToOpenReqObjects(jsonString);
-//			input = gson.fromJson(jsonString, InputExtractor.class);
-//			project = input.getProject();
-//			requirements = input.getRequirements();
-//			releases = input.getReleases();
-//			dependencies = input.getDependencies();
-			
-			// Here we do some initializing and setting up.
-			addAssignedReleasesToRequirements();
-			if (JSONParser.dependencies != null) {
-				addRequiredDependenciesForRequirements();
-			}
-			
-			// Here we start creating the ReleasePlan
-			ReleasePlan releasePlan = new ReleasePlan();
-			releasePlan.setProject(JSONParser.project);
-			for (Requirement requirement : JSONParser.requirements) {
-				Requirement old = 
-						releasePlan.addRequirement(requirement);
-				if (old != null) 
-					throw new 
-						ReleasePlanException("Duplicate Requirement with ID: " + old.getId());
-			}
-			for (Release release: JSONParser.releases) {
-				Release old =
-						releasePlan.addRelease(release);
-				if (old != null) 
-					throw new 
-						ReleasePlanException("Duplicate Release with ID: " + old.getId());
-			}
-			
-			return releasePlan;
+	public static ReleasePlan parseProjectJSON(String jsonString) throws ReleasePlanException, JSONException {
+
+		JSONParser.parseToOpenReqObjects(jsonString);
+		// input = gson.fromJson(jsonString, InputExtractor.class);
+		// project = input.getProject();
+		// requirements = input.getRequirements();
+		// releases = input.getReleases();
+		// dependencies = input.getDependencies();
+
+		// Here we tell requirements their assigned releases and create dependency
+		// lists.
+		addAssignedReleasesToRequirements();
+		if (JSONParser.dependencies != null) {
+			addDependenciesForRequirements();
+		}
+
+		// Here we start creating the ReleasePlan
+		ReleasePlan releasePlan = new ReleasePlan();
+		releasePlan.setProject(JSONParser.project);
+		for (Requirement requirement : JSONParser.requirements) {
+			Requirement old = releasePlan.addRequirement(requirement);
+			if (old != null)
+				throw new ReleasePlanException("Duplicate Requirement with ID: " + old.getId());
+		}
+		for (Release release : JSONParser.releases) {
+			Release old = releasePlan.addRelease(release);
+			if (old != null)
+				throw new ReleasePlanException("Duplicate Release with ID: " + old.getId());
+		}
+
+		return releasePlan;
 	}
-	
+
 	public static void addAssignedReleasesToRequirements() {
-		for (Release rel: JSONParser.releases) {
-			List<String> reqIds = rel.getRequirements();
-			for (String reqId: reqIds) {
-				JSONParser.input.findRequirementById(reqId).setAssignedRelease(rel.getId());
+		for (Release release : JSONParser.releases) {
+			List<String> reqIds = release.getRequirements();
+			for (String reqId : reqIds) {
+				JSONParser.input.findRequirementById(reqId).setAssignedRelease(release.getId());
 				JSONParser.input.findRequirementById(reqId).setRequiresDependencies();
+				JSONParser.input.findRequirementById(reqId).setExcludesDependencies();
 			}
 		}
 	}
 
-	public static void addRequiredDependenciesForRequirements() {
-		for (Dependency dep: JSONParser.dependencies) {
-			String from_id = dep.getFrom();
-			String to_id = dep.getTo();
-			Requirement r = JSONParser.input.findRequirementById(from_id);
-			r.addRequiresDependency(to_id);
+	public static void addDependenciesForRequirements() {
+		for (Dependency dependency : JSONParser.dependencies) {
+			String from_id = dependency.getFromId();
+			String to_id = dependency.getToId();
+			Requirement req = JSONParser.input.findRequirementById(from_id);
+
+			switch (dependency.getDependencyType()) {
+			case "requires":
+				req.addRequiresDependency(to_id);
+				break;
+			case "excludes":
+				req.addExcludesDependency(to_id);
+				break;
+			}
 		}
 	}
-	
+
 }

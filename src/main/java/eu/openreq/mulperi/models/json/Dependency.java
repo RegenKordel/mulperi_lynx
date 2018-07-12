@@ -37,17 +37,17 @@ public class Dependency {
 	* (Required)
 	* 
 	*/
-	@SerializedName("from")
+	@SerializedName("fromId")
 	@Expose
-	private Requirement from;
+	private Requirement fromId;
 	/**
 	* The requirement dependent on another
 	* (Required)
 	* 
 	*/
-	@SerializedName("to")
+	@SerializedName("toId")
 	@Expose
-	private Requirement to;
+	private Requirement toId;
 	
 	/**
 	* Creation timestamp
@@ -82,20 +82,20 @@ public class Dependency {
 		this.status = status;
 	}
 	
-	public Requirement getFrom() {
-		return from;
+	public Requirement getFromId() {
+		return fromId;
 	}
 	
-	public void setFrom(Requirement from) {
-		this.from = from;
+	public void setFromId(Requirement fromId) {
+		this.fromId = fromId;
 	}
 	
-	public Requirement getTo() {
-		return to;
+	public Requirement getToId() {
+		return toId;
 	}
 	
-	public void setTo(Requirement to) {
-		this.to = to;
+	public void setToId(Requirement toId) {
+		this.toId = toId;
 	}
 	
 	public int getCreated_at() {
