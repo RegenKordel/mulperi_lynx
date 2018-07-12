@@ -160,6 +160,10 @@ public class MurmeliModelGenerator {
 		statuses.add(recommended);
 		statuses.add(planned);
 		
+		for (AttributeValue status : statuses) {
+			status.setType(statusType);
+		}
+		
 		statusType.setValue(statuses);
 		
 		this.valueTypes.put("statuses", statusType);
@@ -285,6 +289,9 @@ public class MurmeliModelGenerator {
 			element.setType(this.elementTypes.get("user-story"));
 			break;
 		default:
+			//if requirement doesn't have a type it supposedly is not in the project
+			//and comes from a dependency. hence we create a mock element.
+			
 			ElementType mock = this.elementTypes.get("mock");
 			element.setType(mock);
 			
@@ -302,6 +309,12 @@ public class MurmeliModelGenerator {
 		return element;
 	}
 
+	/**
+	 * method to find the corresponding status AttributeValue for a status of an
+	 * OpenReq requirement
+	 * @param status
+	 * @return
+	 */
 	private AttributeValue<String> factorStatus(Requirement_status status) {
 		
 		AttributeValueType statuses = this.valueTypes.get("statuses");
@@ -450,6 +463,14 @@ public class MurmeliModelGenerator {
 		return root;
 	}
 	
+	/**
+	 * Method to create Murmeli model from OpenReq objects given as input 
+	 * @param requirements
+	 * @param constraints
+	 * @param dependencies
+	 * @param releases
+	 * @return
+	 */
 	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases) {
 		
 		ElementModel model = new ElementModel();
@@ -489,6 +510,7 @@ public class MurmeliModelGenerator {
 
 	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
 		
+		//if there are no releases in input the method will create a dummy release
 		initializeRootContainer();
 		
 		Container dummy = new Container("dummy");
