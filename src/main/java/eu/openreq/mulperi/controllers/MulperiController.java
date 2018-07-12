@@ -117,7 +117,14 @@ public class MulperiController {
 		//ParsedModel pm = transform.parseMulson(name, requirements);
 		ParsedModel pm = new ParsedModel();
 
-		return sendModelToCaasAndSave(pm, caasAddress);
+		
+	//	return sendModelToCaasAndSave(pm, caasAddress);
+		try {
+			return new ResponseEntity<>("Requirements received", HttpStatus.ACCEPTED);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
+		}
 	}
 	
 	public String generateName(Object object) {
