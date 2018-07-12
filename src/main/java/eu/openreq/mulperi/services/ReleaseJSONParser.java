@@ -15,7 +15,7 @@ public class ReleaseJSONParser {
 	static List<Release> releases;
 	static List<Dependency> dependencies;
 	static InputExtractor input;
-	static List<String> allReqIds;
+	//static List<String> allReqIds;
 
 	public static ReleasePlan parseProjectJSON(String jsonString) throws ReleasePlanException, JSONException {
 
@@ -61,7 +61,7 @@ public class ReleaseJSONParser {
 	}
 
 	public static void addAssignedReleasesToRequirements() {
-		allReqIds = new ArrayList<>();
+	//	allReqIds = new ArrayList<>();
 		for (Release release : JSONParser.releases) {
 			List<String> reqIds = release.getRequirements();
 			for (String reqId : reqIds) {
@@ -69,7 +69,7 @@ public class ReleaseJSONParser {
 				JSONParser.input.findRequirementById(reqId).setRequiresDependencies();
 				JSONParser.input.findRequirementById(reqId).setExcludesDependencies();
 			}
-			allReqIds.addAll(reqIds);
+		//	allReqIds.addAll(reqIds);
 		}
 	}
 

@@ -391,9 +391,12 @@ public class TestingController {
 		try {
 			releasePlan
 			= ReleaseJSONParser.parseProjectJSON(jsonString);
-//			List<String> problems = releasePlan.generateParsedModel(); 
-//			if (!problems.isEmpty())
-//				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
+			//Should be updated at some point.
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty()) {
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			}
 		} 
 		catch (ReleasePlanException ex) {
 			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
@@ -446,9 +449,12 @@ public class TestingController {
 		try {
 			releasePlan
 			= ReleaseJSONParser.parseProjectJSON(jsonString);
-//			List<String> problems = releasePlan.generateParsedModel(); 
-//			if (!problems.isEmpty())
-			//return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
+			//Should be updated at some point. 
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty()) {
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			}
 		} 
 		catch (ReleasePlanException ex) {
 			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +

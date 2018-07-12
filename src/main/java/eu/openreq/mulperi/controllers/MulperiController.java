@@ -120,7 +120,7 @@ public class MulperiController {
 		
 	//	return sendModelToCaasAndSave(pm, caasAddress);
 		try {
-			return new ResponseEntity<>("Requirements received", HttpStatus.ACCEPTED);
+			return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
