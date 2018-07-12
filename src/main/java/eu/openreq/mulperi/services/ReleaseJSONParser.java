@@ -3,6 +3,7 @@ package eu.openreq.mulperi.services;
 import eu.openreq.mulperi.models.release.*;
 //import eu.openreq.mulperi.models.json.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONException;
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ public class ReleaseJSONParser {
 	static List<Release> releases;
 	static List<Dependency> dependencies;
 	static InputExtractor input;
+	static List<String> allReqIds;
 
 	public static ReleasePlan parseProjectJSON(String jsonString) throws ReleasePlanException, JSONException {
 
@@ -36,19 +38,30 @@ public class ReleaseJSONParser {
 		releasePlan.setProject(JSONParser.project);
 		for (Requirement requirement : JSONParser.requirements) {
 			Requirement old = releasePlan.addRequirement(requirement);
-			if (old != null)
+			if (old != null) {
 				throw new ReleasePlanException("Duplicate Requirement with ID: " + old.getId());
+			}
 		}
 		for (Release release : JSONParser.releases) {
 			Release old = releasePlan.addRelease(release);
-			if (old != null)
+			if (old != null) {
 				throw new ReleasePlanException("Duplicate Release with ID: " + old.getId());
+			}
 		}
-
+		
+		//this part is for preventing nullPointerExceptions in case a requirement in the project has not been assigned to any release,
+		//in which case it's dependency lists would be null
+		for (Requirement requirement : releasePlan.getRequirements()) {
+			if(requirement.getExcludesDependencies()==null || requirement.getRequiresDependencies()==null) {
+				requirement.setExcludesDependencies();
+				requirement.setRequiresDependencies();
+			}
+		}
 		return releasePlan;
 	}
 
 	public static void addAssignedReleasesToRequirements() {
+		allReqIds = new ArrayList<>();
 		for (Release release : JSONParser.releases) {
 			List<String> reqIds = release.getRequirements();
 			for (String reqId : reqIds) {
@@ -56,6 +69,7 @@ public class ReleaseJSONParser {
 				JSONParser.input.findRequirementById(reqId).setRequiresDependencies();
 				JSONParser.input.findRequirementById(reqId).setExcludesDependencies();
 			}
+			allReqIds.addAll(reqIds);
 		}
 	}
 
