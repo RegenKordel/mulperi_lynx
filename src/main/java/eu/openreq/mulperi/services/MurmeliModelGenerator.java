@@ -1,17 +1,12 @@
 package eu.openreq.mulperi.services;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hibernate.annotations.SourceType;
-
 import eu.openreq.mulperi.models.json.*;
 import fi.helsinki.ese.murmeli.*;
 import fi.helsinki.ese.murmeli.AttributeValueType.BaseType;
-import fi.helsinki.ese.murmeli.AttributeValueType.Bound;
 import fi.helsinki.ese.murmeli.AttributeValueType.Cardinality;
 import fi.helsinki.ese.murmeli.RelationshipType.NameType;
 import fi.helsinki.ese.murmeli.AttributeValue.Source;
