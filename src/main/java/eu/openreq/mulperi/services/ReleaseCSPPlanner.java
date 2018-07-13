@@ -470,7 +470,6 @@ public class ReleaseCSPPlanner {
 		if (!D.isEmpty()) {
 			if (isConsistent) {
 				return Collections.emptyList();
-
 			}
 		}
 
