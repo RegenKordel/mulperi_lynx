@@ -26,22 +26,6 @@ public class Parts {
 	* (Required)
 	*
 	*/
-	@SerializedName("cardinality_min")
-	@Expose
-	private int cardinality_min;
-	/**
-	*
-	* (Required)
-	*
-	*/
-	@SerializedName("cardinality_max")
-	@Expose
-	private int cardinality_max;
-	/**
-	*
-	* (Required)
-	*
-	*/
 	@SerializedName("role")
 	@Expose
 	private String role;
@@ -50,23 +34,50 @@ public class Parts {
 	@Expose
 	private List<Integer> parts = new ArrayList<Integer>();
 	
+	@SerializedName("definition")
+	@Expose
+	private int definition = -1;
+	
 	private static int hid = 0;
 	
-	public Parts(int min, int max, String role, int id) {
-		this.cardinality_max = max;
-		this.cardinality_min = min;
+	public Parts(String role, int id) {
 		this.role = role;
 		this.id = id;
 	}
 	
-	public Parts(int min, int max, String role) {
-		this.cardinality_max = max;
-		this.cardinality_min = min;
+	public Parts(String role) {
 		this.role = role;
 		this.id = hid;
 		hid++;
 	}
 	
+	public Parts(String role, int id, int definition) {
+		this(role, id);
+		this.setDefinitionAsId(definition);
+	}
+	
+	public Parts(String role, PartDefinition definition) {
+		this(role);
+		this.setDefinition(definition);
+	}
+	
+	public Parts(String role, int id, PartDefinition definition) {
+		this(role, id);
+		this.setDefinition(definition);
+	}
+	
+	public int getDefinition() {
+		return definition;
+	}
+
+	public void setDefinitionAsId(int definition) {
+		this.definition = definition;
+	}
+	
+	public void setDefinition(PartDefinition definition) {
+		this.definition = definition.getID();
+	}
+
 	public void addPart(Element part) {
 		
 		this.parts.add(part.getID());
@@ -79,42 +90,6 @@ public class Parts {
 	
 	public int getID() {
 		return this.id;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public int getCardinality_min() {
-		return cardinality_min;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public void setCardinality_min(int cardinality_min) {
-		this.cardinality_min = cardinality_min;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public int getCardinality_max() {
-		return cardinality_max;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public void setCardinality_max(int cardinality_max) {
-		this.cardinality_max = cardinality_max;
 	}
 	
 	/**
