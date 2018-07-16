@@ -33,6 +33,7 @@ import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.KumbangModelGenerator;
+import eu.openreq.mulperi.services.ReleaseCSPPlanner;
 import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
 import io.swagger.annotations.ApiOperation;
@@ -126,6 +127,133 @@ public class MulperiController {
 			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
 	}
+	
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false
+	 * 			}
+	 * 		}
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+			notes = "Check whether a release plan is consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
+	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+
+		ReleasePlan releasePlan = null;
+		try {
+			releasePlan
+			= ReleaseJSONParser.parseProjectJSON(jsonString);
+			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
+			//Should be updated at some point.
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty()) {
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			}
+		} 
+		catch (ReleasePlanException ex) {
+			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
+					(ex.getMessage() == null ? "":	ex.getMessage()) +
+					(ex.getCause() == null ? "" : ex.getCause().toString()),
+					HttpStatus.BAD_REQUEST);
+		}
+		
+		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(releasePlan);
+		rcspGen.generateCSP();
+		
+		boolean isConsistent = rcspGen.isReleasePlanConsistent();
+		if (isConsistent) {
+			return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(true, "Consistent", false),
+				HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(false, "Not consistent", false),
+				HttpStatus.CONFLICT);
+	}
+	
+
+
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false, 
+	 * 				"diagnosis": [
+	 * 					[
+	 * 						{
+	 * 							"requirement": (requirementID)
+	 * 						}
+	 * 					]
+	 * 				]
+	 * 			}
+	 * 		}
+
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
+	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+
+		ReleasePlan releasePlan = null;
+		try {
+			releasePlan
+			= ReleaseJSONParser.parseProjectJSON(jsonString);
+			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
+			//Should be updated at some point. 
+			List<String> problems = releasePlan.generateParsedModel(); 
+			if (!problems.isEmpty()) {
+				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
+			}
+		} 
+		catch (ReleasePlanException ex) {
+			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
+					(ex.getMessage() == null ? "":	ex.getMessage()) +
+					(ex.getCause() == null ? "" : ex.getCause().toString()),
+					HttpStatus.BAD_REQUEST);
+		}
+		
+		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(releasePlan);
+		rcspGen.generateCSP();
+		
+		boolean isConsistent = rcspGen.isReleasePlanConsistent();
+		if (isConsistent) {
+			return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(true, "Consistent", true),
+				HttpStatus.OK);
+		}
+		
+		String diagnosis = rcspGen.getDiagnosis();
+		
+		return new ResponseEntity<>(
+				transform.generateProjectJsonResponse(false, diagnosis, true),
+				HttpStatus.CONFLICT);
+	}
+
 	
 	public String generateName(Object object) {
 		int hashCode = object.hashCode();
