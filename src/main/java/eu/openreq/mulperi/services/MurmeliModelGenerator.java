@@ -14,21 +14,23 @@ import fi.helsinki.ese.murmeli.AttributeValue.Source;
 public class MurmeliModelGenerator {
 
 	
-	private HashMap<String, AttributeValueType> valueTypes;
+	private HashMap<String, AttributeValueType> attributeValueTypes;
 	private HashMap<String, ElementType> elementTypes;
 	private HashMap<String, Element> elements;
 	private Container rootContainer;
 	private List<RelationshipType> relations;
 	private HashMap<Integer, Constraint> constraints;
+	private HashMap<Integer, AttributeValue> attributeValues;
 	
 	public MurmeliModelGenerator() {
 		
-		this.valueTypes = new HashMap();
+		this.attributeValueTypes = new HashMap();
 		this.elementTypes = new HashMap();
 		this.elements = new HashMap();
 		this.rootContainer = null;
 		this.relations = new ArrayList();
 		this.constraints = new HashMap();
+		this.attributeValues = new HashMap();
 		
 		initializeElementTypes();
 	}
@@ -106,7 +108,8 @@ public class MurmeliModelGenerator {
 			potentialParts.add(type);
 		}
 		
-		PartDefinition partDefinition = new PartDefinition(0, 200, "decomposition", potentialParts);
+		PartDefinition partDefinition = new PartDefinition(0, 200, "decomposition");
+		partDefinition.setTypes(potentialParts);
 		
 		for (ElementType type : this.elementTypes.values()) {
 			
@@ -122,7 +125,7 @@ public class MurmeliModelGenerator {
 		
 		AttributeDefinition atr = new AttributeDefinition(priorityDefault, priorityType);
 		
-		this.valueTypes.put("priority", priorityType);
+		this.attributeValueTypes.put("priority", priorityType);
 		
 		return atr;
 	}
@@ -159,9 +162,9 @@ public class MurmeliModelGenerator {
 			status.setType(statusType);
 		}
 		
-		statusType.setValue(statuses);
+		statusType.setValues(statuses);
 		
-		this.valueTypes.put("statuses", statusType);
+		this.attributeValueTypes.put("statuses", statusType);
 		
 		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
 		submitted.setSource(Source.DEFAULT);
@@ -192,11 +195,11 @@ public class MurmeliModelGenerator {
 			Element to = mapRequirement(dep.getToId());
 			
 			if (!from.getParts().isEmpty()) {
-				from.getParts().get(0).addType(to);
+				from.getParts().get(0).addPart(to);
 			}
 			
 			Parts part = new Parts(0, 200, "decomposition");
-			part.addType(to);
+			part.addPart(to);
 			
 			from.addPart(part);
 			
@@ -245,7 +248,7 @@ public class MurmeliModelGenerator {
 		
 		String name = req.getId();
 		AttributeValue<Integer> priority = new AttributeValue("priority", true, req.getPriority());
-		priority.setType(this.valueTypes.get("priority"));
+		priority.setType(this.attributeValueTypes.get("priority"));
 		AttributeValue<String> status = factorStatus(req.getStatus());
 		
 		Element element = new Element(name);
@@ -291,7 +294,7 @@ public class MurmeliModelGenerator {
 			element.setType(mock);
 			
 			for (AttributeDefinition def : mock.getAttributeDefinitions()) {
-				element.addAttribute(def.getDefaultValue());
+				element.addAttribute(this.attributeValues.get(def.getDefaultValue()));
 			}
 			
 			element.setNameID(element.getNameID() + "-mock");
@@ -312,114 +315,114 @@ public class MurmeliModelGenerator {
 	 */
 	private AttributeValue<String> factorStatus(Requirement_status status) {
 		
-		AttributeValueType statuses = this.valueTypes.get("statuses");
+		AttributeValueType statuses = this.attributeValueTypes.get("statuses");
 		
 		switch(status) {
 		case ACCEPTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("accepted")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("accepted")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case COMPLETED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("completed")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("completed")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case DEFERRED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("deferred")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("deferred")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			break;
 		case DRAFT:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("draft")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("draft")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case IN_PROGRESS:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("inProgress")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("inProgress")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case PENDING:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 			
-				if (value.getNameID().equals("pending")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("pending")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case REJECTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("rejected")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("rejected")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case SUBMITTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("submitted")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("submitted")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case NEW:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("new")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("new")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case PLANNED:
 
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("planned")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("planned")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case RECOMMENDED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("recommended")) {
-					return value;
+				if (this.attributeValues.get(value).getName().equals("recommended")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
@@ -493,7 +496,7 @@ public class MurmeliModelGenerator {
 		model.setElementTypes(this.elementTypes);
 		model.setRootContainer(this.rootContainer);
 		model.setRelations(this.relations);
-		model.setValueTypes(this.valueTypes);
+		model.setAttributeValueTypes(this.attributeValueTypes);
 		
 		return model;
 	}

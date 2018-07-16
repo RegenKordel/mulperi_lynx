@@ -18,7 +18,7 @@ public class ElementType {
 	
 	@SerializedName("potentialParts")
 	@Expose
-	private List<PartDefinition> potentialParts = new ArrayList<PartDefinition>();
+	private List<Integer> potentialParts = new ArrayList<Integer>();
 	
 	public ElementType(String nameID, List<AttributeDefinition> attributeDefinitions) {
 		
@@ -59,16 +59,27 @@ public class ElementType {
 	
 	public void setPotentialParts(List<PartDefinition> parts) {
 	
+		for (PartDefinition part : parts) {
+			this.potentialParts.add(part.getID());
+		}
+	}
+	
+	public void setPotentialPartsAsIds(List<Integer> parts) {
 		this.potentialParts = parts;
 	}
 	
-	public List<PartDefinition> getPotentialParts() {
+	public List<Integer> getPotentialParts() {
 		
 		return this.potentialParts;
 	}
 	
 	public void addPotentialPart(PartDefinition part) {
 		
-		this.potentialParts.add(part);
+		this.potentialParts.add(part.getID());
+	}
+	
+	public void addPotentialPart(int partID) {
+		
+		this.potentialParts.add(partID);
 	}
 }

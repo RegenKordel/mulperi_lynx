@@ -34,7 +34,7 @@ public class Element {
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private HashMap<String, AttributeValue> attributes;
+	private HashMap<String, Integer> attributes;
 	
 	@SerializedName("partDefinitions")
 	@Expose
@@ -46,7 +46,7 @@ public class Element {
 	*/
 	@SerializedName("requiredInterfaces")
 	@Expose
-	private List<Interface> requiredInterfaces;
+	private List<Integer> requiredInterfaces;
 	
 	/**
 	* Provided interfaces
@@ -54,16 +54,16 @@ public class Element {
 	*/
 	@SerializedName("providedInterfaces")
 	@Expose
-	private List<Interface> providedInterfaces;
+	private List<Integer> providedInterfaces;
 	
 	/**
-	* Required interfaces
+	* ElementType related to this individual Element
 	*
 	*/
 	
 	@SerializedName("type")
 	@Expose
-	private ElementType type;
+	private String type;
 	
 	private static int hid = 0;
 	
@@ -86,11 +86,15 @@ public class Element {
 		hid++;
 	}
 	
-	public ElementType getType() {
+	public String getType() {
 		return type;
 	}
 
 	public void setType(ElementType type) {
+		this.type = type.getNameID();
+	}
+	
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -100,7 +104,7 @@ public class Element {
 	
 	public void addAttribute(AttributeValue attribute) {
 		
-		this.attributes.put(attribute.getNameID(), attribute);
+		this.attributes.put(attribute.getName(), attribute.getID());
 	}
 	
 	public void addPart(Parts part) {
@@ -110,12 +114,12 @@ public class Element {
 	
 	public void addRequiredInterface(Interface required) {
 
-		this.requiredInterfaces.add(required);
+		this.requiredInterfaces.add(required.getID());
 	}
 	
 	public void addProvidedInterface(Interface provided) {
 		
-		this.providedInterfaces.add(provided);
+		this.providedInterfaces.add(provided.getID());
 	}
 	
 	/**
@@ -140,7 +144,7 @@ public class Element {
 	* Attributes related to element
 	*
 	*/
-	public HashMap<String, AttributeValue> getAttributes() {
+	public HashMap<String, Integer> getAttributes() {
 		return attributes;
 	}
 	
@@ -148,14 +152,16 @@ public class Element {
 	* Attributes related to element
 	*
 	*/
-	public void setAttributes(HashMap<String, AttributeValue> attributes) {
+	public void setAttributes(HashMap<String, Integer> attributes) {
 		this.attributes = attributes;
 	}
 	
 	public void setAttributes(List<AttributeValue> attributes) {
 		
+		this.attributes.clear();
+		
 		for (AttributeValue atr : attributes) {
-			this.attributes.put(atr.getNameID(), atr);
+			this.attributes.put(atr.getName(), atr.getID());
 		}
 	}
 	
@@ -171,7 +177,7 @@ public class Element {
 	* Required interfaces
 	*
 	*/
-	public List<Interface> getRequiredInterfaces() {
+	public List<Integer> getRequiredInterfaces() {
 		return requiredInterfaces;
 	}
 	
@@ -180,6 +186,13 @@ public class Element {
 	*
 	*/
 	public void setRequiredInterfaces(List<Interface> requiredInterfaces) {
+		
+		for (Interface interf : requiredInterfaces) {
+			this.requiredInterfaces.add(interf.getID());
+		}
+	}
+	
+	public void setRequiredInterfacesAsIds(List<Integer> requiredInterfaces) {
 		this.requiredInterfaces = requiredInterfaces;
 	}
 	
@@ -187,7 +200,7 @@ public class Element {
 	* Provided interfaces
 	*
 	*/
-	public List<Interface> getProvidedInterfaces() {
+	public List<Integer> getProvidedInterfaces() {
 		return providedInterfaces;
 	}
 	
@@ -196,6 +209,13 @@ public class Element {
 	*
 	*/
 	public void setProvidedInterfaces(List<Interface> providedInterfaces) {
+		
+		for (Interface interf : providedInterfaces) {
+			this.requiredInterfaces.add(interf.getID());
+		}
+	}
+	
+	public void setProvidedInterfacesAsIds(List<Integer> providedInterfaces) {
 		this.providedInterfaces = providedInterfaces;
 	}
 }

@@ -48,30 +48,25 @@ public class PartDefinition {
 	
 	@SerializedName("type")
 	@Expose
-	private List<ElementType> type = null;
+	private List<String> elementTypes = new ArrayList<String>();
 	
 	private static int hid = 0;
 	
-	public PartDefinition(int min, int max, String role, List<ElementType> possibleTypes, int id) {
+	public PartDefinition(int min, int max, String role, int id) {
 		this.cardinality_max = max;
 		this.cardinality_min = min;
 		this.role = role;
-		this.type = possibleTypes;
 		this.id = id;
 	}
 	
-	public PartDefinition(int min, int max, String role, List<ElementType> possibleTypes) {
+	public PartDefinition(int min, int max, String role) {
 		this.cardinality_max = max;
 		this.cardinality_min = min;
 		this.role = role;
-		this.type = possibleTypes;
 		this.id = hid;
 		hid++;
 	}
 	
-	public PartDefinition(int min, int max, String role) {
-		this(min, max, role, new ArrayList<ElementType>());
-	}
 	
 	public PartDefinition(int max, String role) {
 		this(0, max, role);
@@ -81,8 +76,12 @@ public class PartDefinition {
 		this(1, role);
 	}
 	
-	public void addType(ElementType type) {
-		this.type.add(type);
+	public void addElementType(ElementType type) {
+		this.elementTypes.add(type.getNameID());
+	}
+	
+	public void addElementType(String type) {
+		this.elementTypes.add(type);
 	}
 	
 	public int getID() {
@@ -143,12 +142,18 @@ public class PartDefinition {
 		this.role = role;
 	}
 	
-	public List<ElementType> getType() {
-		return type;
+	public List<String> getType() {
+		return this.elementTypes;
 	}
 	
-	public void setType(List<ElementType> type) {
-		this.type = type;
+	public void setTypesAsIds(List<String> types) {
+		this.elementTypes = types;
 	}
 	
+	public void setTypes(List<ElementType> types) {
+		
+		for (ElementType type : types) {
+			this.elementTypes.add(type.getNameID());
+		}
+	}
 }

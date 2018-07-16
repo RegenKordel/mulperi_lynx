@@ -48,33 +48,33 @@ public class Parts {
 	
 	@SerializedName("parts")
 	@Expose
-	private List<Element> parts = null;
+	private List<Integer> parts = new ArrayList<Integer>();
 	
 	private static int hid = 0;
 	
-	public Parts(int min, int max, String role, List<Element> parts, int id) {
+	public Parts(int min, int max, String role, int id) {
 		this.cardinality_max = max;
 		this.cardinality_min = min;
 		this.role = role;
-		this.parts = parts;
 		this.id = id;
 	}
 	
-	public Parts(int min, int max, String role, List<Element> parts) {
+	public Parts(int min, int max, String role) {
 		this.cardinality_max = max;
 		this.cardinality_min = min;
 		this.role = role;
-		this.parts = parts;
 		this.id = hid;
 		hid++;
 	}
 	
-	public Parts(int min, int max, String role) {
-		this(min, max, role, new ArrayList<Element>());
+	public void addPart(Element part) {
+		
+		this.parts.add(part.getID());
 	}
 	
-	public void addType(Element part) {
-		this.parts.add(part);
+	public void addPartAsId(int id) {
+		
+		this.parts.add(id);
 	}
 	
 	public int getID() {
@@ -135,12 +135,18 @@ public class Parts {
 		this.role = role;
 	}
 	
-	public List<Element> getType() {
+	public List<Integer> getType() {
 		return parts;
 	}
 	
-	public void setType(List<Element> parts) {
-		this.parts = parts;
+	public void setParts(List<Element> parts) {
+		
+		for (Element element : parts) {
+			this.parts.add(element.getID());
+		}
 	}
 	
+	public void setPartsAsIds(List<Integer> parts) {
+		this.parts = parts;
+	}
 }

@@ -32,28 +32,28 @@ public class Container {
 	*/
 	@SerializedName("children")
 	@Expose
-	private List<Container> children = new ArrayList();
+	private List<Integer> children = new ArrayList();
 	/**
 	* Containers directly after this one
 	*
 	*/
 	@SerializedName("next")
 	@Expose
-	private List<Container> next = new ArrayList();
+	private List<Integer> next = new ArrayList();
 	/**
 	* Elements in this container
 	*
 	*/
 	@SerializedName("elements")
 	@Expose
-	private List<Element> elements = new ArrayList();
+	private List<String> elements = new ArrayList();
 	/**
 	* Attributes describing this container
 	*
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private List<AttributeValue> attributes = new ArrayList();
+	private List<Integer> attributes = new ArrayList();
 	
 	private static int hid = 0;
 	
@@ -74,22 +74,32 @@ public class Container {
 	
 	public void addChild(Container child) {
 		
-		this.children.add(child);
+		this.children.add(child.getID());
 	}
 	
 	public void addNext(Container next) {
 		
-		this.next.add(next);
+		this.next.add(next.getID());
 	}
 	
 	public void addElement(Element el) {
 
-		this.elements.add(el);
+		this.elements.add(el.getNameID());
+	}
+	
+	public void addElement(String element) {
+		
+		this.elements.add(element);
+	}
+	
+	public void addAttribute(Integer value) {
+
+		this.attributes.add(value);
 	}
 	
 	public void addAttribute(AttributeValue value) {
 
-		this.attributes.add(value);
+		this.attributes.add(value.getID());
 	}
 	
 	/**
@@ -114,7 +124,7 @@ public class Container {
 	* Containers inside this container
 	*
 	*/
-	public List<Container> getChildren() {
+	public List<Integer> getChildren() {
 		return children;
 	}
 	
@@ -122,15 +132,24 @@ public class Container {
 	* Containers inside this container
 	*
 	*/
-	public void setChildren(List<Container> children) {
+	public void setChildrenAsId(List<Integer> children) {
 		this.children = children;
+	}
+	
+	public void setChildren(List<Container> children) {
+		
+		this.children.clear();
+		
+		for (Container child : children) {
+			this.children.add(child.getID());
+		}
 	}
 	
 	/**
 	* Containers directly after this one
 	*
 	*/
-	public List<Container> getNext() {
+	public List<Integer> getNext() {
 		return next;
 	}
 	
@@ -138,15 +157,24 @@ public class Container {
 	* Containers directly after this one
 	*
 	*/
-	public void setNext(List<Container> next) {
+	public void setNextAsId(List<Integer> next) {
 		this.next = next;
+	}
+	
+	public void setNext(List<Container> next) {
+		
+		this.next.clear();
+		
+		for (Container nextContainer : next) {
+			this.next.add(nextContainer.getID());
+		}
 	}
 	
 	/**
 	* Elements in this container
 	*
 	*/
-	public List<Element> getElements() {
+	public List<String> getElements() {
 		return elements;
 	}
 	
@@ -154,15 +182,24 @@ public class Container {
 	* Elements in this container
 	*
 	*/
-	public void setElements(List<Element> elements) {
+	public void setElementsAsNames(List<String> elements) {
 		this.elements = elements;
+	}
+	
+	public void setElements(List<Element> elements) {
+		
+		this.elements.clear();
+		
+		for (Element element : elements) {
+			this.elements.add(element.getNameID());
+		}
 	}
 	
 	/**
 	* Attributes describing this container
 	*
 	*/
-	public List<AttributeValue> getAttributes() {
+	public List<Integer> getAttributes() {
 		return attributes;
 	}
 	
@@ -171,10 +208,20 @@ public class Container {
 	*
 	*/
 	public void setAttributes(List<AttributeValue> attributes) {
+		
+		this.attributes.clear();
+		
+		for (AttributeValue atr : attributes) {
+			this.attributes.add(atr.getID());
+		}
+	}
+	
+	public void setAttributesAsIds(List<Integer> attributes) {
+		
 		this.attributes = attributes;
 	}
 	
-	public String toString() {
+	/*public String toString() {
 		StringBuilder lel = new StringBuilder();
 		
 		lel.append(this.nameID + ";");
@@ -201,5 +248,5 @@ public class Container {
 		}
 		
 		return lel.toString();
-	}
+	}*/
 }

@@ -21,9 +21,9 @@ public class AttributeValue<T> {
 	* (Required)
 	*
 	*/
-	@SerializedName("nameID")
+	@SerializedName("name")
 	@Expose
-	private String nameID;
+	private String name;
 	
 	/**
 	* Whether or not value should be mutable
@@ -53,13 +53,13 @@ public class AttributeValue<T> {
 		INFERRED	
 	}
 	
-	private AttributeValueType type;
+	private String type;
 	
 	private static int hid = 0;
 		
 	public AttributeValue(String nameID, boolean mutable, T value, int id) {
 		
-		this.nameID = nameID;
+		this.name = nameID;
 		this.mutable = mutable;
 		this.value = value;
 		this.id = id;
@@ -67,7 +67,7 @@ public class AttributeValue<T> {
 	
 	public AttributeValue(String nameID, boolean mutable, T value) {
 		
-		this.nameID = nameID;
+		this.name = nameID;
 		this.mutable = mutable;
 		this.value = value;
 		this.id = hid;
@@ -83,8 +83,8 @@ public class AttributeValue<T> {
 	* (Required)
 	*
 	*/
-	public String getNameID() {
-		return nameID;
+	public String getName() {
+		return name;
 	}
 	
 	/**
@@ -92,8 +92,8 @@ public class AttributeValue<T> {
 	* (Required)
 	*
 	*/
-	public void setNameID(String nameID) {
-		this.nameID = nameID;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public void setSource(Source source) {
@@ -158,11 +158,15 @@ public class AttributeValue<T> {
 		this.value = value;
 	}
 	
-	public AttributeValueType getType() {
+	public String getType() {
 		return type;
 	}
 
 	public void setType(AttributeValueType type) {
+		this.type = type.getName();
+	}
+	
+	public void setType(String type) {
 		this.type = type;
 	}
 
