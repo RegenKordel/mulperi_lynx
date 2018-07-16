@@ -198,7 +198,7 @@ public class MurmeliModelGenerator {
 				from.getParts().get(0).addPart(to);
 			}
 			
-			Parts part = new Parts(0, 200, "decomposition");
+			Parts part = new Parts("decomposition");
 			part.addPart(to);
 			
 			from.addPart(part);
