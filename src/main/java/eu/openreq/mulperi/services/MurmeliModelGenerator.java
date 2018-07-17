@@ -239,8 +239,8 @@ public class MurmeliModelGenerator {
 			break;
 		case DECOMPOSITION:
 			
-			Element from = mapRequirement(dep.getFromId());
-			Element to = mapRequirement(dep.getToId());
+			Element from = findRequirement(dep.getFromId());
+			Element to = findRequirement(dep.getToId());
 			
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
@@ -279,14 +279,26 @@ public class MurmeliModelGenerator {
 			return null;
 		}
 		
-		Element from = mapRequirement(dep.getFromId());
-		Element to = mapRequirement(dep.getToId());
+		Element from = findRequirement(dep.getFromId());
+		Element to = findRequirement(dep.getToId());
 		
 		RelationshipType relationship = new RelationshipType(type, from.getNameID(), to.getNameID());
 		
 		this.relations.add(relationship);
 		
 		return relationship;
+	}
+
+	private Element findRequirement(String id) {
+		
+		if (this.elements.containsKey(id)) {
+			return this.elements.get(id);
+		}
+		
+		Requirement req = new Requirement();
+		req.setId(id);
+		
+		return this.mapRequirement(req);
 	}
 
 	private Element mapRequirement(Requirement req) {
@@ -582,8 +594,8 @@ public class MurmeliModelGenerator {
 		
 		rele.addAttribute(capacity);
 		
-		for (Requirement req : release.getRequirements()) {
-			rele.addElement(mapRequirement(req));
+		for (String req : release.getRequirements()) {
+			rele.addElement(findRequirement(req));
 		}
 		
 		return rele;
