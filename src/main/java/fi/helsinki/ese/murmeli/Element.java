@@ -36,7 +36,7 @@ public class Element {
 	@Expose
 	private HashMap<String, Integer> attributes;
 	
-	@SerializedName("partDefinitions")
+	@SerializedName("parts")
 	@Expose
 	private List<Parts> parts;
 	
@@ -169,7 +169,7 @@ public class Element {
 		return parts;
 	}
 	
-	public void setPartDefinitions(List<Parts> parts) {
+	public void setParts(List<Parts> parts) {
 		this.parts = parts;
 	}
 	

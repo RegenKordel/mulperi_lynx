@@ -44,7 +44,7 @@ public class RelationshipType {
 	*/
 	@SerializedName("fromID")
 	@Expose
-	private Element fromID;
+	private String fromID;
 	
 	/**
 	*
@@ -53,7 +53,7 @@ public class RelationshipType {
 	*/
 	@SerializedName("toID")
 	@Expose
-	private Element toID;
+	private String toID;
 	
 	@SerializedName("power")
 	@Expose
@@ -61,14 +61,14 @@ public class RelationshipType {
 	
 	private static int hid = 0;
 	
-	public RelationshipType(NameType nameType, Element from, Element to, int id) {
+	public RelationshipType(NameType nameType, String from, String to, int id) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
 		this.id = id;
 	}
 	
-	public RelationshipType(NameType nameType, Element from, Element to) {
+	public RelationshipType(NameType nameType, String from, String to) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
@@ -103,7 +103,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public Element getFrom() {
+	public String getFromID() {
 		return fromID;
 	}
 	
@@ -112,7 +112,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setFrom(Element from) {
+	public void setFromID(String from) {
 		this.fromID = from;
 	}
 	
@@ -121,7 +121,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public Element getTo() {
+	public String getToID() {
 		return toID;
 	}
 	
@@ -130,7 +130,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setTo(Element to) {
+	public void setToID(String to) {
 		this.toID = to;
 	}
 	

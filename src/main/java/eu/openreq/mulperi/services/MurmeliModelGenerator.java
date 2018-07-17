@@ -123,7 +123,7 @@ public class MurmeliModelGenerator {
 		AttributeValue priorityDefault = new AttributeValue("priority", true, 4);
 		priorityDefault.setSource(Source.DEFAULT);
 		
-		AttributeDefinition atr = new AttributeDefinition(priorityDefault, priorityType);
+		AttributeDefinition atr = new AttributeDefinition(priorityDefault.getID(), priorityType.getName());
 		
 		this.attributeValueTypes.put("priority", priorityType);
 		
@@ -166,7 +166,7 @@ public class MurmeliModelGenerator {
 		
 		this.attributeValueTypes.put("statuses", statusType);
 		
-		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
+		AttributeDefinition def = new AttributeDefinition(submitted.getID(), statusType.getName());
 		submitted.setSource(Source.DEFAULT);
 		
 		return def;
@@ -233,7 +233,7 @@ public class MurmeliModelGenerator {
 		Element from = mapRequirement(dep.getFromId());
 		Element to = mapRequirement(dep.getToId());
 		
-		RelationshipType relationship = new RelationshipType(type, from, to);
+		RelationshipType relationship = new RelationshipType(type, from.getNameID(), to.getNameID());
 		
 		this.relations.add(relationship);
 		

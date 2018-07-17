@@ -43,7 +43,7 @@ public class AttributeValue<T> {
 	private T value = null;
 	
 	@SerializedName("source")
-	@Expose
+	@Expose	
 	Source source = Source.DEFAULT;
 	
 	public enum Source {

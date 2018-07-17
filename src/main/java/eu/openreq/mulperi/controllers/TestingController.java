@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.chocosolver.solver.constraints.nary.nValue.amnv.differences.D;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
 
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.release.ReleasePlan;
@@ -31,6 +34,7 @@ import eu.openreq.mulperi.services.ReleaseCSPPlanner;
 import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
 import eu.openreq.mulperi.services.ReqifParser;
+import fi.helsinki.ese.murmeli.ElementModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -597,4 +601,62 @@ public class TestingController {
 			return new ResponseEntity<>("Syntax error in ReqIF\n\n" + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
+	@ApiOperation(value = "Method for testing JSON parsing",
+			notes = "Method for testing JSON parsing",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
+	@RequestMapping(value = "/projects/jsonToMurmeli", method = RequestMethod.POST)
+	public void jsonToMurmeli(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+
+		Gson gson = new Gson();
+		ElementModel model = gson.fromJson(jsonString, ElementModel.class);
+		
+		System.out.println(model);
+		
+		System.out.println("\nStatus name " + model.getAttributeValueTypes().get("status").getName());
+		System.out.println("Status ID " + model.getAttributeValueTypes().get("status").getID());
+		System.out.println("Status BaseType " + model.getAttributeValueTypes().get("status").getBaseType());
+		System.out.println("Status bound " + model.getAttributeValueTypes().get("status").getBound());
+		System.out.println("Status cardinality " + model.getAttributeValueTypes().get("status").getCardinality());
+		
+		System.out.println("\nBug nameID " + model.getElementTypes().get("bug").getNameID());
+		System.out.println("Bug attributedef 0 " + model.getElementTypes().get("bug").getAttributeDefinitions().get(0));
+		System.out.println("Bug potentialpart 0 " + model.getElementTypes().get("bug").getPotentialParts().get(0));
+		
+		System.out.println("\nREQ_1 name " + model.getElements().get("REQ_1").getNameID());
+		System.out.println("REQ_1 type " + model.getElements().get("REQ_1").getType());
+		System.out.println("REQ_1 attributes " + model.getElements().get("REQ_1").getAttributes());
+		System.out.println("REQ_1 interfaces " + model.getElements().get("REQ_1").getProvidedInterfaces());
+		
+		System.out.println("\nSubcontainer nameID " + model.getsubContainers().get(0).getNameID());
+		System.out.println("Subcontainer children " + model.getsubContainers().get(0).getChildren());
+		System.out.println("Subcontainer attributes " + model.getsubContainers().get(0).getAttributes());
+		System.out.println("Subcontainer elements " + model.getsubContainers().get(0).getElements());
+		System.out.println("Subcontainer next " + model.getsubContainers().get(0).getNext());
+		
+		System.out.println("\nRootcontainer nameID " + model.getRootContainer().getNameID());
+		System.out.println("Rootcontainer attributes " + model.getRootContainer().getAttributes());
+		System.out.println("Rootcontainer children " + model.getRootContainer().getChildren());
+		System.out.println("Rootcontainer elements " + model.getRootContainer().getElements());
+		System.out.println("Rootcontainer next " + model.getRootContainer().getNext());
+		
+		System.out.println("\nRelation nameType " + model.getRelations().get(0).getNameType());
+		
+		System.out.println("\n" + model.getConstraints());
+		
+		System.out.println("\nAttributeValue name " + model.getAttributeValues().get(1).getName());
+		System.out.println("AttributeValue value " + model.getAttributeValues().get(1).getValue());
+		System.out.println("AttributeValue type " + model.getAttributeValues().get(1).getType());
+		System.out.println("AttributeValue source " + model.getAttributeValues().get(1).getSource());
+		
+		String json = gson.toJson(model);
+		
+		System.out.println("\n" + json);
+	}
+	
 }

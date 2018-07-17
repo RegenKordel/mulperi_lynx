@@ -1,6 +1,7 @@
 package fi.helsinki.ese.murmeli;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -53,7 +54,7 @@ public class Container {
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private List<Integer> attributes = new ArrayList();
+	private HashMap<String, Integer> attributes = new HashMap();
 	
 	private static int hid = 0;
 	
@@ -92,14 +93,14 @@ public class Container {
 		this.elements.add(element);
 	}
 	
-	public void addAttribute(Integer value) {
+	public void addAttribute(String key, Integer value) {
 
-		this.attributes.add(value);
+		this.attributes.put(key, value);
 	}
 	
 	public void addAttribute(AttributeValue value) {
 
-		this.attributes.add(value.getID());
+		this.attributes.put(value.getName(), value.getID());
 	}
 	
 	/**
@@ -199,7 +200,7 @@ public class Container {
 	* Attributes describing this container
 	*
 	*/
-	public List<Integer> getAttributes() {
+	public HashMap<String, Integer> getAttributes() {
 		return attributes;
 	}
 	
@@ -212,11 +213,11 @@ public class Container {
 		this.attributes.clear();
 		
 		for (AttributeValue atr : attributes) {
-			this.attributes.add(atr.getID());
+			this.attributes.put(atr.getName(), atr.getID());
 		}
 	}
 	
-	public void setAttributesAsIds(List<Integer> attributes) {
+	public void setAttributesAsIds(HashMap<String, Integer> attributes) {
 		
 		this.attributes = attributes;
 	}

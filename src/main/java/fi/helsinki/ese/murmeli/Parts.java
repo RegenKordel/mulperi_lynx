@@ -32,7 +32,7 @@ public class Parts {
 	
 	@SerializedName("parts")
 	@Expose
-	private List<Integer> parts = new ArrayList<Integer>();
+	private List<String> parts = new ArrayList<String>();
 	
 	@SerializedName("definition")
 	@Expose
@@ -80,13 +80,13 @@ public class Parts {
 
 	public void addPart(Element part) {
 		
-		this.parts.add(part.getID());
+		this.parts.add(part.getNameID());
 	}
 	
-	public void addPartAsId(int id) {
-		
-		this.parts.add(id);
-	}
+//	public void addPartAsId(int id) {
+//		
+//		this.parts.add(id);
+//	}
 	
 	public int getID() {
 		return this.id;
@@ -110,18 +110,18 @@ public class Parts {
 		this.role = role;
 	}
 	
-	public List<Integer> getType() {
+	public List<String> getType() {
 		return parts;
 	}
 	
 	public void setParts(List<Element> parts) {
 		
 		for (Element element : parts) {
-			this.parts.add(element.getID());
+			this.parts.add(element.getNameID());
 		}
 	}
 	
-	public void setPartsAsIds(List<Integer> parts) {
+	public void setPartsAsIds(List<String> parts) {
 		this.parts = parts;
 	}
 }
