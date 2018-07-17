@@ -39,7 +39,7 @@ public class Dependency {
 	*/
 	@SerializedName("fromId")
 	@Expose
-	private Requirement fromId;
+	private String fromId;
 	/**
 	* The requirement dependent on another
 	* (Required)
@@ -47,7 +47,7 @@ public class Dependency {
 	*/
 	@SerializedName("toId")
 	@Expose
-	private Requirement toId;
+	private String toId;
 	
 	/**
 	* Creation timestamp
@@ -82,19 +82,19 @@ public class Dependency {
 		this.status = status;
 	}
 	
-	public Requirement getFromId() {
+	public String getFromId() {
 		return fromId;
 	}
 	
-	public void setFromId(Requirement fromId) {
+	public void setFromId(String fromId) {
 		this.fromId = fromId;
 	}
 	
-	public Requirement getToId() {
+	public String getToId() {
 		return toId;
 	}
 	
-	public void setToId(Requirement toId) {
+	public void setToId(String toId) {
 		this.toId = toId;
 	}
 	

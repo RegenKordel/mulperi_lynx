@@ -84,7 +84,7 @@ public class Requirement {
 	*/
 	@SerializedName("children")
 	@Expose
-	private List<Requirement> children = null;
+	private List<String> children = null;
 	/**
 	* The keywords or tags from the classification of a requirement
 	* 
@@ -166,11 +166,11 @@ public class Requirement {
 		this.status = status;
 	}
 	
-	public List<Requirement> getChildren() {
+	public List<String> getChildren() {
 		return children;
 	}
 	
-	public void setChildren(List<Requirement> children) {
+	public void setChildren(List<String> children) {
 		this.children = children;
 	}
 	
