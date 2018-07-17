@@ -244,6 +244,7 @@ public class MurmeliModelGenerator {
 			
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
+				break;
 			}
 			
 			Parts part = new Parts("decomposition");
