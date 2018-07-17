@@ -113,7 +113,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public String getFrom() {
+	public String getFromID() {
 		return fromID;
 	}
 	
@@ -122,12 +122,12 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setFrom(Element from) {
-		this.fromID = from.getNameID();
+	public void setFromID(String from) {
+		this.fromID = from;
 	}
 	
-	public void setFrom(String from) {
-		this.fromID = from;
+	public void setFromID(Element from) {
+		this.fromID = from.getNameID();
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public String getTo() {
+	public String getToID() {
 		return toID;
 	}
 	
@@ -144,8 +144,8 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setTo(Element to) {
-		this.toID = to.getNameID();
+	public void setToID(String to) {
+		this.toID = to;
 	}
 	
 	public void setTo(String to) {

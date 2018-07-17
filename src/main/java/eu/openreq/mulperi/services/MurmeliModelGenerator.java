@@ -282,7 +282,7 @@ public class MurmeliModelGenerator {
 		Element from = mapRequirement(dep.getFromId());
 		Element to = mapRequirement(dep.getToId());
 		
-		RelationshipType relationship = new RelationshipType(type, from, to);
+		RelationshipType relationship = new RelationshipType(type, from.getNameID(), to.getNameID());
 		
 		this.relations.add(relationship);
 		

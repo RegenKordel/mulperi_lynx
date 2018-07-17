@@ -23,21 +23,21 @@ public class AttributeDefinition {
 	@Expose
 	private Optionality optionality = Optionality.REQUIRED;
 	
-	public AttributeDefinition(Integer defaultValue, AttributeValueType type, Optionality opt) {
+	public AttributeDefinition(Integer defaultValue, String type, Optionality opt) {
 		
 		this.defaultValue = defaultValue;
-		this.valueType = type.getName();
+		this.valueType = type;
 		this.optionality = opt;
 	}
 	
 	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type, Optionality opt) {
 		
-		this(defaultValue.getID(), type, opt);
+		this(defaultValue.getID(), type.getName(), opt);
 	}
 	
 	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type) {
 		
-		this(defaultValue, type, Optionality.REQUIRED);
+		this(defaultValue.getID(), type.getName(), Optionality.REQUIRED);
 	}
 	
 	public AttributeDefinition(AttributeValueType type) {

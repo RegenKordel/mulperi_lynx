@@ -50,7 +50,7 @@ public class Release {
 	
 	@SerializedName("requirements")
 	@Expose
-	List<Requirement> requirements;
+	List<String> requirements;
 	
 	/**
 	 * (Required)
@@ -115,11 +115,11 @@ public class Release {
 		this.project = project;
 	}
 
-	public List<Requirement> getRequirements() {
+	public List<String> getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(List<Requirement> requirements) {
+	public void setRequirements(List<String> requirements) {
 		this.requirements = requirements;
 	}
 

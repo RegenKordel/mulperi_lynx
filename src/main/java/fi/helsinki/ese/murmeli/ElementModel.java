@@ -21,6 +21,10 @@ public class ElementModel {
 	@Expose
 	private HashMap<String, Element> elements;
 	
+	@SerializedName("subContainers")
+	@Expose
+	private List<Container> subContainers;
+	
 	@SerializedName("rootContainer")
 	@Expose
 	private Container rootContainer;
@@ -40,6 +44,7 @@ public class ElementModel {
 	@SerializedName("partDefinitions")
 	@Expose
 	private HashMap<Integer, PartDefinition> partDefinitions;
+
 	
 	/*@SerializedName("attributeValues")
 	@Expose
@@ -50,12 +55,11 @@ public class ElementModel {
 		this.attributeValueTypes = new HashMap();
 		this.elementTypes = new HashMap();
 		this.elements = new HashMap();
+		this.subContainers = new ArrayList();
 		this.rootContainer = null;
 		this.relations = new ArrayList();
 		this.constraints = new HashMap();
 		this.attributeValues = new HashMap();
-		this.partDefinitions = new HashMap();
-		//lisää oma lista partdefinitionille ja partsille
 	}
 	
 	public HashMap<String, AttributeValueType> getAttributeValueTypes() {
@@ -120,6 +124,14 @@ public class ElementModel {
 
 	public void setRootContainer(Container rootContainer) {
 		this.rootContainer = rootContainer;
+	}
+	
+	public List<Container> getsubContainers() {
+		return subContainers;
+	}
+
+	public void setSubContainers(List<Container> subContainers) {
+		this.subContainers = subContainers;
 	}
 
 	public List<RelationshipType> getRelations() {
