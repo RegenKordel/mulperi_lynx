@@ -83,10 +83,10 @@ public class Parts {
 		this.parts.add(part.getNameID());
 	}
 	
-//	public void addPartAsId(int id) {
-//		
-//		this.parts.add(id);
-//	}
+	public void addPartAsId(String id) {
+		
+		this.parts.add(id);
+	}
 	
 	public int getID() {
 		return this.id;

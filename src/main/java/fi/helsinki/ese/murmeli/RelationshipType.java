@@ -76,6 +76,16 @@ public class RelationshipType {
 		hid++;
 	}
 	
+	public RelationshipType(NameType nameType, Element from, Element to, int id) {
+		
+		this(nameType, from.getNameID(), to.getNameID(), id);
+	}
+	
+	public RelationshipType(NameType nameType, Element from, Element to) {
+		
+		this(nameType, from.getNameID(), to.getNameID());
+	}
+	
 	public int getID() {
 		return this.id;
 	}
@@ -116,6 +126,10 @@ public class RelationshipType {
 		this.fromID = from;
 	}
 	
+	public void setFromID(Element from) {
+		this.fromID = from.getNameID();
+	}
+	
 	/**
 	*
 	* (Required)
@@ -134,4 +148,7 @@ public class RelationshipType {
 		this.toID = to;
 	}
 	
+	public void setTo(String to) {
+		this.toID = to;
+	}
 }

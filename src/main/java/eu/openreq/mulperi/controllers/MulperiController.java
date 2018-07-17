@@ -93,8 +93,9 @@ public class MulperiController {
 		return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
 	}
 	
+	
 	/**
-	 * Import a model in MulSON format
+	 * Import a model in JSON format
 	 * @param requirements
 	 * @return
 	 * @throws JSONException 
@@ -102,24 +103,17 @@ public class MulperiController {
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 */
-	@ApiOperation(value = "Import MulSON model",
-			notes = "Import a model in MulSON format",
+	@ApiOperation(value = "Import OpenReq JSON model",
+			notes = "Import a model in JSON format",
 			response = String.class)
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Success, returns the ID of the generated model"),
+			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
-			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
-	@RequestMapping(value = "mulson", method = RequestMethod.POST)
-	public ResponseEntity<?> chocoMulson(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
+			@ApiResponse(code = 409, message = "Failure")}) 
+	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
+	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
 		
-		//String name = generateName(requirements);
 		System.out.println("Requirements received from Milla");
-		
-		//ParsedModel pm = transform.parseMulson(name, requirements);
-		ParsedModel pm = new ParsedModel();
-
-		
-	//	return sendModelToCaasAndSave(pm, caasAddress);
 		try {
 			return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
 		}
@@ -127,6 +121,41 @@ public class MulperiController {
 			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
 	}
+	
+//	/**
+//	 * Import a model in MulSON format
+//	 * @param requirements
+//	 * @return
+//	 * @throws JSONException 
+//	 * @throws ReleasePlanException 
+//	 * @throws ParserConfigurationException 
+//	 * @throws IOException 
+//	 */
+//	@ApiOperation(value = "Import MulSON model",
+//			notes = "Import a model in MulSON format",
+//			response = String.class)
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 201, message = "Success, returns the ID of the generated model"),
+//			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
+//			@ApiResponse(code = 409, message = "Failure, imported model is impossible")}) 
+//	@RequestMapping(value = "mulson", method = RequestMethod.POST)
+//	public ResponseEntity<?> chocoMulson(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
+//		
+//		//String name = generateName(requirements);
+//		System.out.println("Requirements received from Milla");
+//		
+//		//ParsedModel pm = transform.parseMulson(name, requirements);
+//		ParsedModel pm = new ParsedModel();
+//
+//		
+//	//	return sendModelToCaasAndSave(pm, caasAddress);
+//		try {
+//			return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
+//		}
+//		catch (Exception e) {
+//			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
+//		}
+//	}
 	
 	/**
 	 * Check whether a project is consistent
