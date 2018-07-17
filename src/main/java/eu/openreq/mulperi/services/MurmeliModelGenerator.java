@@ -167,7 +167,7 @@ public class MurmeliModelGenerator {
 		priorityDefault.setSource(Source.DEFAULT);
 		priorityDefault.setType(priorityType);
 		
-		AttributeDefinition atr = new AttributeDefinition(priorityDefault.getID(), priorityType.getName());
+		AttributeDefinition atr = new AttributeDefinition(priorityDefault, priorityType);
 		
 		this.attributeValueTypes.put("priority", priorityType);
 		this.attributeValues.put(priorityDefault.getID(), priorityDefault);
@@ -214,7 +214,7 @@ public class MurmeliModelGenerator {
 		
 		this.attributeValueTypes.put("statuses", statusType);
 		
-		AttributeDefinition def = new AttributeDefinition(submitted.getID(), statusType.getName());
+		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
 		submitted.setSource(Source.DEFAULT);
 		
 		return def;

@@ -30,17 +30,17 @@ public class AttributeDefinition {
 		this.optionality = opt;
 	}
 	
-	public AttributeDefinition(AttributeValue defaultValue, String type, Optionality opt) {
+	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type, Optionality opt) {
 		
-		this(defaultValue.getID(), type, opt);
+		this(defaultValue.getID(), type.getName(), opt);
 	}
 	
-	public AttributeDefinition(Integer defaultValue, String type) {
+	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type) {
 		
-		this(defaultValue, type, Optionality.REQUIRED);
+		this(defaultValue.getID(), type.getName(), Optionality.REQUIRED);
 	}
 	
-	public AttributeDefinition(String type) {
+	public AttributeDefinition(AttributeValueType type) {
 		
 		this(null, type);
 	}
