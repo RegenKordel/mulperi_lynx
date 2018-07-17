@@ -609,6 +609,11 @@ public class MurmeliModelGenerator {
 		Container dummy = new Container("dummy");
 		this.rootContainer.addChild(dummy);
 		
+		AttributeValue capacity = new AttributeValue("capacity", false, 0);
+		capacity.setSource(Source.DEFAULT);
+		capacity.setType(this.attributeValueTypes.get("capacity"));
+		dummy.addAttribute(capacity);
+		
 		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());
 	}
 	
