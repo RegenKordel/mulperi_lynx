@@ -118,6 +118,14 @@ public class AttributeValueType {
 		this(Cardinality.SINGLE, min, max);
 	}
 	
+	public int[] getRange() {
+		return range;
+	}
+
+	public void setRange(int[] range) {
+		this.range = range;
+	}
+
 	public Bound getBound() {
 		return bound;
 	}
