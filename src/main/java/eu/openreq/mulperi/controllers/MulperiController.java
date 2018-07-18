@@ -1,6 +1,6 @@
 package eu.openreq.mulperi.controllers;
 
-//import eu.openreq.mulperi.models.json.*;
+import eu.openreq.mulperi.models.json.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,8 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.openreq.mulperi.models.kumbang.Feature;
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
-import eu.openreq.mulperi.models.mulson.Requirement;
-import eu.openreq.mulperi.models.release.*;
+//import eu.openreq.mulperi.models.mulson.Requirement;
+import eu.openreq.mulperi.models.release.ReleasePlan;
+import eu.openreq.mulperi.models.release.ReleasePlanException;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
@@ -33,9 +34,11 @@ import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.KumbangModelGenerator;
+import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.ReleaseCSPPlanner;
 import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReleaseXMLParser;
+import fi.helsinki.ese.murmeli.ElementModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -112,6 +115,14 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
 	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		
+		JSONParser.parseToOpenReqObjects(requirements);
+		
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		
+		System.out.println(JSONParser.parseToJson(model));
 		
 		System.out.println("Requirements received from Milla");
 		try {

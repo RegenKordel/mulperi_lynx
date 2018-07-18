@@ -2,6 +2,7 @@ package eu.openreq.mulperi.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import eu.openreq.mulperi.models.json.*;
@@ -22,6 +23,8 @@ public class MurmeliModelGenerator {
 	private List<RelationshipType> relations;
 	private HashMap<Integer, Constraint> constraints;
 	private HashMap<Integer, AttributeValue> attributeValues;
+	private List<Container> subContainers;
+	private HashSet<String> requirementsInReleases;
 	
 	public MurmeliModelGenerator() {
 		
@@ -32,6 +35,9 @@ public class MurmeliModelGenerator {
 		this.relations = new ArrayList();
 		this.constraints = new HashMap();
 		this.attributeValues = new HashMap();
+		this.subContainers = new ArrayList();
+		
+		this.requirementsInReleases = new HashSet();
 		
 		initializeElementTypes();
 	}
@@ -105,7 +111,7 @@ public class MurmeliModelGenerator {
 		this.elementTypes.put("issue", issue);
 		this.elementTypes.put("user-story", userStory);
 		this.elementTypes.put("epic", epic);
-		this.elementTypes.put("functinal", functional);
+		this.elementTypes.put("functional", functional);
 		this.elementTypes.put("non-functional", nonFunctional);
 		this.elementTypes.put("prose", prose);
 		this.elementTypes.put("mock", mock);
@@ -212,7 +218,7 @@ public class MurmeliModelGenerator {
 		
 		statusType.setValues(statuses);
 		
-		this.attributeValueTypes.put("statuses", statusType);
+		this.attributeValueTypes.put("status", statusType);
 		
 		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
 		submitted.setSource(Source.DEFAULT);
@@ -310,57 +316,22 @@ public class MurmeliModelGenerator {
 		String name = req.getId();
 		AttributeValue<Integer> priority = new AttributeValue("priority", true, req.getPriority());
 		priority.setType(this.attributeValueTypes.get("priority"));
-		AttributeValue<String> status = factorStatus(req.getStatus());
+		
+		this.attributeValues.put(priority.getID(), priority);
+		
+		AttributeValue<String> status;
+		
+		if (req.getStatus() != null) {
+			status = factorStatus(req.getStatus());
+		} else {
+			status = factorStatus(Requirement_status.NEW);
+		}
 		
 		Element element = new Element(name);
 		element.addAttribute(priority);
 		element.addAttribute(status);
 		
-		switch (req.getRequirement_type()) {
-		case BUG:
-			element.setType(this.elementTypes.get("bug"));
-			element.addAttribute(factorEffort("bug"));
-			break;
-		case EPIC:
-			element.setType(this.elementTypes.get("epic"));
-			element.addAttribute(factorEffort("epic"));
-			break;
-		case FUNCTIONAL:
-			element.setType(this.elementTypes.get("functional"));
-			element.addAttribute(factorEffort("functional"));
-			break;
-		case INITIATIVE:
-			element.setType(this.elementTypes.get("initiative"));
-			element.addAttribute(factorEffort("initiative"));
-			break;
-		case ISSUE:
-			element.setType(this.elementTypes.get("issue"));
-			element.addAttribute(factorEffort("issue"));
-			break;
-		case NON_FUNCTIONAL:
-			element.setType(this.elementTypes.get("non-functional"));
-			element.addAttribute(factorEffort("non-functional"));
-			break;
-		case PROSE:
-			element.setType(this.elementTypes.get("prose"));
-			element.addAttribute(factorEffort("prose"));
-			break;
-		case REQUIREMENT:
-			element.setType(this.elementTypes.get("requirement"));
-			element.addAttribute(factorEffort("requirement"));
-			break;
-		case TASK:
-			element.setType(this.elementTypes.get("task"));
-			element.addAttribute(factorEffort("task"));
-			break;
-		case USER_STORY:
-			element.setType(this.elementTypes.get("user-story"));
-			element.addAttribute(factorEffort("user-story"));
-			break;
-		default:
-			//if requirement doesn't have a type it supposedly is not in the project
-			//and comes from a dependency. hence we create a mock element.
-			
+		if (req.getRequirement_type() == null) {
 			ElementType mock = this.elementTypes.get("mock");
 			element.setType(mock);
 			
@@ -369,8 +340,49 @@ public class MurmeliModelGenerator {
 			}
 			
 			element.setNameID(name + "-mock");
-			
-			break;
+		} else {
+			switch (req.getRequirement_type()) {
+			case BUG:
+				element.setType(this.elementTypes.get("bug"));
+				element.addAttribute(factorEffort("bug"));
+				break;
+			case EPIC:
+				element.setType(this.elementTypes.get("epic"));
+				element.addAttribute(factorEffort("epic"));
+				break;
+			case FUNCTIONAL:
+				element.setType(this.elementTypes.get("functional"));
+				element.addAttribute(factorEffort("functional"));
+				break;
+			case INITIATIVE:
+				element.setType(this.elementTypes.get("initiative"));
+				element.addAttribute(factorEffort("initiative"));
+				break;
+			case ISSUE:
+				element.setType(this.elementTypes.get("issue"));
+				element.addAttribute(factorEffort("issue"));
+				break;
+			case NON_FUNCTIONAL:
+				element.setType(this.elementTypes.get("non-functional"));
+				element.addAttribute(factorEffort("non-functional"));
+				break;
+			case PROSE:
+				element.setType(this.elementTypes.get("prose"));
+				element.addAttribute(factorEffort("prose"));
+				break;
+			case REQUIREMENT:
+				element.setType(this.elementTypes.get("requirement"));
+				element.addAttribute(factorEffort("requirement"));
+				break;
+			case TASK:
+				element.setType(this.elementTypes.get("task"));
+				element.addAttribute(factorEffort("task"));
+				break;
+			case USER_STORY:
+				element.setType(this.elementTypes.get("user-story"));
+				element.addAttribute(factorEffort("user-story"));
+				break;
+			}
 		}
 		
 		this.elements.put(name, element);
@@ -398,14 +410,14 @@ public class MurmeliModelGenerator {
 	 */
 	private AttributeValue<String> factorStatus(Requirement_status status) {
 		
-		AttributeValueType statuses = this.attributeValueTypes.get("statuses");
-		
+		AttributeValueType statuses = this.attributeValueTypes.get("status");
+
 		switch(status) {
 		case ACCEPTED:
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("accepted")) {
+				if (this.attributeValues.get(value).getValue().equals("accepted")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -415,7 +427,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("completed")) {
+				if (this.attributeValues.get(value).getValue().equals("completed")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -425,7 +437,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("deferred")) {
+				if (this.attributeValues.get(value).getValue().equals("deferred")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -434,7 +446,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("draft")) {
+				if (this.attributeValues.get(value).getValue().equals("draft")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -444,7 +456,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("inProgress")) {
+				if (this.attributeValues.get(value).getValue().equals("inProgress")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -454,7 +466,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 			
-				if (this.attributeValues.get(value).getName().equals("pending")) {
+				if (this.attributeValues.get(value).getValue().equals("pending")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -464,7 +476,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("rejected")) {
+				if (this.attributeValues.get(value).getValue().equals("rejected")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -474,7 +486,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("submitted")) {
+				if (this.attributeValues.get(value).getValue().equals("submitted")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -484,7 +496,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("new")) {
+				if (this.attributeValues.get(value).getValue().equals("new")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -494,7 +506,7 @@ public class MurmeliModelGenerator {
 
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("planned")) {
+				if (this.attributeValues.get(value).getValue().equals("planned")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -504,7 +516,7 @@ public class MurmeliModelGenerator {
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getName().equals("recommended")) {
+				if (this.attributeValues.get(value).getValue().equals("recommended")) {
 					return this.attributeValues.get(value);
 				}
 			}
@@ -537,11 +549,21 @@ public class MurmeliModelGenerator {
 		
 		Container root = new Container("root");
 		
+		this.rootContainer = root;
+		
 		for (Element elmnt : this.elements.values()) {
 			root.addElement(elmnt);
 		}
 		
 		return root;
+	}
+	
+	public void addElementsToRootContainer() {
+		for (String element : this.elements.keySet()) {
+			if (!this.requirementsInReleases.contains(element)) {
+				this.rootContainer.addElement(element);
+			}
+		}
 	}
 	
 	/**
@@ -571,8 +593,10 @@ public class MurmeliModelGenerator {
 		this.initializeRootContainer();
 		
 		for (Release release : releases) {
-			this.rootContainer.addChild(mapRelease(release));
+			mapRelease(release);
 		}
+		
+		this.addElementsToRootContainer();
 		
 		model.setConstraints(this.constraints);
 		model.setElements(this.elements);
@@ -580,6 +604,10 @@ public class MurmeliModelGenerator {
 		model.setRootContainer(this.rootContainer);
 		model.setRelations(this.relations);
 		model.setAttributeValueTypes(this.attributeValueTypes);
+		model.setSubContainers(this.subContainers);
+		model.setAttributeValues(this.attributeValues);
+		
+		this.rootContainer.setChildren(this.subContainers);
 		
 		return model;
 	}
@@ -596,18 +624,18 @@ public class MurmeliModelGenerator {
 		
 		for (String req : release.getRequirements()) {
 			rele.addElement(findRequirement(req));
+			this.requirementsInReleases.add(req);
 		}
-		
+		this.subContainers.add(rele);
 		return rele;
 	}
 
 	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
 		
 		//if there are no releases in input the method will create a dummy release
-		initializeRootContainer();
 		
 		Container dummy = new Container("dummy");
-		this.rootContainer.addChild(dummy);
+		this.subContainers.add(dummy);
 		
 		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());
 	}

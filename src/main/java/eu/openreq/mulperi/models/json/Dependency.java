@@ -56,7 +56,7 @@ public class Dependency {
 	*/
 	@SerializedName("created_at")
 	@Expose
-	private int created_at;
+	private long created_at;
 
 	public Dependency_type getDependency_type() {
 		return dependency_type;
@@ -98,11 +98,11 @@ public class Dependency {
 		this.toId = toId;
 	}
 	
-	public int getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 	
-	public void setCreated_at(int created_at) {
+	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
 }
