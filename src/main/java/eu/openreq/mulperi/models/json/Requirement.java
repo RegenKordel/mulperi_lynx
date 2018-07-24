@@ -63,6 +63,14 @@ public class Requirement {
 	@SerializedName("priority")
 	@Expose
 	private int priority;
+	public int getEffort() {
+		return effort;
+	}
+
+	public void setEffort(int effort) {
+		this.effort = effort;
+	}
+
 	/**
 	* The type of a requirement
 	* 
@@ -92,6 +100,11 @@ public class Requirement {
 	@SerializedName("classifierResults")
 	@Expose
 	private List<Classifier> classifierResults = null;
+	
+	@SerializedName("effort")
+	@Expose
+	private int effort;
+	
 	
 	
 	public String getId() {

@@ -19,7 +19,7 @@ public class Release {
 	 */
 	@SerializedName("id")
 	@Expose
-	String id;
+	int id;
 	
 	@SerializedName("created_at")
 	@Expose
@@ -42,7 +42,7 @@ public class Release {
 	 */
 	@SerializedName("capacity")
 	@Expose
-	long capacity;
+	int capacity;
 	
 	@SerializedName("project")
 	@Expose
@@ -59,11 +59,11 @@ public class Release {
 	@Expose
 	Status status;
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -103,7 +103,7 @@ public class Release {
 		return capacity;
 	}
 
-	public void setCapacity(long capacity) {
+	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
 

@@ -114,6 +114,7 @@ public class MurmeliModelGenerator {
 		this.elementTypes.put("functional", functional);
 		this.elementTypes.put("non-functional", nonFunctional);
 		this.elementTypes.put("prose", prose);
+		this.elementTypes.put("requirement", requirement);
 		this.elementTypes.put("mock", mock);
 		
 		initializePotentialParts();
@@ -345,43 +346,43 @@ public class MurmeliModelGenerator {
 			switch (req.getRequirement_type()) {
 			case BUG:
 				element.setType(this.elementTypes.get("bug"));
-				element.addAttribute(factorEffort("bug"));
+				element.addAttribute(factorEffort(req, "bug"));
 				break;
 			case EPIC:
 				element.setType(this.elementTypes.get("epic"));
-				element.addAttribute(factorEffort("epic"));
+				element.addAttribute(factorEffort(req, "epic"));
 				break;
 			case FUNCTIONAL:
 				element.setType(this.elementTypes.get("functional"));
-				element.addAttribute(factorEffort("functional"));
+				element.addAttribute(factorEffort(req, "functional"));
 				break;
 			case INITIATIVE:
 				element.setType(this.elementTypes.get("initiative"));
-				element.addAttribute(factorEffort("initiative"));
+				element.addAttribute(factorEffort(req, "initiative"));
 				break;
 			case ISSUE:
 				element.setType(this.elementTypes.get("issue"));
-				element.addAttribute(factorEffort("issue"));
+				element.addAttribute(factorEffort(req, "issue"));
 				break;
 			case NON_FUNCTIONAL:
 				element.setType(this.elementTypes.get("non-functional"));
-				element.addAttribute(factorEffort("non-functional"));
+				element.addAttribute(factorEffort(req, "non-functional"));
 				break;
 			case PROSE:
 				element.setType(this.elementTypes.get("prose"));
-				element.addAttribute(factorEffort("prose"));
+				element.addAttribute(factorEffort(req, "prose"));
 				break;
 			case REQUIREMENT:
 				element.setType(this.elementTypes.get("requirement"));
-				element.addAttribute(factorEffort("requirement"));
+				element.addAttribute(factorEffort(req, "requirement"));
 				break;
 			case TASK:
 				element.setType(this.elementTypes.get("task"));
-				element.addAttribute(factorEffort("task"));
+				element.addAttribute(factorEffort(req, "task"));
 				break;
 			case USER_STORY:
 				element.setType(this.elementTypes.get("user-story"));
-				element.addAttribute(factorEffort("user-story"));
+				element.addAttribute(factorEffort(req, "user-story"));
 				break;
 			}
 		}
@@ -391,12 +392,19 @@ public class MurmeliModelGenerator {
 		return element;
 	}
 
-	private AttributeValue factorEffort(String type) {
+	private AttributeValue factorEffort(Requirement req, String type) {
 		
 		for (AttributeDefinition def : this.elementTypes.get(type).getAttributeDefinitions()) {
 			
 			if (this.attributeValueTypes.get(def.getValueType()).getName().equals("effort")) {
-				return this.attributeValues.get(def.getDefaultValue());
+				if (req.getEffort() == 0) {
+					return this.attributeValues.get(def.getDefaultValue());
+				} else {
+					AttributeValue value = new AttributeValue("effort", false, req.getEffort());
+					this.attributeValues.put(value.getID(), value);
+					value.setType(this.attributeValueTypes.get("effort"));
+					return value;
+				}
 			}
 		}
 		
@@ -615,13 +623,17 @@ public class MurmeliModelGenerator {
 	
 	private Container mapRelease(Release release) {
 		
-		Container rele = new Container(release.getId());
+		Container rele = new Container(release.getId()+"", release.getId());
 		
-		AttributeValue capacity = new AttributeValue("capacity", false, release.getCapacity());
+		AttributeValue<Integer> capacity = new AttributeValue("capacity", false, (int) release.getCapacity());
+		
 		capacity.setSource(Source.FIXED);
 		capacity.setType(this.attributeValueTypes.get("capacity"));
 		
 		rele.addAttribute(capacity);
+		this.attributeValues.put(capacity.getID(), capacity);
+		
+		System.out.println("Capacity: " + this.attributeValues.get(rele.getAttributes().get("capacity")).getValue());
 		
 		for (String req : release.getRequirements()) {
 			rele.addElement(findRequirement(req));

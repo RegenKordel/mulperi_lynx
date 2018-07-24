@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
+import eu.openreq.mulperi.graveyard.Utils;
 import eu.openreq.mulperi.models.kumbang.Attribute;
 import eu.openreq.mulperi.models.kumbang.Constraint;
 import eu.openreq.mulperi.models.kumbang.Feature;
@@ -16,7 +17,6 @@ import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.kumbang.SubFeature;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.services.FormatTransformerService;
-import eu.openreq.mulperi.services.Utils;
 
 public class UtilsTests {
 

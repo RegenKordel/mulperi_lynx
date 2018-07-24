@@ -14,10 +14,10 @@ import com.google.gson.annotations.SerializedName;
 *
 */
 public class Container {
-
+	
 	@SerializedName("id")
 	@Expose
-	final private int id;
+	private int id;
 
 	/**
 	*
@@ -71,6 +71,9 @@ public class Container {
 	
 	public int getID() {
 		return this.id;
+	}
+	public void setID(int id) {
+		this.id = id;
 	}
 	
 	public void addChild(Container child) {

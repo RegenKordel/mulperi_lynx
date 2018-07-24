@@ -12,7 +12,7 @@ import eu.openreq.mulperi.models.kumbang.Constraint;
 import eu.openreq.mulperi.models.kumbang.Feature;
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.kumbang.SubFeature;
-import eu.openreq.mulperi.services.KumbangModelGenerator;
+import eu.openreq.mulperi.graveyard.KumbangModelGenerator;
 
 public class KumbangModelGeneratorTests {
 	

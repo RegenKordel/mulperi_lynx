@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.services;
+package eu.openreq.mulperi.graveyard;
 
 import eu.openreq.mulperi.models.kumbang.Attribute;
 import eu.openreq.mulperi.models.kumbang.Component;
