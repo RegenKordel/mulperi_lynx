@@ -135,7 +135,7 @@ public class MurmeliModelGenerator {
 		AttributeValueType effortType = new AttributeValueType(BaseType.INT, Cardinality.SINGLE, "effort");
 		effortType.setBound(Bound.UNBOUND);
 		
-		AttributeValue defaultEffort = new AttributeValue("effort", true, 0);
+		AttributeValue defaultEffort = new AttributeValue<Integer>("effort", true, (int) 0);
 		defaultEffort.setType(effortType);
 		defaultEffort.setSource(Source.DEFAULT);
 		
@@ -400,7 +400,7 @@ public class MurmeliModelGenerator {
 				if (req.getEffort() == 0) {
 					return this.attributeValues.get(def.getDefaultValue());
 				} else {
-					AttributeValue value = new AttributeValue("effort", false, req.getEffort());
+					AttributeValue value = new AttributeValue<Integer>("effort", false, (int) req.getEffort());
 					this.attributeValues.put(value.getID(), value);
 					value.setType(this.attributeValueTypes.get("effort"));
 					return value;
@@ -632,9 +632,7 @@ public class MurmeliModelGenerator {
 		
 		rele.addAttribute(capacity);
 		this.attributeValues.put(capacity.getID(), capacity);
-		
-		System.out.println("Capacity: " + this.attributeValues.get(rele.getAttributes().get("capacity")).getValue());
-		
+			
 		for (String req : release.getRequirements()) {
 			rele.addElement(findRequirement(req));
 			this.requirementsInReleases.add(req);

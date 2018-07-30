@@ -1,6 +1,7 @@
 package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import org.chocosolver.solver.constraints.nary.nValue.amnv.differences.D;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
 import eu.openreq.mulperi.graveyard.ReleaseXMLParser;
+import eu.openreq.mulperi.models.json.Requirement;
+import eu.openreq.mulperi.models.json.Requirement_type;
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.models.release.ReleasePlan;
 import eu.openreq.mulperi.models.release.ReleasePlanException;
@@ -31,6 +39,8 @@ import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.CaasClient;
 import eu.openreq.mulperi.services.FormatTransformerService;
+import eu.openreq.mulperi.services.JSONParser;
+import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.ReleaseCSPPlanner;
 import eu.openreq.mulperi.services.ReleaseJSONParser;
 import eu.openreq.mulperi.services.ReqifParser;
@@ -242,6 +252,68 @@ public class TestingController {
 		String json = gson.toJson(model);
 		
 		System.out.println("\n" + json);
+	}
+	
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false
+	 * 			}
+	 * 		}
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Is release plan consistent",
+			notes = "Check whether a release plan is consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
+	@RequestMapping(value = "/testKelju", method = RequestMethod.POST)
+	public ResponseEntity<?> testKelju(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+		
+		System.out.println("Post To Caas");
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		String actualPath = "/testKelju"; 
+
+		String completeAddress = caasAddress + actualPath;
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		
+		JSONParser.parseToOpenReqObjects(jsonString);
+		
+//		for (Requirement req : JSONParser.requirements) {
+//			if (req.getRequirement_type() == null) {
+//				req.setRequirement_type(Requirement_type.REQUIREMENT);
+//			}
+//		} 
+		
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		
+		Gson gson = new Gson();
+		String murmeli = gson.toJson(model);
+		
+		System.out.println("Post To Caas");
+		
+		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+		ResponseEntity<?> response = null;
+		try {
+			response = rt.postForEntity(completeAddress, entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+		}
+
+		return response;
 	}
 	
 }

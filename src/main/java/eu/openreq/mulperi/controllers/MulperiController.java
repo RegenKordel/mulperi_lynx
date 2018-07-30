@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+
 import eu.openreq.mulperi.models.kumbang.Feature;
 import eu.openreq.mulperi.models.kumbang.ParsedModel;
 //import eu.openreq.mulperi.models.mulson.Requirement;
@@ -131,8 +133,6 @@ public class MulperiController {
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
 		
-		System.out.println(JSONParser.parseToJson(model));
-		
 		System.out.println("Requirements received from Milla");
 		try {
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
@@ -168,53 +168,42 @@ public class MulperiController {
 	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		
+		System.out.println("Post To Caas");
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		String actualPath = "/uploadDataAndCheckForConsistency"; 
+
+		String completeAddress = caasAddress + actualPath;
+		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		
 		JSONParser.parseToOpenReqObjects(jsonString);
-		 
+		
 		for (Requirement req : JSONParser.requirements) {
-			System.out.println(req.getRequirement_type());
 			if (req.getRequirement_type() == null) {
 				req.setRequirement_type(Requirement_type.REQUIREMENT);
 			}
-			System.out.println(req.getRequirement_type());
-		}
+		} 
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases);
 		
-		System.out.println("ID: " + model.getsubContainers().get(0).getID());
+		Gson gson = new Gson();
+		String murmeli = gson.toJson(model);
 		
-//		ReleasePlan releasePlan = null;
-//		try {
-////			releasePlan
-////			= ReleaseJSONParser.parseProjectJSON(jsonString);
-////			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
-////			//Should be updated at some point.
-////			List<String> problems = releasePlan.generateParsedModel(); 
-////			if (!problems.isEmpty()) {
-////				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
-////			}
-//		} 
-//		catch (ReleasePlanException ex) {
-//			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
-//					(ex.getMessage() == null ? "":	ex.getMessage()) +
-//					(ex.getCause() == null ? "" : ex.getCause().toString()),
-//					HttpStatus.BAD_REQUEST);
-//		}
+		System.out.println("Post To Caas");
 		
-		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(model);
-		rcspGen.generateCSP();
-		
-		boolean isConsistent = rcspGen.isReleasePlanConsistent();
-		if (isConsistent) {
-			return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(true, "Consistent", false),
-				HttpStatus.OK);
+		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+		ResponseEntity<?> response = null;
+		try {
+			response = rt.postForEntity(completeAddress, entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		
-		return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(false, "Not consistent", false),
-				HttpStatus.CONFLICT);
+
+		return response;
 	}
 	
 
@@ -249,44 +238,40 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+		Gson gson = new Gson();
+		
+		System.out.println("Post To Caas");
+		RestTemplate rt = new RestTemplate();
 
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		String actualPath = "/uploadDataCheckForConsistencyAndDoDiagnosis"; 
+
+		String completeAddress = caasAddress + actualPath;
 		
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
-//		try {
-//			releasePlan
-//			= ReleaseJSONParser.parseProjectJSON(jsonString);
-//			//Note! GenerateParsedModel uses old Kumbang objects, it is left here for demo purposes.
-//			//Should be updated at some point. 
-//			List<String> problems = releasePlan.generateParsedModel(); 
-//			if (!problems.isEmpty()) {
-//				return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" + problems.toString(), HttpStatus.BAD_REQUEST);
-//			}
-//		} 
-//		catch (ReleasePlanException ex) {
-//			return new ResponseEntity<>("Erroneus releasePlan. Errors: \n\n" +
-//					(ex.getMessage() == null ? "":	ex.getMessage()) +
-//					(ex.getCause() == null ? "" : ex.getCause().toString()),
-//					HttpStatus.BAD_REQUEST);
-//		}
-		
-		ReleaseCSPPlanner rcspGen = new ReleaseCSPPlanner(model);
-		rcspGen.generateCSP();
-		
-		boolean isConsistent = rcspGen.isReleasePlanConsistent();
-		if (isConsistent) {
-			return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(true, "Consistent", true),
-				HttpStatus.OK);
+		for (Requirement req : JSONParser.requirements) {
+			if (req.getRequirement_type() == null) {
+				req.setRequirement_type(Requirement_type.REQUIREMENT);
+			}
 		}
 		
-		String diagnosis = rcspGen.getDiagnosis();
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases);
+
+		String murmeli = gson.toJson(model);
 		
-		return new ResponseEntity<>(
-				transform.generateProjectJsonResponse(false, diagnosis, true),
-				HttpStatus.CONFLICT);
+		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+		ResponseEntity<?> response = null;
+		try {
+			response = rt.postForEntity(completeAddress, entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+		}
+
+		return response;
 	}
 
 	

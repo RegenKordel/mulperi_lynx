@@ -35,7 +35,7 @@ public class ReleaseCSPPlanner {
 	public ReleaseCSPPlanner(ElementModel elementModel) {
 		//this.releasePlan = releasePlan;
 		this.elementModel = elementModel;
-		nReleases = elementModel.getsubContainers().size()+1;
+		nReleases = elementModel.getsubContainers().size();
 		nRequirements = elementModel.getElements().size();
 		reqIDToIndex = new LinkedHashMap<>(nRequirements);
 		indexToreqID = new LinkedHashMap<>(nRequirements);
@@ -90,11 +90,10 @@ public class ReleaseCSPPlanner {
 			for (Element requirement : elementModel.getElements().values()) {
 				Req4Csp req4Csp = reqCSPs[reqIDToIndex.get(requirement.getNameID())];
 
-				IntVar effortVar = req4Csp.getEffortOfRelease(release.getID());
-				System.out.println(effortVar);
-				if (effortVar.getUB() > 0) {// do not add variable to be summed if the variable cannot be > 0 TODO = removed
+				IntVar effortVar = req4Csp.getEffortOfRelease(release.getID() - 1);
+
+				if (effortVar.getUB() >= 0) {// do not add variable to be summed if the variable cannot be > 0
 					releaseEffortVars.add(effortVar);
-					System.out.println("Effort vars: " + releaseEffortVars);
 				}
 			}
 			if (releaseEffortVars.size() > 0) {
@@ -204,13 +203,16 @@ public class ReleaseCSPPlanner {
 	}
 
 	public boolean isReleasePlanConsistent() {
+		
 		for (int index = 0; index < nRequirements; index++) {
 			reqCSPs[index].require(true);
 		}
 		model.getSolver().reset();
 
 		Solver solver = model.getSolver();
-		return solver.solve();
+		boolean solution = solver.solve();
+		
+		return solution;
 	}
 	
 	/**
@@ -304,18 +306,22 @@ public class ReleaseCSPPlanner {
 		 * @param rcg
 		 */
 		private void setAssignedRelease(Element requirement, ReleaseCSPPlanner rcg) {
-			if (getAssignedRelease(requirement) == 0) {
-				assignedRelease = model.intVar(requirement.getNameID() + "_assignedTo", 0, rcg.getNReleases() - 1);
+			if (getRelease(requirement) == 0) {
+				assignedRelease = model.intVar(requirement.getNameID() + "_assignedTo", 
+						-1, rcg.getNReleases() - 1);
 			} else {
 				assignedRelease = model.intVar(requirement.getNameID() + "_assignedTo",
-						getAssignedRelease(requirement) - 1);
+						getRelease(requirement) - 1);
 			}
 		}
 		
 		private int getAssignedRelease(Element requirement) {
+			return this.assignedRelease.getUB();
+		}
+		
+		private int getRelease(Element requirement) {
 			for (Container release : this.elementModel.getsubContainers()) {
 				if (release.getElements().contains(requirement.getNameID())) {
-					System.out.println(requirement.getNameID() + " Release id: " + release.getID());
 					return release.getID();
 				}
 			}
@@ -333,19 +339,18 @@ public class ReleaseCSPPlanner {
 		 * @param rcg
 		 */
 		private void createEffortVariables(Element requirement, ReleaseCSPPlanner rcg) {
-			effortInRelease = new IntVar[rcg.getNReleases()];
+			effortInRelease = new IntVar[rcg.getNReleases()+1];
 			int[] effortDomain = new int[2];
 			effortDomain[0] = 0;
 			effortDomain[1] = getEffort(requirement); // What if there is no effort?
 
 			for (int releaseIndex = 0; releaseIndex < rcg.getNReleases(); releaseIndex++) {
 				String varName = "req_" + requirement.getNameID() + "_" + (releaseIndex); //e.g req_REQ1_1 (Requirement 1 in release 1)
-				
-				if (getAssignedRelease(requirement) == 0) { // not assigned
+
+				if (getAssignedRelease(requirement) == -1) { // not assigned
 					effortInRelease[releaseIndex] = model.intVar(varName, effortDomain); // effort in release is 0 or the effort																				
 				} else {// assigned to release
 					if (getAssignedRelease(requirement) == releaseIndex) {
-						
 						effortInRelease[releaseIndex] = model.intVar(varName, effortDomain); //e.g for REQ2_1 (meaning REQ2 in release 1) effortInRelease is req_REQ2_1 = {0,2}
 					} else {
 						effortInRelease[releaseIndex] = model.intVar(varName, 0); // domain is fixed 0 in other releases (e.g for REQ2_2 (meaning REQ2 in release 2) effortInRelease is req_REQ2_2 = 0
@@ -375,9 +380,9 @@ public class ReleaseCSPPlanner {
 					// Source: http://www.choco-solver.org/apidocs/org/chocosolver/solver/constraints/IReificationFactory.html
 				}
 			} else {
-				model.ifThenElse(isIncluded,
-						model.arithm(effortInRelease[getAssignedRelease(requirement) - 1], "=", getEffort(requirement)),
-						model.arithm(effortInRelease[getAssignedRelease(requirement) - 1], "=", 0));
+				model.ifThenElse(model.arithm(isIncluded, "=", 1),
+						model.arithm(effortInRelease[getAssignedRelease(requirement)], "=", getEffort(requirement)),
+						model.arithm(effortInRelease[getAssignedRelease(requirement)], "=", 0));
 				// if isIncluded, Then model.arithm(effortInRelease[requirement.getAssignedRelease() - 1], "=",requirement.getEffort()),
 				// and if Not isIncluded, Then model.arithm(effortInRelease[requirement.getAssignedRelease() - 1], "=", 0)
 				// "IReificationFactory.ifThenElse(BoolVar ifVar, Constraint thenCstr, Constraint elseCstr)"
