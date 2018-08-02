@@ -10,7 +10,7 @@ import fi.helsinki.ese.murmeli.*;
 import fi.helsinki.ese.murmeli.AttributeValueType.BaseType;
 import fi.helsinki.ese.murmeli.AttributeValueType.Bound;
 import fi.helsinki.ese.murmeli.AttributeValueType.Cardinality;
-import fi.helsinki.ese.murmeli.RelationshipType.NameType;
+import fi.helsinki.ese.murmeli.Relationship.NameType;
 import fi.helsinki.ese.murmeli.AttributeValue.Source;
 
 public class MurmeliModelGenerator {
@@ -20,7 +20,7 @@ public class MurmeliModelGenerator {
 	private HashMap<String, ElementType> elementTypes;
 	private HashMap<String, Element> elements;
 	private Container rootContainer;
-	private List<RelationshipType> relations;
+	private List<Relationship> relations;
 	private HashMap<Integer, Constraint> constraints;
 	private HashMap<Integer, AttributeValue> attributeValues;
 	private List<Container> subContainers;
@@ -233,9 +233,9 @@ public class MurmeliModelGenerator {
 	 * @return
 	 */
 
-	public RelationshipType mapDependency(Dependency dep) {
+	public Relationship mapDependency(Dependency dep) {
 		
-		RelationshipType.NameType type = null;
+		Relationship.NameType type = null;
 		
 		switch(dep.getDependency_type()) {
 		case CONTRIBUTES:
@@ -289,15 +289,18 @@ public class MurmeliModelGenerator {
 		Element from = findRequirement(dep.getFromId());
 		Element to = findRequirement(dep.getToId());
 		
-		RelationshipType relationship = new RelationshipType(type, from.getNameID(), to.getNameID());
+		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
 		
+		System.out.println("From: " + relationship.getFromID() + " To: " + relationship.getToID());
+		System.out.println(this.elements.get(from.getNameID()));
+		System.out.println(this.elements.get(to.getNameID()));
 		this.relations.add(relationship);
 		
 		return relationship;
 	}
 
 	private Element findRequirement(String id) {
-		
+		System.out.println("Lollero id on: " + id);
 		if (this.elements.containsKey(id)) {
 			return this.elements.get(id);
 		}
@@ -386,8 +389,9 @@ public class MurmeliModelGenerator {
 				break;
 			}
 		}
-		
-		this.elements.put(name, element);
+		// TODO: in case of mock, might cause problems when trying to find the 
+		// element in the context of the project the mock element doesn't exist in
+		this.elements.put(element.getNameID(), element);
 		
 		return element;
 	}
@@ -643,14 +647,15 @@ public class MurmeliModelGenerator {
 
 	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
 		
-		//if there are no releases in input the method will create a dummy release
-		
+		//if there are no releases in input the method will create a dummy release, ID is set to 1 because of Choco
 		Container dummy = new Container("dummy");
+		dummy.setID(1);
 		this.subContainers.add(dummy);
 		
-		AttributeValue capacity = new AttributeValue("capacity", false, 0);
+		AttributeValue capacity = new AttributeValue("capacity", false, 10);
 		capacity.setSource(Source.DEFAULT);
 		capacity.setType(this.attributeValueTypes.get("capacity"));
+		this.attributeValues.put(capacity.getID(), capacity);
 		dummy.addAttribute(capacity);
 		
 		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());

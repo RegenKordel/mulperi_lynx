@@ -276,7 +276,7 @@ public class TestingController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
 	@RequestMapping(value = "/testKelju", method = RequestMethod.POST)
-	public ResponseEntity<?> testKelju(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> testKelju(@RequestBody String jsonString, String id) throws JSONException, IOException, ParserConfigurationException {
 		
 		System.out.println("Post To Caas");
 		RestTemplate rt = new RestTemplate();
@@ -292,13 +292,15 @@ public class TestingController {
 		
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
-//		for (Requirement req : JSONParser.requirements) {
-//			if (req.getRequirement_type() == null) {
-//				req.setRequirement_type(Requirement_type.REQUIREMENT);
-//			}
-//		} 
+		for (Requirement req : JSONParser.requirements) {
+			if (req.getRequirement_type() == null) {
+				req.setRequirement_type(Requirement_type.REQUIREMENT);
+			}
+		} 
 		
+		// TODO Should check if the element is in the model
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		//model.getsubContainers().get(0).addElement(model.getElements().get(id));
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);

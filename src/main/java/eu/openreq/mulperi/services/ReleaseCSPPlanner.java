@@ -16,7 +16,7 @@ import eu.openreq.mulperi.models.release.Release;
 import eu.openreq.mulperi.models.release.ReleasePlan;
 import eu.openreq.mulperi.models.release.Requirement;
 import fi.helsinki.ese.murmeli.*;
-import fi.helsinki.ese.murmeli.RelationshipType.NameType;
+import fi.helsinki.ese.murmeli.Relationship.NameType;
 
 
 public class ReleaseCSPPlanner {
@@ -127,10 +127,10 @@ public class ReleaseCSPPlanner {
 		}
 	}
 	
-	private List<RelationshipType> getRequiresDependencies(Element element) {
-		List<RelationshipType> dependencies = new ArrayList<>();
+	private List<Relationship> getRequiresDependencies(Element element) {
+		List<Relationship> dependencies = new ArrayList<>();
 		
-		for (RelationshipType relation : this.elementModel.getRelations()) {
+		for (Relationship relation : this.elementModel.getRelations()) {
 			if (relation.getFromID().equals(element.getNameID())) {
 				if (relation.getNameType().equals(NameType.REQUIRES)) {
 					dependencies.add(relation);
@@ -154,10 +154,10 @@ public class ReleaseCSPPlanner {
 		}
 	}
 	
-	private List<RelationshipType> getExcludesDependencies(Element element) {
-		List<RelationshipType> dependencies = new ArrayList<>();
+	private List<Relationship> getExcludesDependencies(Element element) {
+		List<Relationship> dependencies = new ArrayList<>();
 		
-		for (RelationshipType relation : this.elementModel.getRelations()) {
+		for (Relationship relation : this.elementModel.getRelations()) {
 			if (relation.getFromID().equals(element.getNameID())) {
 				if (relation.getNameType().equals(NameType.INCOMPATIBLE)) {
 					dependencies.add(relation);
@@ -185,9 +185,9 @@ public class ReleaseCSPPlanner {
 	 *            String that tells the model if the two requirements can or cannot
 	 *            be in the same release (or in a previous etc)
 	 */
-	private void addDependenciesToModel(Req4Csp requirementFrom, List<RelationshipType> dependencies, Model model,
+	private void addDependenciesToModel(Req4Csp requirementFrom, List<Relationship> dependencies, Model model,
 			int isIncludedValue, String relation) {
-		for (RelationshipType rel : dependencies) {
+		for (Relationship rel : dependencies) {
 			int requirementIndex = reqIDToIndex.get(rel.getToID());
 			Req4Csp requirementTo = reqCSPs[requirementIndex];
 			IntVar size = model.intVar("size", 2); // added this and the third model.arithm(), breaks consistency if
