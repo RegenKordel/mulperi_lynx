@@ -4,7 +4,9 @@ import eu.openreq.mulperi.models.json.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -356,24 +359,27 @@ public class MulperiController {
 	
 	
 	@ApiOperation(value = "Get the transitive closure of a requirement",
-			notes = "Returns the transitive closure of given requirement",
+			notes = "Returns the transitive closure of a given requirement to the specified depth",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success, returns JSON model"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Check of inconsistency returns what?")}) 
+			@ApiResponse(code = 409, message = "Conflict")}) 
 	@RequestMapping(value = "/findTransitiveClosureOfRequirement", method = RequestMethod.POST)
-	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody String requirement) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestParam String requirementId, @RequestParam int depth) throws JSONException, IOException, ParserConfigurationException {
 		RestTemplate rt = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		String completeAddress = caasAddress + "/findTransitiveClosureOfElement";
 		
-		HttpEntity<String> entity = new HttpEntity<String>(requirement, headers);
+		Map<String, Integer> requested = new HashMap<>();
+		requested.put(requirementId, depth);
+		HttpEntity<Map> entity = new HttpEntity<Map>(requested, headers);
+
 		ResponseEntity<?> response = null;
 		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
+			response = rt.postForEntity(completeAddress, entity, Map.class);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
