@@ -53,6 +53,7 @@ import io.swagger.annotations.ApiResponses;
 public class TestingController { 
 
 	private FormatTransformerService transform = new FormatTransformerService();
+	private Gson gson = new Gson();
 
 	@Value("${mulperi.caasAddress}")
 	private String caasAddress;
@@ -300,7 +301,6 @@ public class TestingController {
 		
 		// TODO Should check if the element is in the model
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
-		//model.getsubContainers().get(0).addElement(model.getElements().get(id));
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
