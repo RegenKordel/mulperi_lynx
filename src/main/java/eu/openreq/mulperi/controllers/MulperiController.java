@@ -122,7 +122,7 @@ public class MulperiController {
 		
 		JSONParser.parseToOpenReqObjects(requirements);
 		
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
 		
 		try {
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
@@ -178,7 +178,7 @@ public class MulperiController {
 			}
 		} 
 		
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases);
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
@@ -249,7 +249,7 @@ public class MulperiController {
 		}
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases);
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
 
 		String murmeli = gson.toJson(model);
 		
@@ -342,7 +342,7 @@ public class MulperiController {
 		} 
 		
 		// TODO Should check if the element is in the model
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
 
 		String murmeli = gson.toJson(model);
 		
