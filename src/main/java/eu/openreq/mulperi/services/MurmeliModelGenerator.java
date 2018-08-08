@@ -554,13 +554,13 @@ public class MurmeliModelGenerator {
 		return mapConstraint(expression, "");
 	}
 	
-	public Container initializeRootContainer() {
+	public Container initializeRootContainer(String projectName) {
 		
 		if (this.rootContainer != null) {
 			return this.rootContainer;
 		}
 		
-		Container root = new Container("root");
+		Container root = new Container(projectName);
 		
 		this.rootContainer = root;
 		
@@ -587,7 +587,7 @@ public class MurmeliModelGenerator {
 	 * @param releases
 	 * @return
 	 */
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases, String projectName) {
 		
 		ElementModel model = new ElementModel();
 		
@@ -603,7 +603,7 @@ public class MurmeliModelGenerator {
 			mapDependency(dep);
 		}
 		
-		this.initializeRootContainer();
+		this.initializeRootContainer(projectName);
 		
 		for (Release release : releases) {
 			mapRelease(release);
@@ -645,7 +645,7 @@ public class MurmeliModelGenerator {
 		return rele;
 	}
 
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, String projectName) {
 		
 		//if there are no releases in input the method will create a dummy release, ID is set to 1 because of Choco
 		Container dummy = new Container("dummy");
@@ -658,11 +658,11 @@ public class MurmeliModelGenerator {
 		this.attributeValues.put(capacity.getID(), capacity);
 		dummy.addAttribute(capacity);
 		
-		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());
+		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>(), projectName);
 	}
 	
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<Dependency> dependencies) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<Dependency> dependencies, String projectName) {
 		
-		return this.initializeElementModel(requirements, new ArrayList<String>(), dependencies);
+		return this.initializeElementModel(requirements, new ArrayList<String>(), dependencies, projectName);
 	}
 }

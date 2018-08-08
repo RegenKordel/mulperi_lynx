@@ -63,13 +63,6 @@ public class Requirement {
 	@SerializedName("priority")
 	@Expose
 	private int priority;
-	public int getEffort() {
-		return effort;
-	}
-
-	public void setEffort(int effort) {
-		this.effort = effort;
-	}
 
 	/**
 	* The type of a requirement
@@ -105,6 +98,13 @@ public class Requirement {
 	@Expose
 	private int effort;
 	
+	/**
+	* RequirementParts of a requirement
+	* 
+	*/
+	@SerializedName("requirementParts")
+	@Expose
+	private List<RequirementPart> requirementParts = null;
 	
 	
 	public String getId() {
@@ -163,6 +163,14 @@ public class Requirement {
 		this.priority = priority;
 	}
 	
+	public int getEffort() {
+		return effort;
+	}
+
+	public void setEffort(int effort) {
+		this.effort = effort;
+	}
+	
 	public Requirement_type getRequirement_type() {
 		return requirement_type;
 	}
@@ -193,5 +201,13 @@ public class Requirement {
 	
 	public void setClassifierResults(List<Classifier> classifierResults) {
 		this.classifierResults = classifierResults;
+	}
+
+	public List<RequirementPart> getRequirementParts() {
+		return requirementParts;
+	}
+
+	public void setRequirementParts(List<RequirementPart> requirementParts) {
+		this.requirementParts = requirementParts;
 	}
 }

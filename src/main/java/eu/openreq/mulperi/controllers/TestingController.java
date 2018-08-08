@@ -300,7 +300,7 @@ public class TestingController {
 		} 
 		
 		// TODO Should check if the element is in the model
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies);
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, "root");
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
