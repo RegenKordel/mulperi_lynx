@@ -36,6 +36,7 @@ import eu.openreq.mulperi.repositories.ParsedModelRepository;
 import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
+import eu.openreq.mulperi.services.OpenReqConverter;
 import fi.helsinki.ese.murmeli.ElementModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -176,6 +177,8 @@ public class MulperiController {
 		} 
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases);
+		System.out.println("OPC: ");
+		OpenReqConverter opc = new OpenReqConverter(model);
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
