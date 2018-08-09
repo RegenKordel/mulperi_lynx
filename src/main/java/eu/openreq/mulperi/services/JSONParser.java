@@ -38,11 +38,6 @@ public class JSONParser {
 			releases = input.getReleases();
 			dependencies = input.getDependencies();
 			dependent_requirements = input.getDependentRequirements();
-			
-			for (Dependency dep : dependencies) {
-				System.out.println("From: " + dep.getFromId() + " To: " + dep.getToId());
-			}
-			
 	}
 	
 	public static String parseToJson(ElementModel model) {

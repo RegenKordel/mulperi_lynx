@@ -291,17 +291,13 @@ public class MurmeliModelGenerator {
 		Element to = findRequirement(dep.getToId());
 		
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
-		
-		System.out.println("From: " + relationship.getFromID() + " To: " + relationship.getToID());
-		System.out.println(this.elements.get(from.getNameID()));
-		System.out.println(this.elements.get(to.getNameID()));
+
 		this.relations.add(relationship);
 		
 		return relationship;
 	}
 
 	private Element findRequirement(String id) {
-		System.out.println("Lollero id on: " + id);
 		if (this.elements.containsKey(id)) {
 			return this.elements.get(id);
 		}
