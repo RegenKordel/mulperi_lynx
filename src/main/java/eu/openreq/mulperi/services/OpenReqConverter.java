@@ -126,7 +126,7 @@ public class OpenReqConverter {
 			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("effort")).getValue()).intValue()); 
 		}
 		if (element.getAttributes().containsKey("priority")) {
-			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
+			req.setPriority(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
 		}
 	}
 	

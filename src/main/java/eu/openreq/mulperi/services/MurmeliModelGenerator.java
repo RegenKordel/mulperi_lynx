@@ -315,7 +315,7 @@ public class MurmeliModelGenerator {
 		}
 		
 		String name = req.getId();
-		AttributeValue<Integer> priority = new AttributeValue("priority", true, req.getPriority());
+		AttributeValue<Integer> priority = new AttributeValue("priority", true, (int) req.getPriority());
 		priority.setSource(Source.FIXED);
 		priority.setType(this.attributeValueTypes.get("priority"));
 		
