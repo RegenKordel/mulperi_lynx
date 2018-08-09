@@ -15,7 +15,6 @@ import fi.helsinki.ese.murmeli.AttributeValue.Source;
 
 public class MurmeliModelGenerator {
 
-	
 	private HashMap<String, AttributeValueType> attributeValueTypes;
 	private HashMap<String, ElementType> elementTypes;
 	private HashMap<String, Element> elements;
@@ -25,6 +24,7 @@ public class MurmeliModelGenerator {
 	private HashMap<Integer, AttributeValue> attributeValues;
 	private List<Container> subContainers;
 	private HashSet<String> requirementsInReleases;
+	private HashMap<String, AttributeValue> resolutions;
 	
 	public MurmeliModelGenerator() {
 		
@@ -36,6 +36,7 @@ public class MurmeliModelGenerator {
 		this.constraints = new HashMap();
 		this.attributeValues = new HashMap();
 		this.subContainers = new ArrayList();
+		this.resolutions = new HashMap();
 		
 		this.requirementsInReleases = new HashSet();
 		
@@ -336,6 +337,10 @@ public class MurmeliModelGenerator {
 		element.addAttribute(priority);
 		element.addAttribute(status);
 		
+		resolutionToElement(req, element);
+		
+		titleToElement(req, element);
+		
 		if (req.getRequirement_type() == null) {
 			ElementType mock = this.elementTypes.get("mock");
 			element.setType(mock);
@@ -394,6 +399,30 @@ public class MurmeliModelGenerator {
 		this.elements.put(element.getNameID(), element);
 		
 		return element;
+	}
+
+	private void titleToElement(Requirement req, Element element) {
+		
+		AttributeValue atr = new AttributeValue("title", false, req.getName());
+		this.attributeValues.put(atr.getID(), atr);
+		element.addAttribute(atr);
+	}
+
+	private void resolutionToElement(Requirement req, Element element) {
+		
+		for (RequirementPart part : req.getRequirementParts()) {
+			if (part.getName().equals("resolution")) {
+				if (!this.resolutions.containsKey(part.getText())) {
+					
+					AttributeValue atr = new AttributeValue("resolution", false, part.getText());
+					this.resolutions.put(part.getText(), atr);
+					this.attributeValues.put(atr.getID(), atr);
+				}
+				
+				element.addAttribute(this.resolutions.get(part.getText()));
+				break;
+			}
+		}
 	}
 
 	private AttributeValue factorEffort(Requirement req, String type) {
