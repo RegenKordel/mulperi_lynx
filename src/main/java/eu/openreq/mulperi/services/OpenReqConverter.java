@@ -24,6 +24,9 @@ public class OpenReqConverter {
 	}
 	
 	public void mapRootContainer() {
+		if (model.getRootContainer() == null) {
+			return;
+		}
 		this.project.setId(model.getRootContainer().getNameID());
 		this.project.setName(model.getRootContainer().getNameID()); // TODO: This is same as id, what to do? Root container has no name.
 		if (model.getRootContainer().getAttributes().containsKey("created_at")) {
@@ -120,10 +123,10 @@ public class OpenReqConverter {
 			req.setCreated_at((long) 0);
 		}
 		if (element.getAttributes().containsKey("effort")) {
-			req.setEffort((int) model.getAttributeValues().get(element.getAttributes().get("status")).getValue()); 
+			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("effort")).getValue()).intValue()); 
 		}
 		if (element.getAttributes().containsKey("priority")) {
-			req.setEffort((int) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()); 
+			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
 		}
 	}
 	

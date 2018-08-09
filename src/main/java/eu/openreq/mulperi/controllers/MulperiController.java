@@ -40,7 +40,9 @@ import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.OpenReqConverter;
+import fi.helsinki.ese.murmeli.AttributeDefinition;
 import fi.helsinki.ese.murmeli.ElementModel;
+import fi.helsinki.ese.murmeli.TransitiveClosure;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -158,16 +160,13 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
 	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		
-		System.out.println("Post To Caas");
+
 		RestTemplate rt = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
-		String actualPath = "/uploadDataAndCheckForConsistency"; 
-
-		String completeAddress = caasAddress + actualPath;
+		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		
@@ -179,13 +178,10 @@ public class MulperiController {
 			}
 		} 
 		
-
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
-		
-		System.out.println("Post To Caas");
 		
 		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
 		ResponseEntity<?> response = null;
@@ -232,15 +228,12 @@ public class MulperiController {
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		Gson gson = new Gson();
 		
-		System.out.println("Post To Caas");
 		RestTemplate rt = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
-		String actualPath = "/uploadDataCheckForConsistencyAndDoDiagnosis"; 
-
-		String completeAddress = caasAddress + actualPath;
+		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";
 		
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -379,13 +372,28 @@ public class MulperiController {
 		requested.put(requirementId, depth);
 		HttpEntity<Map> entity = new HttpEntity<Map>(requested, headers);
 
-		ResponseEntity<?> response = null;
+		String response = null;
 		try {
-			response = rt.postForEntity(completeAddress, entity, Map.class);
+			response = rt.postForObject(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		return response;
+		
+		TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
+		
+		OpenReqConverter converter = new OpenReqConverter(closure.getModel());
+		
+		List<Requirement> requirements = converter.getRequirements();
+		List<Dependency> dependencies = converter.getDependencies();
+		Map<Integer, List<String>> layers = closure.getLayers();
+
+		String requirementsAsString = gson.toJson(requirements);
+		String dependenciesAsString = gson.toJson(dependencies);
+		String layersAsString = gson.toJson(layers);
+		
+		String json = "{\"requirements\":" + requirementsAsString + ",\"dependencies\":" + dependenciesAsString + ",\"layers\":" + layersAsString + "}";
+		
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 
