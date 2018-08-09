@@ -122,7 +122,7 @@ public class MulperiController {
 	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		
+		System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());

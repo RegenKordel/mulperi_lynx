@@ -405,7 +405,7 @@ public class MurmeliModelGenerator {
 	}
 
 	private void resolutionToElement(Requirement req, Element element) {
-		
+		if(req.getRequirementParts()!=null) {
 		for (RequirementPart part : req.getRequirementParts()) {
 			if (part.getName().equals("resolution")) {
 				if (!this.resolutions.containsKey(part.getText())) {
@@ -418,6 +418,7 @@ public class MurmeliModelGenerator {
 				element.addAttribute(this.resolutions.get(part.getText()));
 				break;
 			}
+		}
 		}
 	}
 
