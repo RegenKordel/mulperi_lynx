@@ -310,8 +310,9 @@ public class MurmeliModelGenerator {
 
 	private Element mapRequirement(Requirement req) {
 		
-		if (this.elements.containsKey(req.getName())) {
-			return this.elements.get(req.getName());
+		
+		if (this.elements.containsKey(req.getId())) {
+			return this.elements.get(req.getId());
 		}
 		
 		String name = req.getId();
@@ -346,6 +347,10 @@ public class MurmeliModelGenerator {
 			}
 			
 			element.setNameID(name + "-mock");
+			
+			if (this.elements.containsKey(element.getNameID())) {
+				return this.elements.get(element.getNameID());
+			}
 		} else {
 			switch (req.getRequirement_type()) {
 			case BUG:
