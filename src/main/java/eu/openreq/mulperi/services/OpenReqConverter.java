@@ -135,8 +135,6 @@ public class OpenReqConverter {
 			req.setPriority(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
 		}
 		
-		System.out.println(element.getAttributes().keySet());
-		
 		if (element.getAttributes().containsKey("resolution")) {
 			
 			RequirementPart resolution = new RequirementPart();
