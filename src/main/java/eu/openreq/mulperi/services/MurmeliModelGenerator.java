@@ -399,26 +399,28 @@ public class MurmeliModelGenerator {
 
 	private void titleToElement(Requirement req, Element element) {
 		
-		AttributeValue atr = new AttributeValue("title", false, req.getName());
-		this.attributeValues.put(atr.getID(), atr);
-		element.addAttribute(atr);
+		if (req.getName() != null) {
+			AttributeValue atr = new AttributeValue("title", false, req.getName());
+			this.attributeValues.put(atr.getID(), atr);
+			element.addAttribute(atr);
+		}
 	}
 
 	private void resolutionToElement(Requirement req, Element element) {
 		if(req.getRequirementParts()!=null) {
-		for (RequirementPart part : req.getRequirementParts()) {
-			if (part.getName().equals("resolution")) {
-				if (!this.resolutions.containsKey(part.getText())) {
-					
-					AttributeValue atr = new AttributeValue("resolution", false, part.getText());
-					this.resolutions.put(part.getText(), atr);
-					this.attributeValues.put(atr.getID(), atr);
+			for (RequirementPart part : req.getRequirementParts()) {
+				if (part.getName().equals("Resolution")) {
+					if (!this.resolutions.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("resolution", false, part.getText());
+						this.resolutions.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+	
+					element.addAttribute(this.resolutions.get(part.getText()));
+					break;
 				}
-				
-				element.addAttribute(this.resolutions.get(part.getText()));
-				break;
 			}
-		}
 		}
 	}
 

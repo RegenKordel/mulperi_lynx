@@ -45,6 +45,8 @@ public class OpenReqConverter {
 	public void mapElements() {
 		for (Element element : model.getElements().values()) {
 			Requirement req = new Requirement();
+			
+			req.setRequirementParts(new ArrayList());
 			req.setId(element.getNameID());
 			switch (element.getType()) {
 			case "bug":
@@ -112,21 +114,41 @@ public class OpenReqConverter {
 				break;
 			}
 		}
+		
 		if (element.getAttributes().containsKey("modified_at")) {
 			int modified_atID = element.getAttributes().get("modified_at");
 			req.setCreated_at((long) model.getAttributeValues().get(modified_atID).getValue());
 		}
+		
 		if (element.getAttributes().containsKey("created_at")) {
 			int created_at = element.getAttributes().get("created_at");
 			req.setCreated_at(created_at);
 		} else {
 			req.setCreated_at((long) 0);
 		}
+		
 		if (element.getAttributes().containsKey("effort")) {
 			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("effort")).getValue()).intValue()); 
 		}
+		
 		if (element.getAttributes().containsKey("priority")) {
 			req.setPriority(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
+		}
+		
+		System.out.println(element.getAttributes().keySet());
+		
+		if (element.getAttributes().containsKey("resolution")) {
+			
+			RequirementPart resolution = new RequirementPart();
+			resolution.setName("Resolution");
+			resolution.setText(model.getAttributeValues().get(element.getAttributes().get("resolution")).getValue().toString());
+			
+			req.getRequirementParts().add(resolution);
+		}
+		
+		if (element.getAttributes().containsKey("title")) {
+			
+			req.setName(model.getAttributeValues().get(element.getAttributes().get("title")).getValue().toString());
 		}
 	}
 	
