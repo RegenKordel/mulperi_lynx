@@ -350,7 +350,7 @@ public class ReleaseCSPPlanner {
 				if (getAssignedRelease(requirement) == -1) { // not assigned
 					effortInRelease[releaseIndex] = model.intVar(varName, effortDomain); // effort in release is 0 or the effort																				
 				} else {// assigned to release
-					if (getAssignedRelease(requirement) == releaseIndex) {
+					if (getAssignedRelease(requirement) == releaseIndex) { //note: indexing has been changed compared to kumbang. in kumbang this stated getAssignedRelease(requirement) -1 == releaseIndex
 						effortInRelease[releaseIndex] = model.intVar(varName, effortDomain); //e.g for REQ2_1 (meaning REQ2 in release 1) effortInRelease is req_REQ2_1 = {0,2}
 					} else {
 						effortInRelease[releaseIndex] = model.intVar(varName, 0); // domain is fixed 0 in other releases (e.g for REQ2_2 (meaning REQ2 in release 2) effortInRelease is req_REQ2_2 = 0
