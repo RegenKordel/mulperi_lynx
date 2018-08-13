@@ -308,6 +308,11 @@ public class MurmeliModelGenerator {
 		return this.mapRequirement(req);
 	}
 
+	/**
+	 * Map OpenReq requirement to Murmeli Element
+	 * @param req
+	 * @return Element
+	 */
 	private Element mapRequirement(Requirement req) {
 		
 		
@@ -402,6 +407,11 @@ public class MurmeliModelGenerator {
 		return element;
 	}
 
+	/**
+	 * Map requirements title to a attribute and adds it to corresponding Element
+	 * @param req
+	 * @param element
+	 */
 	private void titleToElement(Requirement req, Element element) {
 		
 		if (req.getName() != null) {
@@ -411,6 +421,11 @@ public class MurmeliModelGenerator {
 		}
 	}
 
+	/**
+	 * Map requirements resolution to a attribute and adds it to corresponding Element
+	 * @param req
+	 * @param element
+	 */
 	private void resolutionToElement(Requirement req, Element element) {
 		if(req.getRequirementParts()!=null) {
 			for (RequirementPart part : req.getRequirementParts()) {
@@ -575,6 +590,12 @@ public class MurmeliModelGenerator {
 		return null;
 	}
 	
+	/**
+	 * Maps expression to Murmeli Constraints
+	 * @param expression
+	 * @param name
+	 * @return
+	 */
 	public Constraint mapConstraint(String expression, String name) {
 		
 		Constraint cons = new Constraint(expression, name);

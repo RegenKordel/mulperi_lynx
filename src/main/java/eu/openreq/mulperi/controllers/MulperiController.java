@@ -59,30 +59,31 @@ public class MulperiController {
 	@Value("${mulperi.caasAddress}")
 	private String caasAddress; 
 
-	@Autowired
+	/*@Autowired
 	private ParsedModelRepository parsedModelRepository;
-
+	*/
+	
 	/**
 	 * Get all saved models
 	 * @return
 	 */
-	@ApiOperation(value = "Get saved models",
+	/*@ApiOperation(value = "Get saved models",
 			notes = "Get all saved models",
-			response = ParsedModel.class)
+		4	response = ParsedModel.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success")}) 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<ParsedModel> modelList() {
 		return parsedModelRepository.findAll();
 	}
-	
+	*/
 	
 	/**
 	 * Get single model as FeatureSelection for selecting features
 	 * @param modelName
 	 * @return
 	 */
-	@ApiOperation(value = "Get the structure of a model",
+	/*@ApiOperation(value = "Get the structure of a model",
 			notes = "Get single model as FeatureSelection for selecting features",
 			response = FeatureSelection.class)
 	@ApiResponses(value = { 
@@ -100,7 +101,7 @@ public class MulperiController {
 
 		return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
 	}
-	
+	*/
 	
 	/**
 	 * Import a model in JSON format
@@ -111,7 +112,7 @@ public class MulperiController {
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 */
-	@ApiOperation(value = "Import OpenReq JSON model",
+	@ApiOperation(value = "Import OpenReq JSON model to Caas",
 			notes = "Import a model in JSON format",
 			response = String.class)
 	@ApiResponses(value = { 
@@ -121,9 +122,10 @@ public class MulperiController {
 	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
 	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
 		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		//System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
 		
@@ -266,7 +268,7 @@ public class MulperiController {
 		//replace - with _, since Kumbang doesn't like hyphens
 	}
 	
-	public String makeConfigurationRequest(Selections selections, String modelName) throws Exception {
+	/*public String makeConfigurationRequest(Selections selections, String modelName) throws Exception {
 		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
 
 		if(model == null) {
@@ -279,7 +281,7 @@ public class MulperiController {
 			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
 		}
 	}
-	
+	*/
 	
 	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
 			notes = "The model is saved in KeljuCaaS",
@@ -300,7 +302,7 @@ public class MulperiController {
 		ResponseEntity<String> response = null;
 
 		try {
-			response = rt.postForEntity(caasAddress + "importModel", entity, String.class);
+			response = rt.postForEntity(caasAddress + "importModelAndUpdateGraph", entity, String.class);
 			return response;
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);

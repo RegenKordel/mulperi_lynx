@@ -73,7 +73,7 @@ public class TestingController {
 	 * @param modelName ID of the model
 	 * @return
 	 */
-	@ApiOperation(value = "Get configuration",
+	/*@ApiOperation(value = "Get configuration",
 			notes = "Get a configuration of a model with optional selections",
 			response = FeatureSelection.class)
 	@ApiResponses(value = { 
@@ -82,7 +82,7 @@ public class TestingController {
 			@ApiResponse(code = 409, message = "Failure, configuration with selected features is impossible")}) 
 	@CrossOrigin
 	@RequestMapping(value = "/models/{model}/configurations", method = RequestMethod.POST)
-	public ResponseEntity<?> requestConfiguration(@RequestBody Selections selections, @PathVariable("model") String modelName) {
+	/*public ResponseEntity<?> requestConfiguration(@RequestBody Selections selections, @PathVariable("model") String modelName) {
 		String configurationRequest;
 		try {
 			configurationRequest = mulperiController.makeConfigurationRequest(selections, modelName);
@@ -99,7 +99,7 @@ public class TestingController {
 			return new ResponseEntity<>("Configuration failed: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	*/
 
 	/**
 	 * Check whether a configuration is consistent
@@ -107,7 +107,7 @@ public class TestingController {
 	 * @param modelName
 	 * @return "yes" or "no"
 	 */
-	@ApiOperation(value = "Is configuration consistent",
+	/*@ApiOperation(value = "Is configuration consistent",
 			notes = "Check whether a configuration is consistent",
 			response = String.class)
 	@ApiResponses(value = { 
@@ -142,7 +142,7 @@ public class TestingController {
 		}
 
 	}
-
+	*/
 
 	/**
 	 * Find out the consequences of selecting some features, i.e. which additional features get selected
@@ -151,7 +151,7 @@ public class TestingController {
 	 * @return
 	 * @throws Exception
 	 */
-	@ApiOperation(value = "Find consequences",
+	/*@ApiOperation(value = "Find consequences",
 			notes = "Find out the consequences of selecting some features, i.e. which additional features get selected",
 			response = String.class)
 	@ApiResponses(value = { 
@@ -172,7 +172,7 @@ public class TestingController {
 		return new ResponseEntity<>(caasClient.getConfiguration(configurationRequest, caasAddress + "/directConsequences"), HttpStatus.OK);
 
 	}
-
+	*/
 	
 //	/**
 //	 * Import a model in checkForConsistency(Project) XML format for release planning
