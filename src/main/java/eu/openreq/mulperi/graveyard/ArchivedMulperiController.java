@@ -10,7 +10,51 @@ import eu.openreq.mulperi.models.kumbang.ParsedModel;
 import eu.openreq.mulperi.services.CaasClient;
 
 //public class MulperiController {
-//
+
+/*@Autowired
+private ParsedModelRepository parsedModelRepository;
+*/
+
+/**
+ * Get all saved models
+ * @return
+ */
+/*@ApiOperation(value = "Get saved models",
+		notes = "Get all saved models",
+	4	response = ParsedModel.class)
+@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Success")}) 
+@RequestMapping(value = "", method = RequestMethod.GET)
+public List<ParsedModel> modelList() {
+	return parsedModelRepository.findAll();
+}
+*/
+
+/**
+ * Get single model as FeatureSelection for selecting features
+ * @param modelName
+ * @return
+ */
+/*@ApiOperation(value = "Get the structure of a model",
+		notes = "Get single model as FeatureSelection for selecting features",
+		response = FeatureSelection.class)
+@ApiResponses(value = { 
+		@ApiResponse(code = 200, message = "Success"),
+		@ApiResponse(code = 400, message = "Failure, ex. model not found")}) 
+@CrossOrigin
+@RequestMapping(value = "{model}", method = RequestMethod.GET)
+public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {
+
+	ParsedModel model = this.parsedModelRepository.findFirstByModelName(modelName);
+
+	if(model == null) {
+		return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
+	}
+
+	return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
+}
+*/
+
 ////	/**
 ////	 * Import a model in MulSON format
 ////	 * @param requirements

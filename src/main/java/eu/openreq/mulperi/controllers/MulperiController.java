@@ -59,49 +59,6 @@ public class MulperiController {
 	@Value("${mulperi.caasAddress}")
 	private String caasAddress; 
 
-	/*@Autowired
-	private ParsedModelRepository parsedModelRepository;
-	*/
-	
-	/**
-	 * Get all saved models
-	 * @return
-	 */
-	/*@ApiOperation(value = "Get saved models",
-			notes = "Get all saved models",
-		4	response = ParsedModel.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success")}) 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<ParsedModel> modelList() {
-		return parsedModelRepository.findAll();
-	}
-	*/
-	
-	/**
-	 * Get single model as FeatureSelection for selecting features
-	 * @param modelName
-	 * @return
-	 */
-	/*@ApiOperation(value = "Get the structure of a model",
-			notes = "Get single model as FeatureSelection for selecting features",
-			response = FeatureSelection.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found")}) 
-	@CrossOrigin
-	@RequestMapping(value = "{model}", method = RequestMethod.GET)
-	public ResponseEntity<?> getModel(@PathVariable("model") String modelName) {
-
-		ParsedModel model = this.parsedModelRepository.findFirstByModelName(modelName);
-
-		if(model == null) {
-			return new ResponseEntity<>("Model not found", HttpStatus.BAD_REQUEST);
-		}
-
-		return new ResponseEntity<>(transform.parsedModelToFeatureSelection(model), HttpStatus.OK);
-	}
-	*/
 	
 	/**
 	 * Import a model in JSON format
@@ -190,9 +147,8 @@ public class MulperiController {
 		try {
 			response = rt.postForEntity(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-
 		return response;
 	}
 	
@@ -255,7 +211,7 @@ public class MulperiController {
 		try {
 			response = rt.postForEntity(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 
 		return response;
@@ -348,7 +304,7 @@ public class MulperiController {
 		try {
 			response = rt.postForEntity(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 
 		return response;
@@ -378,7 +334,7 @@ public class MulperiController {
 		try {
 			response = rt.postForObject(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Kelju error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		
 		TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
