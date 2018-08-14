@@ -26,95 +26,70 @@ public class Parts {
 	* (Required)
 	*
 	*/
-	@SerializedName("cardinality_min")
-	@Expose
-	private int cardinality_min;
-	/**
-	*
-	* (Required)
-	*
-	*/
-	@SerializedName("cardinality_max")
-	@Expose
-	private int cardinality_max;
-	/**
-	*
-	* (Required)
-	*
-	*/
 	@SerializedName("role")
 	@Expose
 	private String role;
 	
 	@SerializedName("parts")
 	@Expose
-	private List<Element> parts = null;
+	private List<String> parts = new ArrayList<String>();
+	
+	@SerializedName("definition")
+	@Expose
+	private int definition = -1;
 	
 	private static int hid = 0;
 	
-	public Parts(int min, int max, String role, List<Element> parts, int id) {
-		this.cardinality_max = max;
-		this.cardinality_min = min;
+	public Parts(String role, int id) {
 		this.role = role;
-		this.parts = parts;
 		this.id = id;
 	}
 	
-	public Parts(int min, int max, String role, List<Element> parts) {
-		this.cardinality_max = max;
-		this.cardinality_min = min;
+	public Parts(String role) {
 		this.role = role;
-		this.parts = parts;
 		this.id = hid;
 		hid++;
 	}
 	
-	public Parts(int min, int max, String role) {
-		this(min, max, role, new ArrayList<Element>());
+	public Parts(String role, int id, int definition) {
+		this(role, id);
+		this.setDefinitionAsId(definition);
 	}
 	
-	public void addType(Element part) {
-		this.parts.add(part);
+	public Parts(String role, PartDefinition definition) {
+		this(role);
+		this.setDefinition(definition);
+	}
+	
+	public Parts(String role, int id, PartDefinition definition) {
+		this(role, id);
+		this.setDefinition(definition);
+	}
+	
+	public int getDefinition() {
+		return definition;
+	}
+
+	public void setDefinitionAsId(int definition) {
+		this.definition = definition;
+	}
+	
+	public void setDefinition(PartDefinition definition) {
+		this.definition = definition.getID();
+	}
+
+	public void addPart(Element part) {
+		
+		this.parts.add(part.getNameID());
+	}
+	
+	public void addPartAsId(String id) {
+		
+		this.parts.add(id);
 	}
 	
 	public int getID() {
 		return this.id;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public int getCardinality_min() {
-		return cardinality_min;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public void setCardinality_min(int cardinality_min) {
-		this.cardinality_min = cardinality_min;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public int getCardinality_max() {
-		return cardinality_max;
-	}
-	
-	/**
-	*
-	* (Required)
-	*
-	*/
-	public void setCardinality_max(int cardinality_max) {
-		this.cardinality_max = cardinality_max;
 	}
 	
 	/**
@@ -135,12 +110,18 @@ public class Parts {
 		this.role = role;
 	}
 	
-	public List<Element> getType() {
+	public List<String> getParts() {
 		return parts;
 	}
 	
-	public void setType(List<Element> parts) {
-		this.parts = parts;
+	public void setParts(List<Element> parts) {
+		
+		for (Element element : parts) {
+			this.parts.add(element.getNameID());
+		}
 	}
 	
+	public void setPartsAsIds(List<String> parts) {
+		this.parts = parts;
+	}
 }

@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 * Relation between two elements
 *
 */
-public class RelationshipType {
+public class Relationship {
 
 	public enum NameType {
 		
@@ -44,7 +44,7 @@ public class RelationshipType {
 	*/
 	@SerializedName("fromID")
 	@Expose
-	private Element fromID;
+	private String fromID;
 	
 	/**
 	*
@@ -53,7 +53,7 @@ public class RelationshipType {
 	*/
 	@SerializedName("toID")
 	@Expose
-	private Element toID;
+	private String toID;
 	
 	@SerializedName("power")
 	@Expose
@@ -61,19 +61,29 @@ public class RelationshipType {
 	
 	private static int hid = 0;
 	
-	public RelationshipType(NameType nameType, Element from, Element to, int id) {
+	public Relationship(NameType nameType, String from, String to, int id) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
 		this.id = id;
 	}
 	
-	public RelationshipType(NameType nameType, Element from, Element to) {
+	public Relationship(NameType nameType, String from, String to) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
 		this.id = hid;
 		hid++;
+	}
+	
+	public Relationship(NameType nameType, Element from, Element to, int id) {
+		
+		this(nameType, from.getNameID(), to.getNameID(), id);
+	}
+	
+	public Relationship(NameType nameType, Element from, Element to) {
+		
+		this(nameType, from.getNameID(), to.getNameID());
 	}
 	
 	public int getID() {
@@ -103,7 +113,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public Element getFrom() {
+	public String getFromID() {
 		return fromID;
 	}
 	
@@ -112,8 +122,12 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setFrom(Element from) {
+	public void setFromID(String from) {
 		this.fromID = from;
+	}
+	
+	public void setFromID(Element from) {
+		this.fromID = from.getNameID();
 	}
 	
 	/**
@@ -121,7 +135,7 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public Element getTo() {
+	public String getToID() {
 		return toID;
 	}
 	
@@ -130,8 +144,11 @@ public class RelationshipType {
 	* (Required)
 	*
 	*/
-	public void setTo(Element to) {
+	public void setToID(String to) {
 		this.toID = to;
 	}
 	
+	public void setTo(String to) {
+		this.toID = to;
+	}
 }

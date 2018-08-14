@@ -2,33 +2,43 @@ package eu.openreq.mulperi.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import eu.openreq.mulperi.models.json.*;
 import fi.helsinki.ese.murmeli.*;
 import fi.helsinki.ese.murmeli.AttributeValueType.BaseType;
+import fi.helsinki.ese.murmeli.AttributeValueType.Bound;
 import fi.helsinki.ese.murmeli.AttributeValueType.Cardinality;
-import fi.helsinki.ese.murmeli.RelationshipType.NameType;
+import fi.helsinki.ese.murmeli.Relationship.NameType;
 import fi.helsinki.ese.murmeli.AttributeValue.Source;
 
 public class MurmeliModelGenerator {
 
-	
-	private HashMap<String, AttributeValueType> valueTypes;
+	private HashMap<String, AttributeValueType> attributeValueTypes;
 	private HashMap<String, ElementType> elementTypes;
 	private HashMap<String, Element> elements;
 	private Container rootContainer;
-	private List<RelationshipType> relations;
+	private List<Relationship> relations;
 	private HashMap<Integer, Constraint> constraints;
+	private HashMap<Integer, AttributeValue> attributeValues;
+	private List<Container> subContainers;
+	private HashSet<String> requirementsInReleases;
+	private HashMap<String, AttributeValue> resolutions;
 	
 	public MurmeliModelGenerator() {
 		
-		this.valueTypes = new HashMap();
+		this.attributeValueTypes = new HashMap();
 		this.elementTypes = new HashMap();
 		this.elements = new HashMap();
 		this.rootContainer = null;
 		this.relations = new ArrayList();
 		this.constraints = new HashMap();
+		this.attributeValues = new HashMap();
+		this.subContainers = new ArrayList();
+		this.resolutions = new HashMap();
+		
+		this.requirementsInReleases = new HashSet();
 		
 		initializeElementTypes();
 	}
@@ -39,49 +49,62 @@ public class MurmeliModelGenerator {
 		
 		AttributeDefinition statusDefinition = initializeStatusType();
 		
+		AttributeDefinition effortDefinition = initializeEffortType();
+		
 		ElementType bug = new ElementType("bug");
 		bug.addAttributeDefinition(priorityDefinition);
 		bug.addAttributeDefinition(statusDefinition);
+		bug.addAttributeDefinition(effortDefinition);
 		
 		ElementType task = new ElementType("task");
 		task.addAttributeDefinition(priorityDefinition);
 		task.addAttributeDefinition(statusDefinition);
+		task.addAttributeDefinition(effortDefinition);
 		
 		ElementType issue = new ElementType("issue");
 		issue.addAttributeDefinition(priorityDefinition);
 		issue.addAttributeDefinition(statusDefinition);
+		issue.addAttributeDefinition(effortDefinition);
 		
 		ElementType userStory = new ElementType("user-story");
 		userStory.addAttributeDefinition(priorityDefinition);
 		userStory.addAttributeDefinition(statusDefinition);
+		userStory.addAttributeDefinition(effortDefinition);
 		
 		ElementType epic = new ElementType("epic");
 		epic.addAttributeDefinition(priorityDefinition);
 		epic.addAttributeDefinition(statusDefinition);
+		epic.addAttributeDefinition(effortDefinition);
 		
 		ElementType initiative = new ElementType("initiative");
 		initiative.addAttributeDefinition(priorityDefinition);
 		initiative.addAttributeDefinition(statusDefinition);
+		initiative.addAttributeDefinition(effortDefinition);
 		
 		ElementType functional = new ElementType("functional");
 		functional.addAttributeDefinition(priorityDefinition);
 		functional.addAttributeDefinition(statusDefinition);
+		functional.addAttributeDefinition(effortDefinition);
 		
 		ElementType nonFunctional = new ElementType("non-functional");
 		nonFunctional.addAttributeDefinition(priorityDefinition);
 		nonFunctional.addAttributeDefinition(statusDefinition);
+		nonFunctional.addAttributeDefinition(effortDefinition);
 		
 		ElementType prose = new ElementType("prose");
 		prose.addAttributeDefinition(priorityDefinition);
 		prose.addAttributeDefinition(statusDefinition);
+		prose.addAttributeDefinition(effortDefinition);
 		
 		ElementType requirement = new ElementType("requirement");
 		requirement.addAttributeDefinition(priorityDefinition);
 		requirement.addAttributeDefinition(statusDefinition);
+		requirement.addAttributeDefinition(effortDefinition);
 		
 		ElementType mock = new ElementType("mock");
 		mock.addAttributeDefinition(priorityDefinition);
 		mock.addAttributeDefinition(statusDefinition);
+		mock.addAttributeDefinition(effortDefinition);
 		
 		this.elementTypes.put("bug", bug);
 		this.elementTypes.put("task", task);
@@ -89,12 +112,40 @@ public class MurmeliModelGenerator {
 		this.elementTypes.put("issue", issue);
 		this.elementTypes.put("user-story", userStory);
 		this.elementTypes.put("epic", epic);
-		this.elementTypes.put("functinal", functional);
+		this.elementTypes.put("functional", functional);
 		this.elementTypes.put("non-functional", nonFunctional);
 		this.elementTypes.put("prose", prose);
+		this.elementTypes.put("requirement", requirement);
 		this.elementTypes.put("mock", mock);
 		
 		initializePotentialParts();
+		
+		initializeCapacity();
+	}
+
+	private void initializeCapacity() {
+		
+		AttributeValueType capacity = new AttributeValueType(BaseType.INT, Cardinality.SINGLE, "capacity");
+		capacity.setBound(Bound.UNBOUND);
+		
+		this.attributeValueTypes.put("capacity", capacity);
+	}
+
+	private AttributeDefinition initializeEffortType() {
+		
+		AttributeValueType effortType = new AttributeValueType(BaseType.INT, Cardinality.SINGLE, "effort");
+		effortType.setBound(Bound.UNBOUND);
+		
+		AttributeValue defaultEffort = new AttributeValue<Integer>("effort", true, (int) 0);
+		defaultEffort.setType(effortType);
+		defaultEffort.setSource(Source.DEFAULT);
+		
+		AttributeDefinition def = new AttributeDefinition(defaultEffort, effortType);
+		
+		this.attributeValues.put(defaultEffort.getID(), defaultEffort);
+		this.attributeValueTypes.put("effort", effortType);
+		
+		return def;
 	}
 
 	private void initializePotentialParts() {
@@ -106,23 +157,28 @@ public class MurmeliModelGenerator {
 			potentialParts.add(type);
 		}
 		
-		PartDefinition partDefinition = new PartDefinition(0, 200, "decomposition", potentialParts);
+		PartDefinition partDefinition = new PartDefinition(0, 200, "decomposition");
+		partDefinition.setTypes(potentialParts);
 		
 		for (ElementType type : this.elementTypes.values()) {
 			
-			type.addPotentialPart(partDefinition);;
+			type.addPotentialPart(partDefinition);
 		}
 	}
 
 	private AttributeDefinition initializePriorityType() {
 		
 		AttributeValueType priorityType = new AttributeValueType(Cardinality.SINGLE, "priority", 0, 6);
+		priorityType.setBound(Bound.RANGE);
+		
 		AttributeValue priorityDefault = new AttributeValue("priority", true, 4);
 		priorityDefault.setSource(Source.DEFAULT);
+		priorityDefault.setType(priorityType);
 		
 		AttributeDefinition atr = new AttributeDefinition(priorityDefault, priorityType);
 		
-		this.valueTypes.put("priority", priorityType);
+		this.attributeValueTypes.put("priority", priorityType);
+		this.attributeValues.put(priorityDefault.getID(), priorityDefault);
 		
 		return atr;
 	}
@@ -130,6 +186,8 @@ public class MurmeliModelGenerator {
 	private AttributeDefinition initializeStatusType() {
 		
 		AttributeValueType statusType = new AttributeValueType(BaseType.STRING, Cardinality.SINGLE, "status");
+		statusType.setBound(Bound.ENUM);
+		
 		AttributeValue submitted = new AttributeValue("status", false, "submitted");
 		AttributeValue deferred = new AttributeValue("status", false, "deferred");
 		AttributeValue pending = new AttributeValue("status", false, "pending");
@@ -157,11 +215,12 @@ public class MurmeliModelGenerator {
 		
 		for (AttributeValue status : statuses) {
 			status.setType(statusType);
+			this.attributeValues.put(status.getID(), status);
 		}
 		
-		statusType.setValue(statuses);
+		statusType.setValues(statuses);
 		
-		this.valueTypes.put("statuses", statusType);
+		this.attributeValueTypes.put("status", statusType);
 		
 		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
 		submitted.setSource(Source.DEFAULT);
@@ -175,9 +234,9 @@ public class MurmeliModelGenerator {
 	 * @return
 	 */
 
-	public RelationshipType mapDependency(Dependency dep) {
+	public Relationship mapDependency(Dependency dep) {
 		
-		RelationshipType.NameType type = null;
+		Relationship.NameType type = null;
 		
 		switch(dep.getDependency_type()) {
 		case CONTRIBUTES:
@@ -188,15 +247,16 @@ public class MurmeliModelGenerator {
 			break;
 		case DECOMPOSITION:
 			
-			Element from = mapRequirement(dep.getFromId());
-			Element to = mapRequirement(dep.getToId());
+			Element from = findRequirement(dep.getFromId());
+			Element to = findRequirement(dep.getToId());
 			
 			if (!from.getParts().isEmpty()) {
-				from.getParts().get(0).addType(to);
+				from.getParts().get(0).addPart(to);
+				break;
 			}
 			
-			Parts part = new Parts(0, 200, "decomposition");
-			part.addType(to);
+			Parts part = new Parts("decomposition");
+			part.addPart(to);
 			
 			from.addPart(part);
 			
@@ -227,81 +287,180 @@ public class MurmeliModelGenerator {
 			return null;
 		}
 		
-		Element from = mapRequirement(dep.getFromId());
-		Element to = mapRequirement(dep.getToId());
+		Element from = findRequirement(dep.getFromId());
+		Element to = findRequirement(dep.getToId());
 		
-		RelationshipType relationship = new RelationshipType(type, from, to);
-		
+		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
+
 		this.relations.add(relationship);
 		
 		return relationship;
 	}
 
+	private Element findRequirement(String id) {
+		if (this.elements.containsKey(id)) {
+			return this.elements.get(id);
+		}
+		
+		Requirement req = new Requirement();
+		req.setId(id);
+		
+		return this.mapRequirement(req);
+	}
+
+	/**
+	 * Map OpenReq requirement to Murmeli Element
+	 * @param req
+	 * @return Element
+	 */
 	private Element mapRequirement(Requirement req) {
 		
-		if (this.elements.containsKey(req.getName())) {
-			return this.elements.get(req.getName());
+		
+		if (this.elements.containsKey(req.getId())) {
+			return this.elements.get(req.getId());
 		}
 		
 		String name = req.getId();
-		AttributeValue<Integer> priority = new AttributeValue("priority", true, req.getPriority());
-		priority.setType(this.valueTypes.get("priority"));
-		AttributeValue<String> status = factorStatus(req.getStatus());
+		AttributeValue<Integer> priority = new AttributeValue("priority", true, (int) req.getPriority());
+		priority.setSource(Source.FIXED);
+		priority.setType(this.attributeValueTypes.get("priority"));
+		
+		this.attributeValues.put(priority.getID(), priority);
+		
+		AttributeValue<String> status;
+		
+		if (req.getStatus() != null) {
+			status = factorStatus(req.getStatus());
+		} else {
+			status = factorStatus(Requirement_status.NEW);
+		}
 		
 		Element element = new Element(name);
 		element.addAttribute(priority);
 		element.addAttribute(status);
 		
-		switch (req.getRequirement_type()) {
-		case BUG:
-			element.setType(this.elementTypes.get("bug"));
-			break;
-		case EPIC:
-			element.setType(this.elementTypes.get("epic"));
-			break;
-		case FUNCTIONAL:
-			element.setType(this.elementTypes.get("functional"));
-			break;
-		case INITIATIVE:
-			element.setType(this.elementTypes.get("initiative"));
-			break;
-		case ISSUE:
-			element.setType(this.elementTypes.get("issue"));
-			break;
-		case NON_FUNCTIONAL:
-			element.setType(this.elementTypes.get("non-functional"));
-			break;
-		case PROSE:
-			element.setType(this.elementTypes.get("prose"));
-			break;
-		case REQUIREMENT:
-			element.setType(this.elementTypes.get("requirement"));
-			break;
-		case TASK:
-			element.setType(this.elementTypes.get("task"));
-			break;
-		case USER_STORY:
-			element.setType(this.elementTypes.get("user-story"));
-			break;
-		default:
-			//if requirement doesn't have a type it supposedly is not in the project
-			//and comes from a dependency. hence we create a mock element.
-			
+		resolutionToElement(req, element);
+		
+		titleToElement(req, element);
+		
+		if (req.getRequirement_type() == null) {
 			ElementType mock = this.elementTypes.get("mock");
 			element.setType(mock);
 			
 			for (AttributeDefinition def : mock.getAttributeDefinitions()) {
-				element.addAttribute(def.getDefaultValue());
+				element.addAttribute(this.attributeValues.get(def.getDefaultValue()));
 			}
 			
-			element.setNameID(element.getNameID() + "-mock");
+			element.setNameID(name + "-mock");
 			
-			break;
+			if (this.elements.containsKey(element.getNameID())) {
+				return this.elements.get(element.getNameID());
+			}
+		} else {
+			switch (req.getRequirement_type()) {
+			case BUG:
+				element.setType(this.elementTypes.get("bug"));
+				element.addAttribute(factorEffort(req, "bug"));
+				break;
+			case EPIC:
+				element.setType(this.elementTypes.get("epic"));
+				element.addAttribute(factorEffort(req, "epic"));
+				break;
+			case FUNCTIONAL:
+				element.setType(this.elementTypes.get("functional"));
+				element.addAttribute(factorEffort(req, "functional"));
+				break;
+			case INITIATIVE:
+				element.setType(this.elementTypes.get("initiative"));
+				element.addAttribute(factorEffort(req, "initiative"));
+				break;
+			case ISSUE:
+				element.setType(this.elementTypes.get("issue"));
+				element.addAttribute(factorEffort(req, "issue"));
+				break;
+			case NON_FUNCTIONAL:
+				element.setType(this.elementTypes.get("non-functional"));
+				element.addAttribute(factorEffort(req, "non-functional"));
+				break;
+			case PROSE:
+				element.setType(this.elementTypes.get("prose"));
+				element.addAttribute(factorEffort(req, "prose"));
+				break;
+			case REQUIREMENT:
+				element.setType(this.elementTypes.get("requirement"));
+				element.addAttribute(factorEffort(req, "requirement"));
+				break;
+			case TASK:
+				element.setType(this.elementTypes.get("task"));
+				element.addAttribute(factorEffort(req, "task"));
+				break;
+			case USER_STORY:
+				element.setType(this.elementTypes.get("user-story"));
+				element.addAttribute(factorEffort(req, "user-story"));
+				break;
+			}
 		}
-		
-		this.elements.put(name, element);
+		// TODO: in case of mock, might cause problems when trying to find the 
+		// element in the context of the project the mock element doesn't exist in
+		this.elements.put(element.getNameID(), element);
 		
 		return element;
+	}
+
+	/**
+	 * Map requirements title to a attribute and adds it to corresponding Element
+	 * @param req
+	 * @param element
+	 */
+	private void titleToElement(Requirement req, Element element) {
+		
+		if (req.getName() != null) {
+			AttributeValue atr = new AttributeValue("title", false, req.getName());
+			this.attributeValues.put(atr.getID(), atr);
+			element.addAttribute(atr);
+		}
+	}
+
+	/**
+	 * Map requirements resolution to a attribute and adds it to corresponding Element
+	 * @param req
+	 * @param element
+	 */
+	private void resolutionToElement(Requirement req, Element element) {
+		if(req.getRequirementParts()!=null) {
+			for (RequirementPart part : req.getRequirementParts()) {
+				if (part.getName().equals("Resolution")) {
+					if (!this.resolutions.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("resolution", false, part.getText());
+						this.resolutions.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+	
+					element.addAttribute(this.resolutions.get(part.getText()));
+					break;
+				}
+			}
+		}
+	}
+
+	private AttributeValue factorEffort(Requirement req, String type) {
+		
+		for (AttributeDefinition def : this.elementTypes.get(type).getAttributeDefinitions()) {
+			
+			if (this.attributeValueTypes.get(def.getValueType()).getName().equals("effort")) {
+				if (req.getEffort() == 0) {
+					return this.attributeValues.get(def.getDefaultValue());
+				} else {
+					AttributeValue value = new AttributeValue<Integer>("effort", false, (int) req.getEffort());
+					this.attributeValues.put(value.getID(), value);
+					value.setType(this.attributeValueTypes.get("effort"));
+					return value;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	/**
@@ -312,114 +471,114 @@ public class MurmeliModelGenerator {
 	 */
 	private AttributeValue<String> factorStatus(Requirement_status status) {
 		
-		AttributeValueType statuses = this.valueTypes.get("statuses");
-		
+		AttributeValueType statuses = this.attributeValueTypes.get("status");
+
 		switch(status) {
 		case ACCEPTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("accepted")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("accepted")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case COMPLETED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("completed")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("completed")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case DEFERRED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("deferred")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("deferred")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			break;
 		case DRAFT:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("draft")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("draft")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case IN_PROGRESS:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("inProgress")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("inProgress")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case PENDING:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 			
-				if (value.getNameID().equals("pending")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("pending")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case REJECTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("rejected")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("rejected")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case SUBMITTED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("submitted")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("submitted")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case NEW:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("new")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("new")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case PLANNED:
 
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("planned")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("planned")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
 			break;
 		case RECOMMENDED:
 			
-			for (AttributeValue value : statuses.getValues()) {
+			for (Integer value : statuses.getValues()) {
 				
-				if (value.getNameID().equals("recommended")) {
-					return value;
+				if (this.attributeValues.get(value).getValue().equals("recommended")) {
+					return this.attributeValues.get(value);
 				}
 			}
 			
@@ -431,6 +590,12 @@ public class MurmeliModelGenerator {
 		return null;
 	}
 	
+	/**
+	 * Maps expression to Murmeli Constraints
+	 * @param expression
+	 * @param name
+	 * @return
+	 */
 	public Constraint mapConstraint(String expression, String name) {
 		
 		Constraint cons = new Constraint(expression, name);
@@ -443,19 +608,29 @@ public class MurmeliModelGenerator {
 		return mapConstraint(expression, "");
 	}
 	
-	public Container initializeRootContainer() {
+	public Container initializeRootContainer(String projectName) {
 		
 		if (this.rootContainer != null) {
 			return this.rootContainer;
 		}
 		
-		Container root = new Container("root");
+		Container root = new Container(projectName);
+		
+		this.rootContainer = root;
 		
 		for (Element elmnt : this.elements.values()) {
 			root.addElement(elmnt);
 		}
 		
 		return root;
+	}
+	
+	public void addElementsToRootContainer() {
+		for (String element : this.elements.keySet()) {
+			if (!this.requirementsInReleases.contains(element)) {
+				this.rootContainer.addElement(element);
+			}
+		}
 	}
 	
 	/**
@@ -466,7 +641,7 @@ public class MurmeliModelGenerator {
 	 * @param releases
 	 * @return
 	 */
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, List<Release> releases, String projectName) {
 		
 		ElementModel model = new ElementModel();
 		
@@ -482,40 +657,66 @@ public class MurmeliModelGenerator {
 			mapDependency(dep);
 		}
 		
-		this.initializeRootContainer();
+		this.initializeRootContainer(projectName);
 		
 		for (Release release : releases) {
-			this.rootContainer.addChild(mapRelease(release));
+			mapRelease(release);
 		}
+		
+		this.addElementsToRootContainer();
 		
 		model.setConstraints(this.constraints);
 		model.setElements(this.elements);
 		model.setElementTypes(this.elementTypes);
 		model.setRootContainer(this.rootContainer);
 		model.setRelations(this.relations);
-		model.setValueTypes(this.valueTypes);
+		model.setAttributeValueTypes(this.attributeValueTypes);
+		model.setSubContainers(this.subContainers);
+		model.setAttributeValues(this.attributeValues);
+		
+		this.rootContainer.setChildren(this.subContainers);
 		
 		return model;
 	}
 	
 	private Container mapRelease(Release release) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Container rele = new Container(release.getId()+"", release.getId());
+		
+		AttributeValue<Integer> capacity = new AttributeValue("capacity", false, (int) release.getCapacity());
+		
+		capacity.setSource(Source.FIXED);
+		capacity.setType(this.attributeValueTypes.get("capacity"));
+		
+		rele.addAttribute(capacity);
+		this.attributeValues.put(capacity.getID(), capacity);
+			
+		for (String req : release.getRequirements()) {
+			rele.addElement(findRequirement(req));
+			this.requirementsInReleases.add(req);
+		}
+		this.subContainers.add(rele);
+		return rele;
 	}
 
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<String> constraints, List<Dependency> dependencies, String projectName) {
 		
-		//if there are no releases in input the method will create a dummy release
-		initializeRootContainer();
-		
+		//if there are no releases in input the method will create a dummy release, ID is set to 1 because of Choco
 		Container dummy = new Container("dummy");
-		this.rootContainer.addChild(dummy);
+		dummy.setID(1);
+		this.subContainers.add(dummy);
 		
-		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>());
+		AttributeValue capacity = new AttributeValue("capacity", false, 10);
+		capacity.setSource(Source.DEFAULT);
+		capacity.setType(this.attributeValueTypes.get("capacity"));
+		this.attributeValues.put(capacity.getID(), capacity);
+		dummy.addAttribute(capacity);
+		
+		return this.initializeElementModel(requirements, constraints, dependencies, new ArrayList<Release>(), projectName);
 	}
 	
-	public ElementModel initializeElementModel(List<Requirement> requirements, List<Dependency> dependencies) {
+	public ElementModel initializeElementModel(List<Requirement> requirements, List<Dependency> dependencies, String projectName) {
 		
-		return this.initializeElementModel(requirements, new ArrayList<String>(), dependencies);
+		return this.initializeElementModel(requirements, new ArrayList<String>(), dependencies, projectName);
 	}
 }

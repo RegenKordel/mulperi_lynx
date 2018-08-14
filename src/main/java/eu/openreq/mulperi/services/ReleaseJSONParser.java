@@ -14,7 +14,7 @@ public class ReleaseJSONParser {
 	static List<Requirement> requirements;
 	static List<Release> releases;
 	static List<Dependency> dependencies;
-	static InputExtractor input;
+	static ReleaseInputExtractor input;
 	//static List<String> allReqIds;
 
 	public static ReleasePlan parseProjectJSON(String jsonString) throws ReleasePlanException, JSONException {
@@ -35,14 +35,14 @@ public class ReleaseJSONParser {
 
 		// Here we start creating the ReleasePlan
 		ReleasePlan releasePlan = new ReleasePlan();
-		releasePlan.setProject(JSONParser.project);
-		for (Requirement requirement : JSONParser.requirements) {
+		releasePlan.setProject(ReleaseJSONParser.project);
+		for (Requirement requirement : ReleaseJSONParser.requirements) {
 			Requirement old = releasePlan.addRequirement(requirement);
 			if (old != null) {
 				throw new ReleasePlanException("Duplicate Requirement with ID: " + old.getId());
 			}
 		}
-		for (Release release : JSONParser.releases) {
+		for (Release release : ReleaseJSONParser.releases) {
 			Release old = releasePlan.addRelease(release);
 			if (old != null) {
 				throw new ReleasePlanException("Duplicate Release with ID: " + old.getId());
@@ -61,23 +61,23 @@ public class ReleaseJSONParser {
 	}
 
 	public static void addAssignedReleasesToRequirements() {
-	//	allReqIds = new ArrayList<>();
-		for (Release release : JSONParser.releases) {
-			List<String> reqIds = release.getRequirements();
-			for (String reqId : reqIds) {
-				JSONParser.input.findRequirementById(reqId).setAssignedRelease(release.getId());
-				JSONParser.input.findRequirementById(reqId).setRequiresDependencies();
-				JSONParser.input.findRequirementById(reqId).setExcludesDependencies();
-			}
-		//	allReqIds.addAll(reqIds);
-		}
+//	//	allReqIds = new ArrayList<>();
+//		for (Release release : ReleaseJSONParser.releases) {
+//			List<String> reqIds = release.getRequirements();
+//			for (String reqId : reqIds) {
+//				JSONParser.input.findRequirementById(reqId).setAssignedRelease(release.getId());
+//				JSONParser.input.findRequirementById(reqId).setRequiresDependencies();
+//				JSONParser.input.findRequirementById(reqId).setExcludesDependencies();
+//			}
+//		//	allReqIds.addAll(reqIds);
+//		}
 	}
 
 	public static void addDependenciesForRequirements() {
-		for (Dependency dependency : JSONParser.dependencies) {
+		for (Dependency dependency : ReleaseJSONParser.dependencies) {
 			String from_id = dependency.getFromId();
 			String to_id = dependency.getToId();
-			Requirement req = JSONParser.input.findRequirementById(from_id);
+			Requirement req = ReleaseJSONParser.input.findRequirementById(from_id);
 
 			switch (dependency.getDependencyType()) {
 			case "requires":

@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.services;
+package eu.openreq.mulperi.graveyard;
 
 import java.util.List;
 

@@ -19,15 +19,15 @@ public class Release {
 	 */
 	@SerializedName("id")
 	@Expose
-	String id;
+	int id;
 	
 	@SerializedName("created_at")
 	@Expose
-	int created_at;
+	long created_at;
 	
 	@SerializedName("modified_at")
 	@Expose
-	int modified_at;
+	long modified_at;
 	
 	@SerializedName("start_date")
 	@Expose
@@ -50,7 +50,7 @@ public class Release {
 	
 	@SerializedName("requirements")
 	@Expose
-	List<Requirement> requirements;
+	List<String> requirements;
 	
 	/**
 	 * (Required)
@@ -59,27 +59,27 @@ public class Release {
 	@Expose
 	Status status;
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(int created_at) {
+	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
 
-	public int getModified_at() {
+	public long getModified_at() {
 		return modified_at;
 	}
 
-	public void setModified_at(int modified_at) {
+	public void setModified_at(long modified_at) {
 		this.modified_at = modified_at;
 	}
 
@@ -99,7 +99,7 @@ public class Release {
 		this.release_date = release_date;
 	}
 
-	public int getCapacity() {
+	public long getCapacity() {
 		return capacity;
 	}
 
@@ -115,11 +115,11 @@ public class Release {
 		this.project = project;
 	}
 
-	public List<Requirement> getRequirements() {
+	public List<String> getRequirements() {
 		return requirements;
 	}
 
-	public void setRequirements(List<Requirement> requirements) {
+	public void setRequirements(List<String> requirements) {
 		this.requirements = requirements;
 	}
 

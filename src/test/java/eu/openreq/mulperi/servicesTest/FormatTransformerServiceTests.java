@@ -18,7 +18,7 @@ import eu.openreq.mulperi.models.selections.CalculationConstraint;
 import eu.openreq.mulperi.models.selections.FeatureSelection;
 import eu.openreq.mulperi.models.selections.Selections;
 import eu.openreq.mulperi.services.FormatTransformerService;
-import eu.openreq.mulperi.services.KumbangModelGenerator;
+import eu.openreq.mulperi.graveyard.KumbangModelGenerator;
 
 public class FormatTransformerServiceTests {
 	

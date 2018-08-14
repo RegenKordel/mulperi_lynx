@@ -9,9 +9,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class ElementModel {
 
-	@SerializedName("valueTypes")
+	@SerializedName("attributeValueTypes")
 	@Expose
-	private HashMap<String, AttributeValueType> valueTypes;
+	private HashMap<String, AttributeValueType> attributeValueTypes;
 
 	@SerializedName("elementTypes")
 	@Expose
@@ -21,28 +21,67 @@ public class ElementModel {
 	@Expose
 	private HashMap<String, Element> elements;
 	
+	@SerializedName("subContainers")
+	@Expose
+	private List<Container> subContainers;
+	
 	@SerializedName("rootContainer")
 	@Expose
 	private Container rootContainer;
 	
 	@SerializedName("relations")
 	@Expose
-	private List<RelationshipType> relations;
+	private List<Relationship> relations;
 	
 	@SerializedName("constraints")
 	@Expose
 	private HashMap<Integer, Constraint> constraints;
 	
+	@SerializedName("attributeValues")
+	@Expose
+	private HashMap<Integer, AttributeValue> attributeValues;
+	
+	@SerializedName("partDefinitions")
+	@Expose
+	private HashMap<Integer, PartDefinition> partDefinitions;
+
+	
+	/*@SerializedName("attributeValues")
+	@Expose
+	private HashMap<Integer, AttributeValue> parts;*/
+	
 	public ElementModel() {
 		
-		this.valueTypes = new HashMap();
+		this.attributeValueTypes = new HashMap();
 		this.elementTypes = new HashMap();
 		this.elements = new HashMap();
+		this.subContainers = new ArrayList();
 		this.rootContainer = null;
 		this.relations = new ArrayList();
 		this.constraints = new HashMap();
+		this.attributeValues = new HashMap();
 	}
 	
+	public HashMap<String, AttributeValueType> getAttributeValueTypes() {
+		return attributeValueTypes;
+	}
+
+	public void setAttributeValueTypes(HashMap<String, AttributeValueType> attributeValueTypes) {
+		this.attributeValueTypes = attributeValueTypes;
+	}
+	
+	public void addValueType(AttributeValueType type) {
+		this.attributeValueTypes.put(type.getName(), type);
+	}
+
+	public HashMap<Integer, PartDefinition> getPartDefinitions() {
+		return partDefinitions;
+	}
+
+	public void setPartDefinitions(HashMap<Integer, PartDefinition> partDefinitions) {
+		this.partDefinitions = partDefinitions;
+	}
+
 	public HashMap<Integer, Constraint> getConstraints() {
 		return constraints;
 	}
@@ -53,18 +92,6 @@ public class ElementModel {
 	
 	public void addConstraint(Constraint cons) {
 		this.constraints.put(cons.getID(), cons);
-	}
-
-	public HashMap<String, AttributeValueType> getValueTypes() {
-		return valueTypes;
-	}
-
-	public void setValueTypes(HashMap<String, AttributeValueType> valueTypes) {
-		this.valueTypes = valueTypes;
-	}
-
-	public void addValueType(AttributeValueType type) {
-		this.valueTypes.put(type.getName(), type);
 	}
 	
 	public HashMap<String, ElementType> getElementTypes() {
@@ -98,16 +125,36 @@ public class ElementModel {
 	public void setRootContainer(Container rootContainer) {
 		this.rootContainer = rootContainer;
 	}
+	
+	public List<Container> getsubContainers() {
+		return subContainers;
+	}
 
-	public List<RelationshipType> getRelations() {
+	public void setSubContainers(List<Container> subContainers) {
+		this.subContainers = subContainers;
+	}
+
+	public List<Relationship> getRelations() {
 		return relations;
 	}
 
-	public void setRelations(List<RelationshipType> relations) {
+	public void setRelations(List<Relationship> relations) {
 		this.relations = relations;
 	}
 	
-	public void addRelation(RelationshipType relation) {
+	public void addRelation(Relationship relation) {
 		this.relations.add(relation);
+	}
+	
+	public HashMap<Integer, AttributeValue> getAttributeValues() {
+		return attributeValues;
+	}
+
+	public void setAttributeValues(HashMap<Integer, AttributeValue> attributeValues) {
+		this.attributeValues = attributeValues;
+	}
+
+	public void addAttriputeValue(AttributeValue value) {
+		this.attributeValues.put(value.getID(), value);
 	}
 }

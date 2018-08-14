@@ -1,5 +1,6 @@
 package fi.helsinki.ese.murmeli;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -30,7 +31,7 @@ public class AttributeValueType {
 	}
 	
 	public enum Bound {
-		EMUM,
+		ENUM,
 		UNBOUND,
 		RANGE
 	}
@@ -45,7 +46,7 @@ public class AttributeValueType {
 	
 	@SerializedName("values")
 	@Expose
-	private List<AttributeValue> values = null;
+	private List<Integer> values = new ArrayList<Integer>();
 	
 	@SerializedName("baseType")
 	@Expose
@@ -117,6 +118,14 @@ public class AttributeValueType {
 		this(Cardinality.SINGLE, min, max);
 	}
 	
+	public int[] getRange() {
+		return range;
+	}
+
+	public void setRange(int[] range) {
+		this.range = range;
+	}
+
 	public Bound getBound() {
 		return bound;
 	}
@@ -144,19 +153,29 @@ public class AttributeValueType {
         return cardinality;
 	}
 	
-	public List<AttributeValue> getValues() {
+	public List<Integer> getValues() {
 		
 		return this.values;
 	}
 	
-	public void setValue(List<AttributeValue> value) {
+	public void setValuesAsIDs(List<Integer> values) {
 		
-		this.values = value;
+		this.values = values;
+	}
+	
+	public void setValues(List<AttributeValue> values) {
+		
+		this.values.clear();
+		
+		for (AttributeValue value : values) {
+			
+			this.values.add(value.getID());
+		}
 	}
 	
 	public void addValue(AttributeValue value) {
 		
-		this.values.add(value);
+		this.values.add(value.getID());
 	}
 	
 	public boolean equals(AttributeValueType other) {

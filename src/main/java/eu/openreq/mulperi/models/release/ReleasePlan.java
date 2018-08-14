@@ -1,7 +1,6 @@
 package eu.openreq.mulperi.models.release;
 
-//import eu.openreq.mulperi.models.json.*;
-import eu.openreq.mulperi.models.release.*;
+import eu.openreq.mulperi.models.json.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

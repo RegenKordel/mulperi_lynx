@@ -4,7 +4,7 @@ import java.util.List;
 
 // This class extracts models from the input Json
 
-public class InputExtractor {
+public class ReleaseInputExtractor {
 	Project project;
 	Requirement requirement;
 	List<Requirement> requirements;

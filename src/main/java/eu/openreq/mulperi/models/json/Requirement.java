@@ -48,14 +48,14 @@ public class Requirement {
 	*/
 	@SerializedName("created_at")
 	@Expose
-	private int created_at;
+	private long created_at;
 	/**
 	* Last modification time
 	* 
 	*/
 	@SerializedName("modified_at")
 	@Expose
-	private int modified_at;
+	private long modified_at;
 	/**
 	* The calculated priority of a requirement
 	* 
@@ -63,6 +63,7 @@ public class Requirement {
 	@SerializedName("priority")
 	@Expose
 	private int priority;
+
 	/**
 	* The type of a requirement
 	* 
@@ -84,7 +85,7 @@ public class Requirement {
 	*/
 	@SerializedName("children")
 	@Expose
-	private List<Requirement> children = null;
+	private List<String> children = null;
 	/**
 	* The keywords or tags from the classification of a requirement
 	* 
@@ -92,6 +93,18 @@ public class Requirement {
 	@SerializedName("classifierResults")
 	@Expose
 	private List<Classifier> classifierResults = null;
+	
+	@SerializedName("effort")
+	@Expose
+	private int effort;
+	
+	/**
+	* RequirementParts of a requirement
+	* 
+	*/
+	@SerializedName("requirementParts")
+	@Expose
+	private List<RequirementPart> requirementParts = null;
 	
 	
 	public String getId() {
@@ -126,19 +139,19 @@ public class Requirement {
 		this.comments = comments;
 	}
 	
-	public int getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 	
-	public void setCreated_at(int created_at) {
+	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
 	
-	public int getModified_at() {
+	public long getModified_at() {
 		return modified_at;
 	}
 	
-	public void setModified_at(int modified_at) {
+	public void setModified_at(long modified_at) {
 		this.modified_at = modified_at;
 	}
 	
@@ -148,6 +161,14 @@ public class Requirement {
 	
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+	
+	public int getEffort() {
+		return effort;
+	}
+
+	public void setEffort(int effort) {
+		this.effort = effort;
 	}
 	
 	public Requirement_type getRequirement_type() {
@@ -166,11 +187,11 @@ public class Requirement {
 		this.status = status;
 	}
 	
-	public List<Requirement> getChildren() {
+	public List<String> getChildren() {
 		return children;
 	}
 	
-	public void setChildren(List<Requirement> children) {
+	public void setChildren(List<String> children) {
 		this.children = children;
 	}
 	
@@ -180,5 +201,13 @@ public class Requirement {
 	
 	public void setClassifierResults(List<Classifier> classifierResults) {
 		this.classifierResults = classifierResults;
+	}
+
+	public List<RequirementPart> getRequirementParts() {
+		return requirementParts;
+	}
+
+	public void setRequirementParts(List<RequirementPart> requirementParts) {
+		this.requirementParts = requirementParts;
 	}
 }

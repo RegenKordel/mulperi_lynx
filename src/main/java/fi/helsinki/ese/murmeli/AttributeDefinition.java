@@ -13,26 +13,31 @@ public class AttributeDefinition {
 	
 	@SerializedName("defaultValue")
 	@Expose
-	private AttributeValue defaultValue;
+	private Integer defaultValue;
 	
 	@SerializedName("valueType")
 	@Expose
-	private AttributeValueType valueType;
+	private String valueType;
 	
 	@SerializedName("optionality")
 	@Expose
 	private Optionality optionality = Optionality.REQUIRED;
 	
-	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type, Optionality opt) {
+	public AttributeDefinition(Integer defaultValue, String type, Optionality opt) {
 		
 		this.defaultValue = defaultValue;
 		this.valueType = type;
 		this.optionality = opt;
 	}
 	
+	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type, Optionality opt) {
+		
+		this(defaultValue.getID(), type.getName(), opt);
+	}
+	
 	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type) {
 		
-		this(defaultValue, type, Optionality.REQUIRED);
+		this(defaultValue.getID(), type.getName(), Optionality.REQUIRED);
 	}
 	
 	public AttributeDefinition(AttributeValueType type) {
@@ -40,20 +45,28 @@ public class AttributeDefinition {
 		this(null, type);
 	}
 
-	public AttributeValue getDefaultValue() {
+	public Integer getDefaultValue() {
 		return defaultValue;
 	}
 
 	public void setDefaultValue(AttributeValue defaultValue) {
+		this.defaultValue = defaultValue.getID();
+	}
+	
+	public void setDefaultValue(int defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
-	public AttributeValueType getValueType() {
+	public String getValueType() {
 		return valueType;
 	}
 
 	public void setValueType(AttributeValueType valueType) {
-		this.valueType = valueType;
+		this.valueType = valueType.getName();
+	}
+	
+	public void setValueType(String typeName) {
+		this.valueType = typeName;
 	}
 
 	public Optionality getOptionality() {

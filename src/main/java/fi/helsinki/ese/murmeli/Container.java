@@ -1,6 +1,7 @@
 package fi.helsinki.ese.murmeli;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -13,10 +14,10 @@ import com.google.gson.annotations.SerializedName;
 *
 */
 public class Container {
-
+	
 	@SerializedName("id")
 	@Expose
-	final private int id;
+	private int id;
 
 	/**
 	*
@@ -32,28 +33,28 @@ public class Container {
 	*/
 	@SerializedName("children")
 	@Expose
-	private List<Container> children = new ArrayList();
+	private List<Integer> children = new ArrayList();
 	/**
 	* Containers directly after this one
 	*
 	*/
 	@SerializedName("next")
 	@Expose
-	private List<Container> next = new ArrayList();
+	private List<Integer> next = new ArrayList();
 	/**
 	* Elements in this container
 	*
 	*/
 	@SerializedName("elements")
 	@Expose
-	private List<Element> elements = new ArrayList();
+	private List<String> elements = new ArrayList();
 	/**
 	* Attributes describing this container
 	*
 	*/
 	@SerializedName("attributes")
 	@Expose
-	private List<AttributeValue> attributes = new ArrayList();
+	private HashMap<String, Integer> attributes = new HashMap();
 	
 	private static int hid = 0;
 	
@@ -71,25 +72,38 @@ public class Container {
 	public int getID() {
 		return this.id;
 	}
+	public void setID(int id) {
+		this.id = id;
+	}
 	
 	public void addChild(Container child) {
 		
-		this.children.add(child);
+		this.children.add(child.getID());
 	}
 	
 	public void addNext(Container next) {
 		
-		this.next.add(next);
+		this.next.add(next.getID());
 	}
 	
 	public void addElement(Element el) {
 
-		this.elements.add(el);
+		this.elements.add(el.getNameID());
+	}
+	
+	public void addElement(String element) {
+		
+		this.elements.add(element);
+	}
+	
+	public void addAttribute(String key, Integer value) {
+
+		this.attributes.put(key, value);
 	}
 	
 	public void addAttribute(AttributeValue value) {
 
-		this.attributes.add(value);
+		this.attributes.put(value.getName(), value.getID());
 	}
 	
 	/**
@@ -114,7 +128,7 @@ public class Container {
 	* Containers inside this container
 	*
 	*/
-	public List<Container> getChildren() {
+	public List<Integer> getChildren() {
 		return children;
 	}
 	
@@ -122,15 +136,24 @@ public class Container {
 	* Containers inside this container
 	*
 	*/
-	public void setChildren(List<Container> children) {
+	public void setChildrenAsId(List<Integer> children) {
 		this.children = children;
+	}
+	
+	public void setChildren(List<Container> children) {
+		
+		this.children.clear();
+		
+		for (Container child : children) {
+			this.children.add(child.getID());
+		}
 	}
 	
 	/**
 	* Containers directly after this one
 	*
 	*/
-	public List<Container> getNext() {
+	public List<Integer> getNext() {
 		return next;
 	}
 	
@@ -138,15 +161,24 @@ public class Container {
 	* Containers directly after this one
 	*
 	*/
-	public void setNext(List<Container> next) {
+	public void setNextAsId(List<Integer> next) {
 		this.next = next;
+	}
+	
+	public void setNext(List<Container> next) {
+		
+		this.next.clear();
+		
+		for (Container nextContainer : next) {
+			this.next.add(nextContainer.getID());
+		}
 	}
 	
 	/**
 	* Elements in this container
 	*
 	*/
-	public List<Element> getElements() {
+	public List<String> getElements() {
 		return elements;
 	}
 	
@@ -154,15 +186,24 @@ public class Container {
 	* Elements in this container
 	*
 	*/
-	public void setElements(List<Element> elements) {
+	public void setElementsAsNames(List<String> elements) {
 		this.elements = elements;
+	}
+	
+	public void setElements(List<Element> elements) {
+		
+		this.elements.clear();
+		
+		for (Element element : elements) {
+			this.elements.add(element.getNameID());
+		}
 	}
 	
 	/**
 	* Attributes describing this container
 	*
 	*/
-	public List<AttributeValue> getAttributes() {
+	public HashMap<String, Integer> getAttributes() {
 		return attributes;
 	}
 	
@@ -171,10 +212,20 @@ public class Container {
 	*
 	*/
 	public void setAttributes(List<AttributeValue> attributes) {
+		
+		this.attributes.clear();
+		
+		for (AttributeValue atr : attributes) {
+			this.attributes.put(atr.getName(), atr.getID());
+		}
+	}
+	
+	public void setAttributesAsIds(HashMap<String, Integer> attributes) {
+		
 		this.attributes = attributes;
 	}
 	
-	public String toString() {
+	/*public String toString() {
 		StringBuilder lel = new StringBuilder();
 		
 		lel.append(this.nameID + ";");
@@ -201,5 +252,5 @@ public class Container {
 		}
 		
 		return lel.toString();
-	}
+	}*/
 }

@@ -59,6 +59,12 @@ public class ElementType {
 	
 	public void setPotentialParts(List<PartDefinition> parts) {
 	
+		for (PartDefinition part : parts) {
+			this.potentialParts.add(part);
+		}
+	}
+	
+	public void setPotentialPartsAsIds(List<PartDefinition> parts) {
 		this.potentialParts = parts;
 	}
 	
@@ -71,4 +77,9 @@ public class ElementType {
 		
 		this.potentialParts.add(part);
 	}
+	
+//	public void addPotentialPart(int partID) {
+//		
+//		this.potentialParts.add(partID);
+//	}
 }
