@@ -181,9 +181,27 @@ public class OpenReqConverter {
 				dep.setDependency_type(Dependency_type.SIMILAR);
 				break;
 			}
+			mapRelationshipAttributes(dep, rel);
+			
 			dependencies.add(dep);
 		}
 		mapElementParts();
+	}
+	
+	public void mapRelationshipAttributes(Dependency dep, Relationship relation) {
+		if (relation.getAttributes().containsKey("status")) {
+			switch((String) model.getAttributeValues().get(relation.getAttributes().get("status")).getValue()) {
+			case "proposed":
+				dep.setStatus(Dependency_status.PROPOSED);
+				break;
+			case "rejected":
+				dep.setStatus(Dependency_status.REJECTED);
+				break;
+			case "accepted":
+				dep.setStatus(Dependency_status.ACCEPTED);
+				break;
+			}
+		}
 	}
 	
 	public void mapElementParts() {
