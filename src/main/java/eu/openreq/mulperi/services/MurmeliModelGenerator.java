@@ -121,6 +121,36 @@ public class MurmeliModelGenerator {
 		initializePotentialParts();
 		
 		initializeCapacity();
+		
+		initializeDependencyStatus();
+	}
+
+	private void initializeDependencyStatus() {
+		
+		AttributeValueType dependencyStatus = new AttributeValueType(BaseType.STRING, Cardinality.SINGLE, "relationshipStatus");
+		dependencyStatus.setBound(Bound.ENUM);
+		
+		AttributeValue accepted = new AttributeValue<String>("relationshipStatus", true, "accepted");
+		accepted.setType(dependencyStatus);
+		accepted.setSource(Source.DEFAULT);
+		
+		AttributeValue proposed = new AttributeValue<String>("relationshipStatus", true, "proposed");
+		accepted.setType(dependencyStatus);
+		accepted.setSource(Source.DEFAULT);
+		
+		AttributeValue rejected = new AttributeValue<String>("relationshipStatus", true, "rejected");
+		accepted.setType(dependencyStatus);
+		accepted.setSource(Source.DEFAULT);
+		
+		dependencyStatus.addValue(rejected);
+		dependencyStatus.addValue(proposed);
+		dependencyStatus.addValue(rejected);
+		
+		this.attributeValues.put(rejected.getID(), rejected);
+		this.attributeValues.put(proposed.getID(), proposed);
+		this.attributeValues.put(accepted.getID(), accepted);
+		
+		this.attributeValueTypes.put("relationshipStatus", dependencyStatus);
 	}
 
 	private void initializeCapacity() {
@@ -185,20 +215,20 @@ public class MurmeliModelGenerator {
 
 	private AttributeDefinition initializeStatusType() {
 		
-		AttributeValueType statusType = new AttributeValueType(BaseType.STRING, Cardinality.SINGLE, "status");
+		AttributeValueType statusType = new AttributeValueType(BaseType.STRING, Cardinality.SINGLE, "elementStatus");
 		statusType.setBound(Bound.ENUM);
 		
-		AttributeValue submitted = new AttributeValue("status", false, "submitted");
-		AttributeValue deferred = new AttributeValue("status", false, "deferred");
-		AttributeValue pending = new AttributeValue("status", false, "pending");
-		AttributeValue inProgress = new AttributeValue("status", false, "inProgress");
-		AttributeValue rejected = new AttributeValue("status", false, "rejected");
-		AttributeValue draft = new AttributeValue("status", false, "draft");
-		AttributeValue accepted = new AttributeValue("status", false, "accepted");
-		AttributeValue completed = new AttributeValue("status", false, "completed");
-		AttributeValue newReq = new AttributeValue("status", false, "new");
-		AttributeValue planned = new AttributeValue("status", false, "planned");
-		AttributeValue recommended = new AttributeValue("status", false, "recommended");
+		AttributeValue submitted = new AttributeValue("elementStatus", false, "submitted");
+		AttributeValue deferred = new AttributeValue("elementStatus", false, "deferred");
+		AttributeValue pending = new AttributeValue("elementStatus", false, "pending");
+		AttributeValue inProgress = new AttributeValue("elementStatus", false, "inProgress");
+		AttributeValue rejected = new AttributeValue("elementStatus", false, "rejected");
+		AttributeValue draft = new AttributeValue("elementStatus", false, "draft");
+		AttributeValue accepted = new AttributeValue("elementStatus", false, "accepted");
+		AttributeValue completed = new AttributeValue("elementStatus", false, "completed");
+		AttributeValue newReq = new AttributeValue("elementStatus", false, "new");
+		AttributeValue planned = new AttributeValue("elementStatus", false, "planned");
+		AttributeValue recommended = new AttributeValue("elementStatus", false, "recommended");
 		
 		List<AttributeValue> statuses = new ArrayList();
 		statuses.add(submitted);
@@ -220,7 +250,7 @@ public class MurmeliModelGenerator {
 		
 		statusType.setValues(statuses);
 		
-		this.attributeValueTypes.put("status", statusType);
+		this.attributeValueTypes.put("elementStatus", statusType);
 		
 		AttributeDefinition def = new AttributeDefinition(submitted, statusType);
 		submitted.setSource(Source.DEFAULT);
@@ -291,10 +321,38 @@ public class MurmeliModelGenerator {
 		Element to = findRequirement(dep.getToId());
 		
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
+		
+		factorRelationshipStatus(relationship, dep);
 
 		this.relations.add(relationship);
 		
 		return relationship;
+	}
+
+	private void factorRelationshipStatus(Relationship relationship, Dependency dep) {
+		
+		List<Integer> values = this.attributeValueTypes.get("relationshipType").getValues();
+		
+		switch(dep.getStatus()) {
+		case ACCEPTED:
+			for (Integer id : values) {
+				if (this.attributeValues.get(id).getValue().equals("accepted")) {
+					relationship.addAttribute("relationshipStatus", id);
+				}
+			}
+		case REJECTED:
+			for (Integer id : values) {
+				if (this.attributeValues.get(id).getValue().equals("rejected")) {
+					relationship.addAttribute("relationshipStatus", id);
+				}
+			}
+		case PROPOSED:
+			for (Integer id : values) {
+				if (this.attributeValues.get(id).getValue().equals("proposed")) {
+					relationship.addAttribute("relationshipStatus", id);
+				}
+			}
+		}
 	}
 
 	private Element findRequirement(String id) {
@@ -471,7 +529,7 @@ public class MurmeliModelGenerator {
 	 */
 	private AttributeValue<String> factorStatus(Requirement_status status) {
 		
-		AttributeValueType statuses = this.attributeValueTypes.get("status");
+		AttributeValueType statuses = this.attributeValueTypes.get("elementStatus");
 
 		switch(status) {
 		case ACCEPTED:
