@@ -189,8 +189,9 @@ public class OpenReqConverter {
 	}
 	
 	public void mapRelationshipAttributes(Dependency dep, Relationship relation) {
-		if (relation.getAttributes().containsKey("status")) {
-			switch((String) model.getAttributeValues().get(relation.getAttributes().get("status")).getValue()) {
+		
+		if (relation.getAttributes().containsKey("relationshipStatus")) {
+			switch((String) model.getAttributeValues().get(relation.getAttributes().get("relationshipStatus")).getValue()) {
 			case "proposed":
 				dep.setStatus(Dependency_status.PROPOSED);
 				break;
@@ -208,18 +209,18 @@ public class OpenReqConverter {
 		for (Element element : model.getElements().values()) {
 			if (element.getParts() != null || !element.getParts().isEmpty()) {
 				for (Parts parts : element.getParts()) {
-					if (parts.getRole() == "decomposition") {
-						for (String toId : parts.getParts()) {
-							Dependency dep = new Dependency();
-							dep.setFromId(element.getNameID());
-							dep.setToId(toId);
-							dep.setDependency_type(Dependency_type.DECOMPOSITION);
-							// TODO: What is the status was something else when transforming into Murmeli?
-							dep.setStatus(Dependency_status.PROPOSED);
-							
-							dependencies.add(dep);
-						}
+					//if (parts.getRole() == "decomposition") {
+					for (String toId : parts.getParts()) {
+						Dependency dep = new Dependency();
+						dep.setFromId(element.getNameID());
+						dep.setToId(toId);
+						dep.setDependency_type(Dependency_type.DECOMPOSITION);
+						// TODO: What is the status was something else when transforming into Murmeli?
+						dep.setStatus(Dependency_status.PROPOSED);
+						
+						dependencies.add(dep);
 					}
+					//}
 				}
 			}
 		}
