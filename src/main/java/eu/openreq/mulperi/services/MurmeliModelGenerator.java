@@ -331,7 +331,7 @@ public class MurmeliModelGenerator {
 
 	private void factorRelationshipStatus(Relationship relationship, Dependency dep) {
 		
-		List<Integer> values = this.attributeValueTypes.get("relationshipType").getValues();
+		List<Integer> values = this.attributeValueTypes.get("relationshipStatus").getValues();
 		
 		switch(dep.getStatus()) {
 		case ACCEPTED:
