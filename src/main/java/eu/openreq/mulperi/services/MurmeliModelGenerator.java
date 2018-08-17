@@ -333,23 +333,25 @@ public class MurmeliModelGenerator {
 		
 		List<Integer> values = this.attributeValueTypes.get("relationshipStatus").getValues();
 		
-		switch(dep.getStatus()) {
-		case ACCEPTED:
-			for (Integer id : values) {
-				if (this.attributeValues.get(id).getValue().equals("accepted")) {
-					relationship.addAttribute("relationshipStatus", id);
+		if (dep.getStatus() != null) {
+			switch(dep.getStatus()) {
+			case ACCEPTED:
+				for (Integer id : values) {
+					if (this.attributeValues.get(id).getValue().equals("accepted")) {
+						relationship.addAttribute("relationshipStatus", id);
+					}
 				}
-			}
-		case REJECTED:
-			for (Integer id : values) {
-				if (this.attributeValues.get(id).getValue().equals("rejected")) {
-					relationship.addAttribute("relationshipStatus", id);
+			case REJECTED:
+				for (Integer id : values) {
+					if (this.attributeValues.get(id).getValue().equals("rejected")) {
+						relationship.addAttribute("relationshipStatus", id);
+					}
 				}
-			}
-		case PROPOSED:
-			for (Integer id : values) {
-				if (this.attributeValues.get(id).getValue().equals("proposed")) {
-					relationship.addAttribute("relationshipStatus", id);
+			case PROPOSED:
+				for (Integer id : values) {
+					if (this.attributeValues.get(id).getValue().equals("proposed")) {
+						relationship.addAttribute("relationshipStatus", id);
+					}
 				}
 			}
 		}
