@@ -277,8 +277,8 @@ public class MurmeliModelGenerator {
 			break;
 		case DECOMPOSITION:
 			
-			Element from = findRequirement(dep.getFromId());
-			Element to = findRequirement(dep.getToId());
+			Element from = findRequirement(dep.getFromid());
+			Element to = findRequirement(dep.getToid());
 			
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
@@ -317,8 +317,8 @@ public class MurmeliModelGenerator {
 			return null;
 		}
 		
-		Element from = findRequirement(dep.getFromId());
-		Element to = findRequirement(dep.getToId());
+		Element from = findRequirement(dep.getFromid());
+		Element to = findRequirement(dep.getToid());
 		
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
 		

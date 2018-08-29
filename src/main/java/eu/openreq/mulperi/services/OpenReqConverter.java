@@ -153,8 +153,8 @@ public class OpenReqConverter {
 	public void mapRelationships() {
 		for (Relationship rel : model.getRelations()) {
 			Dependency dep = new Dependency();
-			dep.setFromId(rel.getFromID());
-			dep.setToId(rel.getToID());
+			dep.setFromid(rel.getFromID());
+			dep.setToid(rel.getToID());
 			switch(rel.getNameType()) {
 			case REFINES:
 				dep.setDependency_type(Dependency_type.REFINES);
@@ -212,8 +212,8 @@ public class OpenReqConverter {
 					//if (parts.getRole() == "decomposition") {
 					for (String toId : parts.getParts()) {
 						Dependency dep = new Dependency();
-						dep.setFromId(element.getNameID());
-						dep.setToId(toId);
+						dep.setFromid(element.getNameID());
+						dep.setToid(toId);
 						dep.setDependency_type(Dependency_type.DECOMPOSITION);
 						// TODO: What is the status was something else when transforming into Murmeli?
 						dep.setStatus(Dependency_status.PROPOSED);
