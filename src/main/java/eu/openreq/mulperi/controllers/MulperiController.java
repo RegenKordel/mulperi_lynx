@@ -79,7 +79,7 @@ public class MulperiController {
 	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
 	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
 		
-		//System.out.println("Received requirements from Milla " + requirements);
+		System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
@@ -250,6 +250,7 @@ public class MulperiController {
 	public ResponseEntity<String> sendModelToKeljuCaas(String jsonString) {
 		RestTemplate rt = new RestTemplate();
 
+		System.out.println("String is " +jsonString);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_XML);
 

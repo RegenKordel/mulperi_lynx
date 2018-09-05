@@ -135,21 +135,22 @@ public class MurmeliModelGenerator {
 		accepted.setSource(Source.DEFAULT);
 		
 		AttributeValue proposed = new AttributeValue<String>("relationshipStatus", true, "proposed");
-		accepted.setType(dependencyStatus);
-		accepted.setSource(Source.DEFAULT);
+		proposed.setType(dependencyStatus);
+		proposed.setSource(Source.DEFAULT);
 		
 		AttributeValue rejected = new AttributeValue<String>("relationshipStatus", true, "rejected");
-		accepted.setType(dependencyStatus);
-		accepted.setSource(Source.DEFAULT);
+		rejected.setType(dependencyStatus);
+		rejected.setSource(Source.DEFAULT);
 		
-		dependencyStatus.addValue(rejected);
+		dependencyStatus.addValue(accepted);
 		dependencyStatus.addValue(proposed);
 		dependencyStatus.addValue(rejected);
 		
 		this.attributeValues.put(rejected.getID(), rejected);
 		this.attributeValues.put(proposed.getID(), proposed);
 		this.attributeValues.put(accepted.getID(), accepted);
-		
+		System.out.println("accepted ID " + accepted.getID());
+		System.out.println("this.attributeValues.get(13) " + this.attributeValues.get(13));
 		this.attributeValueTypes.put("relationshipStatus", dependencyStatus);
 	}
 
@@ -333,26 +334,41 @@ public class MurmeliModelGenerator {
 		
 		List<Integer> values = this.attributeValueTypes.get("relationshipStatus").getValues();
 		
+		for(int value: values) {
+			System.out.println("Value is " +value);
+		}
+		System.out.println("Here this.attributeValues.get(13) " + this.attributeValues.get(13));
 		if (dep.getStatus() != null) {
+			System.out.println("Dep status " + dep.getStatus());
 			switch(dep.getStatus()) {
 			case ACCEPTED:
+				System.out.println("Accepted!");
 				for (Integer id : values) {
+					System.out.println("this.attributeValues.get(id).getValue() " + this.attributeValues.get(id).getValue());
+					System.out.println("id is " + id);
 					if (this.attributeValues.get(id).getValue().equals("accepted")) {
+						System.out.println("Accepted here");
 						relationship.addAttribute("relationshipStatus", id);
 					}
 				}
+				break;
 			case REJECTED:
 				for (Integer id : values) {
 					if (this.attributeValues.get(id).getValue().equals("rejected")) {
+						System.out.println("Rejected here");
 						relationship.addAttribute("relationshipStatus", id);
 					}
 				}
+				break;
 			case PROPOSED:
+				System.out.println("Proposed!");
 				for (Integer id : values) {
 					if (this.attributeValues.get(id).getValue().equals("proposed")) {
+						System.out.println("Proposed here");
 						relationship.addAttribute("relationshipStatus", id);
 					}
 				}
+				break;
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public class Dependency {
 	* (Required)
 	* 
 	*/
-	@SerializedName("fromId")
+	@SerializedName("fromid")
 	@Expose
 	private String fromid;
 	/**
@@ -45,7 +45,7 @@ public class Dependency {
 	* (Required)
 	* 
 	*/
-	@SerializedName("toId")
+	@SerializedName("toid")
 	@Expose
 	private String toid;
 	
