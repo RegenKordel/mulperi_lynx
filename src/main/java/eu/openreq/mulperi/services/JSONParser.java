@@ -21,6 +21,7 @@ public class JSONParser {
 	static Gson gson = new Gson();
 	public static Project project;
 	public static Requirement requirement;
+	public static List<Project> projects;
 	public static List<Requirement> requirements;
 	public static List<Requirement> dependent_requirements;
 	public static List<Release> releases;
@@ -31,8 +32,8 @@ public class JSONParser {
 			throws JSONException {
 		
 			input = gson.fromJson(jsonString, InputExtractor.class);
-			
 			project = input.getProject();
+			projects = input.getProjects();
 			requirement = input.getRequirement();
 			requirements = input.getRequirements();
 			releases = input.getReleases();

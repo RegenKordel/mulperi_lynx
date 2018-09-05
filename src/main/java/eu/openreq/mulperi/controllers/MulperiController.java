@@ -82,9 +82,16 @@ public class MulperiController {
 		//System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
 		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model;
+		if(JSONParser.projects!=null) {
+			String projectId = JSONParser.projects.get(0).getId();
+			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, projectId);
+		}
+		else{
+			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
+		}
 		
 		try {
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);

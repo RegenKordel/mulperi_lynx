@@ -7,6 +7,7 @@ import java.util.List;
 public class InputExtractor {
 	Project project;
 	Requirement requirement;
+	List<Project> projects;
 	List<Requirement> requirements;
 	List<Requirement> dependent_requirements;
 	List<Release> releases;
@@ -36,6 +37,14 @@ public class InputExtractor {
 		return project;
 	}
 	
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
 	public Requirement getRequirement() {
 		return requirement;
 	}
