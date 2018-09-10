@@ -58,7 +58,6 @@ public class MulperiController {
 
 	@Value("${mulperi.caasAddress}")
 	private String caasAddress; 
-
 	
 	/**
 	 * Import a model in JSON format
@@ -326,39 +325,38 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@RequestMapping(value = "/findTransitiveClosureOfRequirement", method = RequestMethod.POST)
-	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestParam String requirementId, @RequestParam int depth) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestParam String requirementId) throws JSONException, IOException, ParserConfigurationException {
 		RestTemplate rt = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		String completeAddress = caasAddress + "/findTransitiveClosureOfElement";
 		
-		Map<String, Integer> requested = new HashMap<>();
-		requested.put(requirementId, depth);
-		HttpEntity<Map> entity = new HttpEntity<Map>(requested, headers);
-
 		String response = null;
 		try {
-			response = rt.postForObject(completeAddress, entity, String.class);
+			response = rt.postForObject(completeAddress, requirementId, String.class);
+			TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
+			
+			OpenReqConverter converter = new OpenReqConverter(closure.getModel());
+			
+			List<Requirement> requirements = converter.getRequirements();
+			List<Dependency> dependencies = converter.getDependencies();
+			Map<Integer, List<String>> layers = closure.getLayers();
+
+			String requirementsAsString = gson.toJson(requirements);
+			String dependenciesAsString = gson.toJson(dependencies);
+			String layersAsString = gson.toJson(layers);
+			
+			String json = "{\"requirements\":" + requirementsAsString + ",\"dependencies\":" + dependenciesAsString + ",\"layers\":" + layersAsString + "}";
+			
+			return new ResponseEntity<>(json, HttpStatus.OK);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		
-		TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
-		
-		OpenReqConverter converter = new OpenReqConverter(closure.getModel());
-		
-		List<Requirement> requirements = converter.getRequirements();
-		List<Dependency> dependencies = converter.getDependencies();
-		Map<Integer, List<String>> layers = closure.getLayers();
+		catch (Exception e) {
+			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 
-		String requirementsAsString = gson.toJson(requirements);
-		String dependenciesAsString = gson.toJson(dependencies);
-		String layersAsString = gson.toJson(layers);
-		
-		String json = "{\"requirements\":" + requirementsAsString + ",\"dependencies\":" + dependenciesAsString + ",\"layers\":" + layersAsString + "}";
-		
-		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 
