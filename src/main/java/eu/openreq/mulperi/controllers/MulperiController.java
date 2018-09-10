@@ -325,7 +325,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@RequestMapping(value = "/findTransitiveClosureOfRequirement", method = RequestMethod.POST)
-	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestParam String requirementId) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {
 		RestTemplate rt = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
