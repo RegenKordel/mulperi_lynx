@@ -51,24 +51,34 @@ public class OpenReqConverter {
 			switch (element.getType()) {
 			case "bug":
 				req.setRequirement_type(Requirement_type.BUG);
+				break;
 			case "epic":
 				req.setRequirement_type(Requirement_type.EPIC);
+				break;
 			case "functional":
 				req.setRequirement_type(Requirement_type.FUNCTIONAL);
+				break;
 			case "initiative":
 				req.setRequirement_type(Requirement_type.INITIATIVE);
+				break;
 			case "issue":
 				req.setRequirement_type(Requirement_type.ISSUE);
+				break;
 			case "non_functional":
 				req.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
+				break;
 			case "prose":
 				req.setRequirement_type(Requirement_type.PROSE);
+				break;
 			case "requirement":
 				req.setRequirement_type(Requirement_type.REQUIREMENT);
+				break;
 			case "task":
 				req.setRequirement_type(Requirement_type.TASK);
+				break;
 			case "user_story":
 				req.setRequirement_type(Requirement_type.USER_STORY);
+				break;
 			}
 			mapElementAttributes(req, element);
 			
