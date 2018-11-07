@@ -511,18 +511,18 @@ public class MurmeliModelGenerator {
 					}
 	
 					element.addAttribute(this.resolutions.get(part.getText()));
-					break;
-				} else if (part.getName().equals("Platform")) {
+//					break;
+				} else if (part.getName().equals("Platforms")) {
 					if (!this.platforms.containsKey(part.getText())) {
 						
 						AttributeValue atr = new AttributeValue("platform", false, part.getText());
-						this.resolutions.put(part.getText(), atr);
+						this.platforms.put(part.getText(), atr);
 						this.attributeValues.put(atr.getID(), atr);
 					}
 					
 					element.addAttribute(this.platforms.get(part.getText()));
-					break;
-				} else if (part.getName().equals("Version")) {
+//					break;
+				} else if (part.getName().equals("Versions")) {
 					if (!this.versions.containsKey(part.getText())) {
 						
 						AttributeValue atr = new AttributeValue("version", false, part.getText());
@@ -531,7 +531,7 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.versions.get(part.getText()));
-					break;
+//					break;
 				} else if (part.getName().equals("Labels")) {
 					if (!this.labels.containsKey(part.getText())) {
 						
@@ -541,7 +541,7 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.labels.get(part.getText()));
-					break;
+//					break;
 				} else if (part.getName().equals("Environment")) {
 					if (!this.environments.containsKey(part.getText())) {
 						
@@ -551,7 +551,7 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.environments.get(part.getText()));
-					break;
+//					break;
 				} else if (part.getName().equals("FixVersion")) {
 					if (!this.fixVersions.containsKey(part.getText())) {
 						
@@ -561,10 +561,12 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.fixVersions.get(part.getText()));
-					break;
+//					break;
 				}
+				//Add also Components here! 
 			}
 		}
+		
 	}
 
 	private AttributeValue factorEffort(Requirement req, String type) {
