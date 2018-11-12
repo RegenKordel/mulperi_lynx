@@ -154,6 +154,89 @@ public class OpenReqConverter {
 			req.getRequirementParts().add(resolution);
 		}
 		
+		if (element.getAttributes().containsKey("platforms")) {
+			
+			RequirementPart platforms = new RequirementPart();
+			platforms.setName("Platforms");
+			if (model.getAttributeValues().get(element.getAttributes().get("platforms")).getValue() != null) {
+				platforms.setText(model.getAttributeValues().get(element.getAttributes().get("platforms")).getValue().toString());
+			} else {
+				platforms.setText(null);
+			}
+			
+			req.getRequirementParts().add(platforms);
+		}
+		
+		if (element.getAttributes().containsKey("versions")) {
+			
+			RequirementPart versions = new RequirementPart();
+			versions.setName("Versions");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("versions")).getValue() != null) {
+				versions.setText(model.getAttributeValues().get(element.getAttributes().get("versions")).getValue().toString());
+			} else {
+				versions.setText(null);
+			}
+			
+			req.getRequirementParts().add(versions);
+		}
+		
+		if (element.getAttributes().containsKey("labels")) {
+			
+			RequirementPart labels = new RequirementPart();
+			labels.setName("Labels");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("labels")).getValue() != null) {
+				labels.setText(model.getAttributeValues().get(element.getAttributes().get("labels")).getValue().toString());
+			} else {
+				labels.setText(null);
+			}
+			
+			req.getRequirementParts().add(labels);
+		}
+		
+		if (element.getAttributes().containsKey("environment")) {
+			
+			RequirementPart environment = new RequirementPart();
+			environment.setName("Environment");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("environment")).getValue() != null) {
+				environment.setText(model.getAttributeValues().get(element.getAttributes().get("environment")).getValue().toString());
+			} else {
+				environment.setText(null);
+			}
+			
+			req.getRequirementParts().add(environment);
+		}
+		
+		if (element.getAttributes().containsKey("fixVersion")) {
+			
+			RequirementPart fixVersion = new RequirementPart();
+			fixVersion.setName("FixVersion");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("fixVersion")).getValue() != null) {
+				fixVersion.setText(model.getAttributeValues().get(element.getAttributes().get("fixVersion")).getValue().toString());
+			} else {
+				fixVersion.setText(null);
+			}
+			
+			req.getRequirementParts().add(fixVersion);
+		}
+		
+		if (element.getAttributes().containsKey("components")) {
+			
+			RequirementPart components = new RequirementPart();
+			components.setName("Components");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("components")).getValue() != null) {
+				components.setText(model.getAttributeValues().get(element.getAttributes().get("components")).getValue().toString());
+			} else {
+				components.setText(null);
+			}
+			
+			req.getRequirementParts().add(components);
+		}
+		
 		if (element.getAttributes().containsKey("title")) {
 			
 			req.setName(model.getAttributeValues().get(element.getAttributes().get("title")).getValue().toString());

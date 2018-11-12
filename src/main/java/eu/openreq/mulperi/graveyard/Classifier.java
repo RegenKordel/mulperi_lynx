@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.models.json;
+package eu.openreq.mulperi.graveyard;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

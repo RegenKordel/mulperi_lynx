@@ -25,6 +25,12 @@ public class MurmeliModelGenerator {
 	private List<Container> subContainers;
 	private HashSet<String> requirementsInReleases;
 	private HashMap<String, AttributeValue> resolutions;
+	private HashMap<String, AttributeValue> platforms;
+	private HashMap<String, AttributeValue> versions;
+	private HashMap<String, AttributeValue> environments;
+	private HashMap<String, AttributeValue> labels;
+	private HashMap<String, AttributeValue> fixVersions;
+	private HashMap<String, AttributeValue> components;
 	
 	public MurmeliModelGenerator() {
 		
@@ -37,6 +43,12 @@ public class MurmeliModelGenerator {
 		this.attributeValues = new HashMap();
 		this.subContainers = new ArrayList();
 		this.resolutions = new HashMap();
+		this.platforms = new HashMap<String, AttributeValue>();
+		this.versions = new HashMap<String, AttributeValue>();
+		this.environments = new HashMap<String, AttributeValue>();
+		this.labels = new HashMap<String, AttributeValue>();
+		this.fixVersions = new HashMap<String, AttributeValue>();
+		this.components = new HashMap<String, AttributeValue>();
 		
 		this.requirementsInReleases = new HashSet();
 		
@@ -491,7 +503,7 @@ public class MurmeliModelGenerator {
 	 */
 	private void resolutionToElement(Requirement req, Element element) {
 		if(req.getRequirementParts()!=null) {
-			for (RequirementPart part : req.getRequirementParts()) {
+			for (RequirementPart part : req.getRequirementParts()) {				
 				if (part.getName().equals("Resolution")) {
 					if (!this.resolutions.containsKey(part.getText())) {
 						
@@ -501,10 +513,72 @@ public class MurmeliModelGenerator {
 					}
 	
 					element.addAttribute(this.resolutions.get(part.getText()));
-					break;
+//					break;
+				} else if (part.getName().equals("Platforms")) {
+					if (!this.platforms.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("platforms", false, part.getText());
+						this.platforms.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.platforms.get(part.getText()));
+//					break;
+				} else if (part.getName().equals("Versions")) {
+					if (!this.versions.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("versions", false, part.getText());
+						this.versions.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.versions.get(part.getText()));
+//					break;
+				} else if (part.getName().equals("Labels")) {
+					if (!this.labels.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("labels", false, part.getText());
+						this.labels.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.labels.get(part.getText()));
+//					break;
+				} else if (part.getName().equals("Environment")) {
+					if (!this.environments.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("environment", false, part.getText());
+						this.environments.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.environments.get(part.getText()));
+//					break;
+				} else if (part.getName().equals("FixVersion")) {
+					if (!this.fixVersions.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("fixVersion", false, part.getText());
+						this.fixVersions.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.fixVersions.get(part.getText()));
+//					break;
+				} else if (part.getName().equals("Components")) {
+					if (!this.components.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("components", false, part.getText());
+						this.components.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.components.get(part.getText()));
+//					break;
 				}
+				//Add also Components here! 
 			}
 		}
+		
 	}
 
 	private AttributeValue factorEffort(Requirement req, String type) {
