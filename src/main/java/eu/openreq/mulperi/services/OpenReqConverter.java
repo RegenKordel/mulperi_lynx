@@ -209,6 +209,20 @@ public class OpenReqConverter {
 			req.getRequirementParts().add(environment);
 		}
 		
+		if (element.getAttributes().containsKey("status")) {
+			
+			RequirementPart status = new RequirementPart();
+			status.setName("Status");
+			
+			if (model.getAttributeValues().get(element.getAttributes().get("status")).getValue() != null) {
+				status.setText(model.getAttributeValues().get(element.getAttributes().get("status")).getValue().toString());
+			} else {
+				status.setText(null);
+			}
+			
+			req.getRequirementParts().add(status);
+		}
+		
 		if (element.getAttributes().containsKey("fixVersion")) {
 			
 			RequirementPart fixVersion = new RequirementPart();

@@ -27,6 +27,7 @@ public class MurmeliModelGenerator {
 	private HashMap<String, AttributeValue> resolutions;
 	private HashMap<String, AttributeValue> platforms;
 	private HashMap<String, AttributeValue> versions;
+	private HashMap<String, AttributeValue> statuses;
 	private HashMap<String, AttributeValue> environments;
 	private HashMap<String, AttributeValue> labels;
 	private HashMap<String, AttributeValue> fixVersions;
@@ -45,6 +46,7 @@ public class MurmeliModelGenerator {
 		this.resolutions = new HashMap();
 		this.platforms = new HashMap<String, AttributeValue>();
 		this.versions = new HashMap<String, AttributeValue>();
+		this.statuses = new HashMap<String, AttributeValue>();
 		this.environments = new HashMap<String, AttributeValue>();
 		this.labels = new HashMap<String, AttributeValue>();
 		this.fixVersions = new HashMap<String, AttributeValue>();
@@ -554,6 +556,16 @@ public class MurmeliModelGenerator {
 					
 					element.addAttribute(this.environments.get(part.getText()));
 //					break;
+				} else if (part.getName().equals("Status")) {
+					if (!this.statuses.containsKey(part.getText())) {
+						
+						AttributeValue atr = new AttributeValue("status", false, part.getText());
+						this.statuses.put(part.getText(), atr);
+						this.attributeValues.put(atr.getID(), atr);
+					}
+					
+					element.addAttribute(this.statuses.get(part.getText()));
+//					break;
 				} else if (part.getName().equals("FixVersion")) {
 					if (!this.fixVersions.containsKey(part.getText())) {
 						
@@ -575,7 +587,7 @@ public class MurmeliModelGenerator {
 					element.addAttribute(this.components.get(part.getText()));
 //					break;
 				}
-				//Add also Components here! 
+				
 			}
 		}
 		
