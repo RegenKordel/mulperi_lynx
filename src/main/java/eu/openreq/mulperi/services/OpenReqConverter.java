@@ -323,7 +323,7 @@ public class OpenReqConverter {
 						dep.setToid(toId);
 						dep.setDependency_type(Dependency_type.DECOMPOSITION);
 						// TODO: What is the status was something else when transforming into Murmeli?
-						dep.setStatus(Dependency_status.PROPOSED);
+						dep.setStatus(Dependency_status.ACCEPTED);
 						
 						dependencies.add(dep);
 					}
