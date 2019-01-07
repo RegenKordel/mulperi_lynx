@@ -337,6 +337,11 @@ public class MurmeliModelGenerator {
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
 		
 		factorRelationshipStatus(relationship, dep);
+		
+		// TODO Check with Lalli 
+		AttributeValue<List<String>> description = new AttributeValue<List<String>>("description", true, dep.getDescription());
+		this.attributeValues.put(description.getID(), description);
+		relationship.addAttribute(description);
 
 		this.relations.add(relationship);
 		

@@ -309,6 +309,9 @@ public class OpenReqConverter {
 				dep.setStatus(Dependency_status.ACCEPTED);
 				break;
 			}
+			// TODO Check with Lalli
+			List<String> description = (List<String>) model.getAttributeValues().get(relation.getAttributes().get("description")).getValue();
+			dep.setDescription(description);
 		}
 	}
 	
