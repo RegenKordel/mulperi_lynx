@@ -342,6 +342,10 @@ public class MurmeliModelGenerator {
 		AttributeValue<List<String>> description = new AttributeValue<List<String>>("description", true, dep.getDescription());
 		this.attributeValues.put(description.getID(), description);
 		relationship.addAttribute(description);
+		
+		AttributeValue<Double> dependency_score = new AttributeValue<Double>("dependency_score", true, dep.getDependency_score());
+		this.attributeValues.put(dependency_score.getID(), dependency_score);
+		relationship.addAttribute(dependency_score);
 
 		this.relations.add(relationship);
 		

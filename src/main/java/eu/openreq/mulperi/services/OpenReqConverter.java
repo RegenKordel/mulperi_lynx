@@ -309,9 +309,17 @@ public class OpenReqConverter {
 				dep.setStatus(Dependency_status.ACCEPTED);
 				break;
 			}
-			// TODO Check with Lalli
+		}
+		
+		if (relation.getAttributes().containsKey("description")) {
+			//TODO Check with Lalli
 			List<String> description = (List<String>) model.getAttributeValues().get(relation.getAttributes().get("description")).getValue();
 			dep.setDescription(description);
+		}
+		
+		if (relation.getAttributes().containsKey("dependency_score")) {
+			double dependency_score = (double) model.getAttributeValues().get(relation.getAttributes().get("dependency_score")).getValue();
+			dep.setDependency_score(dependency_score);
 		}
 	}
 	
