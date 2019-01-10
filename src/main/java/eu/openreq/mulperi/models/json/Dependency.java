@@ -26,7 +26,7 @@ public class Dependency {
 	*/
 	@SerializedName("dependency_score")
 	@Expose
-	private float dependency_score;
+	private double dependency_score;
 	/**
 	* Status of dependency that has been detected by NLP and whether or not the dependency has been approved
 	* 
@@ -72,11 +72,11 @@ public class Dependency {
 		this.dependency_type = dependency_type;
 	}
 	
-	public float getDependency_score() {
+	public double getDependency_score() {
 		return dependency_score;
 	}
 	
-	public void setDependency_score(float dependency_score) {
+	public void setDependency_score(double dependency_score) {
 		this.dependency_score = dependency_score;
 	}
 	

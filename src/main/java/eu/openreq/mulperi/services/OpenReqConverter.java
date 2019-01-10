@@ -107,8 +107,8 @@ public class OpenReqConverter {
 			case "in_progress":
 				req.setStatus(Requirement_status.IN_PROGRESS);
 				break;
-			case "new":
-				req.setStatus(Requirement_status.NEW);
+			case "open":
+				req.setStatus(Requirement_status.OPEN);
 				break;
 			case "planned":
 				req.setStatus(Requirement_status.PLANNED);
@@ -310,6 +310,17 @@ public class OpenReqConverter {
 				break;
 			}
 		}
+		
+		if (relation.getAttributes().containsKey("description")) {
+			//TODO Check with Lalli
+			List<String> description = (List<String>) model.getAttributeValues().get(relation.getAttributes().get("description")).getValue();
+			dep.setDescription(description);
+		}
+		
+		if (relation.getAttributes().containsKey("dependency_score")) {
+			double dependency_score = (double) model.getAttributeValues().get(relation.getAttributes().get("dependency_score")).getValue();
+			dep.setDependency_score(dependency_score);
+		}
 	}
 	
 	public void mapElementParts() {
@@ -323,7 +334,7 @@ public class OpenReqConverter {
 						dep.setToid(toId);
 						dep.setDependency_type(Dependency_type.DECOMPOSITION);
 						// TODO: What is the status was something else when transforming into Murmeli?
-						dep.setStatus(Dependency_status.PROPOSED);
+						dep.setStatus(Dependency_status.ACCEPTED);
 						
 						dependencies.add(dep);
 					}

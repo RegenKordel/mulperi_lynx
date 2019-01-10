@@ -337,6 +337,15 @@ public class MurmeliModelGenerator {
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
 		
 		factorRelationshipStatus(relationship, dep);
+		
+		// TODO Check with Lalli 
+		AttributeValue<List<String>> description = new AttributeValue<List<String>>("description", true, dep.getDescription());
+		this.attributeValues.put(description.getID(), description);
+		relationship.addAttribute(description);
+		
+		AttributeValue<Double> dependency_score = new AttributeValue<Double>("dependency_score", true, dep.getDependency_score());
+		this.attributeValues.put(dependency_score.getID(), dependency_score);
+		relationship.addAttribute(dependency_score);
 
 		this.relations.add(relationship);
 		
@@ -409,7 +418,7 @@ public class MurmeliModelGenerator {
 		if (req.getStatus() != null) {
 			status = factorStatus(req.getStatus());
 		} else {
-			status = factorStatus(Requirement_status.NEW);
+			status = factorStatus(Requirement_status.OPEN);
 		}
 		
 		Element element = new Element(name);
@@ -702,11 +711,11 @@ public class MurmeliModelGenerator {
 			}
 			
 			break;
-		case NEW:
+		case OPEN:
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getValue().equals("new")) {
+				if (this.attributeValues.get(value).getValue().equals("open")) {
 					return this.attributeValues.get(value);
 				}
 			}
