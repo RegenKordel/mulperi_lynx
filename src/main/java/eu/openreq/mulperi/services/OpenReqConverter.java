@@ -107,8 +107,8 @@ public class OpenReqConverter {
 			case "in_progress":
 				req.setStatus(Requirement_status.IN_PROGRESS);
 				break;
-			case "new":
-				req.setStatus(Requirement_status.NEW);
+			case "open":
+				req.setStatus(Requirement_status.OPEN);
 				break;
 			case "planned":
 				req.setStatus(Requirement_status.PLANNED);

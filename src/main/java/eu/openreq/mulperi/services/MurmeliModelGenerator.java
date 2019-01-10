@@ -418,7 +418,7 @@ public class MurmeliModelGenerator {
 		if (req.getStatus() != null) {
 			status = factorStatus(req.getStatus());
 		} else {
-			status = factorStatus(Requirement_status.NEW);
+			status = factorStatus(Requirement_status.OPEN);
 		}
 		
 		Element element = new Element(name);
@@ -711,11 +711,11 @@ public class MurmeliModelGenerator {
 			}
 			
 			break;
-		case NEW:
+		case OPEN:
 			
 			for (Integer value : statuses.getValues()) {
 				
-				if (this.attributeValues.get(value).getValue().equals("new")) {
+				if (this.attributeValues.get(value).getValue().equals("open")) {
 					return this.attributeValues.get(value);
 				}
 			}
