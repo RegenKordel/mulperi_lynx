@@ -240,7 +240,7 @@ public class MurmeliModelGenerator {
 		AttributeValue draft = new AttributeValue("elementStatus", false, "draft");
 		AttributeValue accepted = new AttributeValue("elementStatus", false, "accepted");
 		AttributeValue completed = new AttributeValue("elementStatus", false, "completed");
-		AttributeValue newReq = new AttributeValue("elementStatus", false, "new");
+		AttributeValue newReq = new AttributeValue("elementStatus", false, "open");
 		AttributeValue planned = new AttributeValue("elementStatus", false, "planned");
 		AttributeValue recommended = new AttributeValue("elementStatus", false, "recommended");
 		
@@ -420,7 +420,7 @@ public class MurmeliModelGenerator {
 		} else {
 			status = factorStatus(Requirement_status.OPEN);
 		}
-		
+
 		Element element = new Element(name);
 		element.addAttribute(priority);
 		element.addAttribute(status);
@@ -524,7 +524,6 @@ public class MurmeliModelGenerator {
 					}
 	
 					element.addAttribute(this.resolutions.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Platforms")) {
 					if (!this.platforms.containsKey(part.getText())) {
 						
@@ -534,7 +533,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.platforms.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Versions")) {
 					if (!this.versions.containsKey(part.getText())) {
 						
@@ -544,7 +542,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.versions.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Labels")) {
 					if (!this.labels.containsKey(part.getText())) {
 						
@@ -554,7 +551,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.labels.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Environment")) {
 					if (!this.environments.containsKey(part.getText())) {
 						
@@ -564,7 +560,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.environments.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Status")) {
 					if (!this.statuses.containsKey(part.getText())) {
 						
@@ -574,7 +569,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.statuses.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("FixVersion")) {
 					if (!this.fixVersions.containsKey(part.getText())) {
 						
@@ -584,7 +578,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.fixVersions.get(part.getText()));
-//					break;
 				} else if (part.getName().equals("Components")) {
 					if (!this.components.containsKey(part.getText())) {
 						
@@ -594,7 +587,6 @@ public class MurmeliModelGenerator {
 					}
 					
 					element.addAttribute(this.components.get(part.getText()));
-//					break;
 				}
 				
 			}
@@ -712,7 +704,6 @@ public class MurmeliModelGenerator {
 			
 			break;
 		case OPEN:
-			
 			for (Integer value : statuses.getValues()) {
 				
 				if (this.attributeValues.get(value).getValue().equals("open")) {
