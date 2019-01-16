@@ -19,8 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,12 +29,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
-import eu.openreq.mulperi.models.kumbang.ParsedModel;
-import eu.openreq.mulperi.models.release.ReleasePlanException;
-import eu.openreq.mulperi.models.selections.FeatureSelection;
-import eu.openreq.mulperi.models.selections.Selections;
-import eu.openreq.mulperi.repositories.ParsedModelRepository;
-import eu.openreq.mulperi.services.FormatTransformerService;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.OpenReqConverter;
@@ -53,7 +45,6 @@ import io.swagger.annotations.ApiResponses;
 //@RequestMapping("uh/mulperi/models")
 public class MulperiController {
 	
-	private FormatTransformerService transform = new FormatTransformerService();
 	private Gson gson = new Gson();
 
 	@Value("${mulperi.caasAddress}")
@@ -76,7 +67,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
-	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws ReleasePlanException, JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		
 		//System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
