@@ -42,7 +42,7 @@ public class OpenReqConverter {
 		this.project.setSpecifiedRequirements(new ArrayList(model.getElements().keySet()));
 	}
 	
-	public void mapElements() {
+	private void mapElements() {
 		for (Element element : model.getElements().values()) {
 			Requirement req = new Requirement();
 			
@@ -86,7 +86,7 @@ public class OpenReqConverter {
 		}
 	}
 	
-	public void mapElementAttributes(Requirement req, Element element) {
+	private void mapElementAttributes(Requirement req, Element element) {
 		if (element.getAttributes().containsKey("status")) {
 			switch((String) model.getAttributeValues().get(element.getAttributes().get("status")).getValue()) {
 			case "pending":
@@ -131,7 +131,7 @@ public class OpenReqConverter {
 		}
 		
 		if (element.getAttributes().containsKey("created_at")) {
-			int created_at = element.getAttributes().get("created_at");
+			long created_at = element.getAttributes().get("created_at");
 			req.setCreated_at(created_at);
 		} else {
 			req.setCreated_at((long) 0);
@@ -257,7 +257,7 @@ public class OpenReqConverter {
 		}
 	}
 	
-	public void mapRelationships() {
+	private void mapRelationships() {
 		for (Relationship rel : model.getRelations()) {
 			Dependency dep = new Dependency();
 			dep.setFromid(rel.getFromID());
@@ -295,7 +295,7 @@ public class OpenReqConverter {
 		mapElementParts();
 	}
 	
-	public void mapRelationshipAttributes(Dependency dep, Relationship relation) {
+	private void mapRelationshipAttributes(Dependency dep, Relationship relation) {
 		
 		if (relation.getAttributes().containsKey("relationshipStatus")) {
 			switch((String) model.getAttributeValues().get(relation.getAttributes().get("relationshipStatus")).getValue()) {
@@ -323,7 +323,7 @@ public class OpenReqConverter {
 		}
 	}
 	
-	public void mapElementParts() {
+	private void mapElementParts() {
 		for (Element element : model.getElements().values()) {
 			if (element.getParts() != null || !element.getParts().isEmpty()) {
 				for (Parts parts : element.getParts()) {
@@ -344,7 +344,7 @@ public class OpenReqConverter {
 		}
 	}
 	
-	public void mapSubContainers() {
+	private void mapSubContainers() {
 		for (Container container : model.getsubContainers()) {
 			Release release = new Release();
 			release.setId(container.getID());
@@ -355,7 +355,7 @@ public class OpenReqConverter {
 		}
 	}
 	
-	public void mapSubContainerAttributes(Release release, Container container) {
+	private void mapSubContainerAttributes(Release release, Container container) {
 		release.setCapacity((int) model.getAttributeValues().get(container.getAttributes().get("capacity")).getValue());
 		
 		switch((String) model.getAttributeValues().get(container.getAttributes().get("status")).getValue()) {
