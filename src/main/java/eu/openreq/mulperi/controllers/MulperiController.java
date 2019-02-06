@@ -213,6 +213,70 @@ public class MulperiController {
 
 		return response;
 	}
+	
+	/**
+	 * Check whether a project is consistent
+	 * @param selections checked selections
+	 * @param modelName
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false, 
+	 * 				"diagnosis": [
+	 * 					[
+	 * 						{
+	 * 							"requirement": (requirementID)
+	 * 						}
+	 * 					]
+	 * 				]
+	 * 			}
+	 * 		}
+
+	 * @throws JSONException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Is release plan consistent and do diagnosis v2",
+			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
+	@RequestMapping(value = "/projects/consistencyCheckAndDiagnosis", method = RequestMethod.POST)
+	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+		Gson gson = new Gson();
+		
+		RestTemplate rt = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
+		
+		JSONParser.parseToOpenReqObjects(jsonString);
+		
+		for (Requirement req : JSONParser.requirements) {
+			if (req.getRequirement_type() == null) {
+				req.setRequirement_type(Requirement_type.REQUIREMENT);
+			}
+		}
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
+
+		String murmeli = gson.toJson(model);
+		
+		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+		ResponseEntity<?> response = null;
+		try {
+			response = rt.postForEntity(completeAddress, entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+		}
+
+		return response;
+	}
 
 	
 	public String generateName(Object object) {
