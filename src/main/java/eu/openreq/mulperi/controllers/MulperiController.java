@@ -29,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
+import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.OpenReqConverter;
@@ -133,6 +134,20 @@ public class MulperiController {
 				req.setRequirement_type(Requirement_type.REQUIREMENT);
 			}
 		} 
+		
+		
+		//Input checker
+		//---------------------------------------------------------------
+				
+		InputChecker checker = new InputChecker();
+		String result = checker.checkInput(JSONParser.project, JSONParser.releases, JSONParser.requirements,  JSONParser.dependencies);
+		
+		if (!result.equals("OK")) {
+			return new ResponseEntity<>("Error(s) with JSON data posted:\n" + result, HttpStatus.BAD_REQUEST); 
+		}
+			
+		//---------------------------------------------------------------
+	
 		
 		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
 		
@@ -273,9 +288,9 @@ public class MulperiController {
 			response = rt.postForEntity(completeAddress, entity, String.class);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		}
-
-		return response;
+		} 
+		
+		return response;	
 	}
 
 	

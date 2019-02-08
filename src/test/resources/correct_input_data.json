@@ -49,9 +49,13 @@
    	"status": "new",
    	"requirements": ["REQ4", "REQ5"]
    }
-
  ],
  "dependencies": [
+   {
+    "dependency_type": "REQUIRES",
+    "fromid": "REQ4",
+    "toid": "REQ5"
+   },
    {
    	"dependency_type": "REQUIRES",
    	"fromid": "REQ1",
