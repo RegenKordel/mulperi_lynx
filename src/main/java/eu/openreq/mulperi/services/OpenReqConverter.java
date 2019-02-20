@@ -287,6 +287,12 @@ public class OpenReqConverter {
 			case SIMILAR:
 				dep.setDependency_type(Dependency_type.SIMILAR);
 				break;
+			case EXCLUDES:
+				dep.setDependency_type(Dependency_type.EXCLUDES);
+				break;
+			case IMPLIES:
+				dep.setDependency_type(Dependency_type.IMPLIES);
+				break;
 			}
 			mapRelationshipAttributes(dep, rel);
 			

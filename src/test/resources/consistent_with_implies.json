@@ -58,8 +58,8 @@
    	"toid": "REQ2"
    },
    {
-   	"dependency_type": "EXCLUDES",
-   	"fromid": "REQ1",
+   	"dependency_type": "IMPLIES",
+   	"fromid": "REQ2",
    	"toid": "REQ5"
    }
  ]

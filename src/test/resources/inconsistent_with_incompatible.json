@@ -58,7 +58,7 @@
    	"toid": "REQ2"
    },
    {
-   	"dependency_type": "EXCLUDES",
+   	"dependency_type": "INCOMPATIBLE",
    	"fromid": "REQ1",
    	"toid": "REQ5"
    }
