@@ -13,7 +13,7 @@
    	"requirementParts": [
    		{
    		"id": "REQPART1",
-   		"name": "Versions",
+   		"name": "FixVersion",
    		"text": "[\"5.15\"]"
    		}
      ]
@@ -26,7 +26,7 @@
    	"requirementParts": [
    		{
    		"id": "REQPART9",
-   		"name": "Versions",
+   		"name": "FixVersion",
    		"text": "[\"6.0\"]"
    		}
      ]
@@ -39,7 +39,7 @@
    	"requirementParts": [
    		{
    		"id": "REQPART5",
-   		"name": "Versions",
+   		"name": "FixVersion",
    		"text": "[\"5.9.1\", \"9.2.4\", \"0.3a\"]"
    		}
      ]
@@ -52,7 +52,7 @@
    	"requirementParts": [
    		{
    		"id": "REQPART7",
-   		"name": "Versions",
+   		"name": "FixVersion",
    		"text": "[\"0.ab\"]"
    		}
      ]
@@ -65,7 +65,7 @@
    	"requirementParts": [
    		{
    		"id": "REQPART2",
-   		"name": "Versions",
+   		"name": "FixVersion",
    		"text": "[\"5.9.1\", \"9.2.4\"]"
    		}
      ]

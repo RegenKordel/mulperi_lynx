@@ -13,8 +13,8 @@
    	"requirementParts": [
    		{
    		"id": "REQPART1",
-   		"name": "Versions",
-   		"text": "[\"5.z\"]"
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.z\"]"
    		}
      ]
    },   
@@ -26,8 +26,8 @@
    	"requirementParts": [
    		{
    		"id": "REQPART9",
-   		"name": "Versions",
-   		"text": "[\"5.1\"]"
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.1\"]"
    		}
      ]
    },
@@ -39,8 +39,8 @@
    	"requirementParts": [
    		{
    		"id": "REQPART5",
-   		"name": "Versions",
-   		"text": "[\"5.9.1\", \"9.2.4\", \"0.3a\"]"
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.9.1\", \"QT Creator 9.2.4\", \"QT Creator 0.3a\"]"
    		}
      ]
    },
@@ -52,8 +52,8 @@
    	"requirementParts": [
    		{
    		"id": "REQPART7",
-   		"name": "Versions",
-   		"text": "[\"6.0\"]"
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 6.0\"]"
    		}
      ]
    },
@@ -65,8 +65,8 @@
    	"requirementParts": [
    		{
    		"id": "REQPART2",
-   		"name": "Versions",
-   		"text": "[\"5.9.1\", \"9.2.4\"]"
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.9.1\", \"QT Creator 9.2.4\"]"
    		}
      ]
    }  

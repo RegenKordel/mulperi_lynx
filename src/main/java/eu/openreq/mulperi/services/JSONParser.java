@@ -58,8 +58,7 @@ public class JSONParser {
 				continue;
 			}
 			for (RequirementPart reqPart : req.getRequirementParts()) {
-				if (reqPart.getName().equals("Versions") && reqPart.getText()!=null) {
-					
+				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {			
 					List<String> versions = parseVersions(reqPart.getText());
 					for (String version : versions) {	
 						ComparableVersion compVersion = new ComparableVersion(version);
