@@ -323,7 +323,11 @@ public class MurmeliModelGenerator {
 		case SIMILAR:
 			type = NameType.SIMILAR;
 			break;
-		default:
+		case EXCLUDES:
+			type = NameType.EXCLUDES;
+			break;
+		case IMPLIES:
+			type = NameType.IMPLIES;
 			break;
 		}
 		
