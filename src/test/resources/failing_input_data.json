@@ -59,7 +59,7 @@
    "id": 5,
    "capacity" : -2,
    "status": "new",
-   "requirements": ["REQ8"]
+   "requirements": ["REQ8", "REQ2"]
    }
  ],
  "dependencies": [

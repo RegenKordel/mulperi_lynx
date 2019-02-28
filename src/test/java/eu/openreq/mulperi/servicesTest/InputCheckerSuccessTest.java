@@ -91,15 +91,20 @@ public class InputCheckerSuccessTest {
 		assertTrue(checker.noDuplicateDependencies(JSONParser.dependencies));
 	}
 	
+//	@Test
+//	public void releasesInOrder() {
+//		assertTrue(checker.releasesInOrder(JSONParser.releases));
+//	}
+	
 	@Test
-	public void releasesInOrder() {
-		assertTrue(checker.releasesInOrder(JSONParser.releases));
+	public void requirementNotInMultipleReleases() {
+		assertTrue(checker.requirementNotInMultipleReleases(JSONParser.releases));
 	}
 	
 	@Test
 	public void checkInput() throws JSONException {
-		assertEquals(checker.checkInput(JSONParser.project, JSONParser.releases, 
-				JSONParser.requirements, JSONParser.dependencies), "OK");
+		assertEquals(checker.checkInput(JSONParser.project, JSONParser.requirements, 
+				JSONParser.dependencies, JSONParser.releases), "OK");
 	}
 		
 }

@@ -59,18 +59,18 @@ public class JSONParser {
 			}
 			for (RequirementPart reqPart : req.getRequirementParts()) {
 				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {			
-					List<String> versions = parseVersions(reqPart.getText());
+					List<String> versions = parseVersions(reqPart.getText());;
 					for (String version : versions) {	
-						ComparableVersion compVersion = new ComparableVersion(version);
-						if (releaseMap.containsKey(compVersion)) {
-							releaseMap.get(compVersion).add(req.getId());
-						} else {
+						if (!version.equals("No FixVersion") && !version.equals("")) {
+							ComparableVersion compVersion = new ComparableVersion(version);
 							List<String> reqs = new ArrayList<String>();
+							if (releaseMap.containsKey(compVersion)) {
+								reqs = releaseMap.get(compVersion);
+							} 
 							reqs.add(req.getId());
-							releaseMap.put(compVersion, reqs);
+							releaseMap.put(compVersion, reqs);	
 						}
-					}
-					
+					}					
 				}
 			}
 		}
@@ -80,12 +80,10 @@ public class JSONParser {
 		Collections.sort(keys);
 		
 		List<Release> releases = new ArrayList<Release>();
-		
-		//the first element in keys is an empty string (due to text splits)
-		//using the empty string key returns an array of all requirements (not used)
-		for (int i = 1; i < keys.size(); i++) {
+
+		for (int i = 0; i < keys.size(); i++) {
 			Release rel = new Release();
-			rel.setId(i);
+			rel.setId(keys.get(i).toString());
 			rel.setCapacity(0);
 			rel.setRequirements(releaseMap.get(keys.get(i)));
 			releases.add(rel);

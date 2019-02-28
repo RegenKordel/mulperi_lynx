@@ -81,7 +81,7 @@ public class MulperiController {
 			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, projectId);
 		}
 		else{
-			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
+			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.requirements.get(0).getId());
 		}
 		
 		try {
@@ -117,52 +117,10 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
 	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";
-		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		
-		JSONParser.parseToOpenReqObjects(jsonString);
-		
-		for (Requirement req : JSONParser.requirements) {
-			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-			}
-		} 
-		
-		
-		//Input checker
-		//---------------------------------------------------------------
-				
-		InputChecker checker = new InputChecker();
-		String result = checker.checkInput(JSONParser.project, JSONParser.releases, JSONParser.requirements,  JSONParser.dependencies);
-		
-		if (!result.equals("OK")) {
-			return new ResponseEntity<>("Error(s) with JSON data posted:\n" + result, HttpStatus.BAD_REQUEST); 
-		}
-			
-		//---------------------------------------------------------------
-	
-		
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
-		
-		Gson gson = new Gson();
-		String murmeli = gson.toJson(model);
-		
-		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-		ResponseEntity<?> response = null;
-		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
-		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		}
-		return response;
+		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);		
 	}
+	
 	
 
 	/**
@@ -196,37 +154,8 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		Gson gson = new Gson();
-		
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";
-		
-		JSONParser.parseToOpenReqObjects(jsonString);
-		
-		for (Requirement req : JSONParser.requirements) {
-			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-			}
-		}
-		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
-
-		String murmeli = gson.toJson(model);
-		
-		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-		ResponseEntity<?> response = null;
-		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
-		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		}
-
-		return response;
+		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);
 	}
 	
 	/**
@@ -260,37 +189,8 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@RequestMapping(value = "/projects/consistencyCheckAndDiagnosis", method = RequestMethod.POST)
 	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		Gson gson = new Gson();
-		
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		
-		JSONParser.parseToOpenReqObjects(jsonString);
-		
-		for (Requirement req : JSONParser.requirements) {
-			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-			}
-		}
-		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, JSONParser.releases, JSONParser.project.getId());
-
-		String murmeli = gson.toJson(model);
-		
-		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-		ResponseEntity<?> response = null;
-		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
-		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		} 
-		
-		return response;	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);	
 	}
 
 	
@@ -314,6 +214,66 @@ public class MulperiController {
 		}
 	}
 	*/
+	
+
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress) {
+			
+		JSONParser.parseToOpenReqObjects(jsonString);
+		
+		for (Requirement req : JSONParser.requirements) {
+			if (req.getRequirement_type() == null) {
+				req.setRequirement_type(Requirement_type.REQUIREMENT);
+			}
+		} 
+		
+		Project project = null;
+		String id = null;
+		 
+		if (JSONParser.requirements.size()>0) {
+			id = JSONParser.requirements.get(0).getName();
+		}
+		if (JSONParser.project != null) {
+			project = JSONParser.project;
+			id = project.getId();
+		}
+		
+		List<Release> releases = new ArrayList<Release>();
+		if (JSONParser.releases != null) {
+			releases = JSONParser.releases;
+		}
+		
+		//Input checker
+		//---------------------------------------------------------------
+				
+		InputChecker checker = new InputChecker();
+		String result = checker.checkInput(project, JSONParser.requirements,  JSONParser.dependencies, releases);
+		
+		if (!result.equals("OK")) {
+			return new ResponseEntity<>("Error(s) with JSON data posted:\n" + result, HttpStatus.BAD_REQUEST); 
+		}
+			
+		//---------------------------------------------------------------
+	
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, releases, id);
+		
+		Gson gson = new Gson();
+		String murmeli = gson.toJson(model);
+		
+		
+		RestTemplate rt = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+		ResponseEntity<?> response = null;
+		try {
+			response = rt.postForEntity(completeAddress, entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+		}
+		return response;
+	}
 	
 	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
 			notes = "The model is saved in KeljuCaaS",
@@ -361,6 +321,8 @@ public class MulperiController {
 		String completeAddress = caasAddress + actualPath;
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		
+		System.out.println(jsonString);
 		
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -418,7 +380,6 @@ public class MulperiController {
 			String layersAsString = gson.toJson(layers);
 			
 			String json = "{\"requirements\":" + requirementsAsString + ",\"dependencies\":" + dependenciesAsString + ",\"layers\":" + layersAsString + "}";
-			
 			return new ResponseEntity<>(json, HttpStatus.OK);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
@@ -429,5 +390,17 @@ public class MulperiController {
 
 	}
 
+	@ApiOperation(value = "Get the transitive closure of a requirement, then check for consistency",
+			notes = "Returns whether the transitive closure of the requirement is consistent",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON model"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Conflict")}) 
+	@RequestMapping(value = "/consistencyCheckForTransitiveClosure", method = RequestMethod.POST)
+	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {	
+		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId);
+		return uploadDataAndCheckForConsistency(transitiveClosure.getBody().toString());	
+	}
 
 }

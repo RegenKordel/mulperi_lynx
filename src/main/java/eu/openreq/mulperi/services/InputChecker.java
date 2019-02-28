@@ -15,29 +15,18 @@ public class InputChecker {
 		
 	}
 	
-	public String checkInput(Project project, List<Release> releases, 
-			List<Requirement> requirements, List<Dependency> dependencies) {		
-		
-		List<String> specReqIds = new ArrayList<String>();
-		for (String specReqId : project.getSpecifiedRequirements()) {
-			specReqIds.add(specReqId);
-		}
-		
+	public String checkInput(Project project, List<Requirement> requirements, 
+			List<Dependency> dependencies, List<Release> releases) {		
+			
 		List<String> reqIds = new ArrayList<String>();
 		for (Requirement req : requirements) {
-		//	if (req.getStatus().equals(Requirement_status.ACCEPTED)) {
-				reqIds.add(req.getId());
-		//	}
+			reqIds.add(req.getId());
 		}
 	
 		String errorMessage = "";
 		
-		if (specReqIds.size() == 0) {
-			errorMessage += "No project requirements specified!\n";
-		}
-		
 		if (releases.size() == 0) {
-			errorMessage += "No release versions provided!\n";
+			errorMessage += "No release versions included!\n";
 		}	
 		
 		if (!noNegativeEffortRequirements(requirements)) {
@@ -48,40 +37,60 @@ public class InputChecker {
 			errorMessage += "Negative capacity in some release(s)!\n";
 		}
 		
-		if (!allSpecifiedRequirementsIncluded(specReqIds, reqIds)) {
-			errorMessage += "Some specified requirement(s) not included in requirements!\n";
-		}
-		
-		if (!onlySpecifiedRequirements(reqIds, specReqIds)) {
-			errorMessage += "Some requirement(s) not included in specified requirements!\n";
-		}
-		
-		if (!allSpecifiedRequirementsInReleases(specReqIds, releases)) {
-			errorMessage += "Some specified requirement(s) not included in releases!\n";
-		}
-		
-		if (!allReleaseRequirementsIncluded(releases, specReqIds, reqIds)) {
-			errorMessage += "Unspecified requirement(s) in releases!\n";
-		}
-		
-		if (!allDependencyRequirementsIncluded(dependencies, specReqIds, reqIds)) {
-			errorMessage += "Unspecified requirement(s) in dependencies!\n";
-		}
-		
 		if (!noDuplicateDependencies(dependencies)) {
 			errorMessage += "Some duplicate(s) in dependencies!\n";
 		}
 		
-		if (!releasesInOrder(releases)) {
-			errorMessage += "Some versions missing between releases!\n";
+//		if (!releasesInOrder(releases)) {
+//			errorMessage += "Some versions missing between releases!\n";
+//		}
+		
+		
+		if (project!=null) {		
+			
+			List<String> specReqIds = new ArrayList<String>();
+			
+			for (String specReqId : project.getSpecifiedRequirements()) {
+				specReqIds.add(specReqId);
+			}
+			
+			if (specReqIds.size() == 0) {
+				errorMessage += "No project requirements specified!\n";
+			}
+			
+//			if (!allSpecifiedRequirementsIncluded(specReqIds, reqIds)) {
+//				errorMessage += "Some specified requirement(s) not included in requirements!\n";
+//			}
+			
+			if (!onlySpecifiedRequirements(reqIds, specReqIds)) {
+				errorMessage += "Some requirement(s) not included in specified requirements!\n";
+			}
+			
+//			if (!allSpecifiedRequirementsInReleases(specReqIds, releases)) {
+//				errorMessage += "Some specified requirement(s) not included in releases!\n";
+//			}
+			
+			if (!allReleaseRequirementsIncluded(releases, specReqIds, reqIds)) {
+				errorMessage += "Unspecified requirement(s) in releases!\n";
+			}
+			
+			if (!allDependencyRequirementsIncluded(dependencies, specReqIds, reqIds)) {
+				errorMessage += "Unspecified requirement(s) in dependencies!\n";
+			}
+			
+			if (!requirementNotInMultipleReleases(releases)) {
+				errorMessage += "Some requirement(s) included in multiple releases!\n";
+			}
+		
 		}
 		
 		if (errorMessage.isEmpty()) {
 			return "OK";
 		}
+		
 		return errorMessage;
 	}
-	
+
 	/**
 	 * Check that there are no negative efforts in requirements
 	 * @param requirements
@@ -181,7 +190,8 @@ public class InputChecker {
 	 */
 	private boolean requirementIdInReleases(String reqId, List<Release> releases) {
 		for (Release release : releases) {
-			if (release.getRequirements().contains(reqId) && release.getId()!=0) {
+			int releaseId = Integer.parseInt(release.getId());
+			if (release.getRequirements().contains(reqId) && releaseId!=0) {
 				return true;
 			}
 		}
@@ -223,27 +233,48 @@ public class InputChecker {
 		}
 		return true;
 	}
+
+//	Probably unused
+//	/**
+//	 * Check that no versions are skipped between releases. (1, 2, 3, 4) and (1, 4, 3, 2) are valid but not (1, 3, 5, 2)
+//	 * @param releases
+//	 * @return
+//	 */
+//	public boolean releasesInOrder(List<Release> releases) {
+//		int i = 1;
+//		int expectedTotal = 0;
+//		int total = 0;
+//		
+//		for (Release release : releases) {
+//			int releaseId = Integer.parseInt(release.getId());
+//			if (release.getCapacity()<0) {
+//				return false;
+//			}	
+//			expectedTotal += i;
+//			total += releaseId;
+//			i++;	
+//		}
+//		
+//		return total == expectedTotal;
+//	}
 	
 	/**
-	 * Check that no versions are skipped between releases. (1, 2, 3, 4) and (1, 4, 3, 2) are valid but not (1, 3, 5, 2)
+	 * Check that a requirement is not included in multiple releases
+	 * @param reqIds
 	 * @param releases
 	 * @return
 	 */
-	public boolean releasesInOrder(List<Release> releases) {
-		int i = 1;
-		int expectedTotal = 0;
-		int total = 0;
-		
-		for (Release release : releases) {
-			if (release.getCapacity()<0) {
-				return false;
-			}	
-			expectedTotal += i;
-			total += release.getId();
-			i++;	
+	public boolean requirementNotInMultipleReleases(List<Release> releases) {
+		List<String> uniqueReqs = new ArrayList<String>();	
+		for (Release rel : releases) {;
+			for (String req : rel.getRequirements()) {
+				if (uniqueReqs.contains(req)) {
+					return false;
+				}
+				uniqueReqs.add(req);
+			}
 		}
-		
-		return total == expectedTotal;
+		return true;
 	}
 	
 	

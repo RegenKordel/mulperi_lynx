@@ -1,6 +1,7 @@
 package eu.openreq.mulperi.servicesTest;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -87,15 +88,20 @@ public class InputCheckerFailTest {
 		assertFalse(checker.noDuplicateDependencies(JSONParser.dependencies));
 	}
 	
+//	@Test
+//	public void releasesInOrder() {
+//		assertFalse(checker.releasesInOrder(JSONParser.releases));
+//	}
+	
 	@Test
-	public void releasesInOrder() {
-		assertFalse(checker.releasesInOrder(JSONParser.releases));
+	public void requirementNotInMultipleReleases() {
+		assertFalse(checker.requirementNotInMultipleReleases(JSONParser.releases));
 	}
 	
 	@Test
 	public void checkInput() throws JSONException {
-		assertFalse(checker.checkInput(JSONParser.project, JSONParser.releases, 
-				JSONParser.requirements, JSONParser.dependencies).equals("OK"));
+		assertFalse(checker.checkInput(JSONParser.project, JSONParser.requirements, 
+				JSONParser.dependencies, JSONParser.releases).equals("OK"));
 	}
 		
 }

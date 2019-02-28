@@ -353,7 +353,7 @@ public class OpenReqConverter {
 	private void mapSubContainers() {
 		for (Container container : model.getsubContainers()) {
 			Release release = new Release();
-			release.setId(container.getID());
+			release.setId(container.getID()+"");
 			release.setRequirements(container.getElements());
 			mapSubContainerAttributes(release, container);
 			

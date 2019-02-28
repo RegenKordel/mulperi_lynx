@@ -833,8 +833,9 @@ public class MurmeliModelGenerator {
 	}
 	
 	private Container mapRelease(Release release) {
+		String releaseId = release.getId();
 		
-		Container rele = new Container(release.getId()+"", release.getId());
+		Container rele = new Container(releaseId);
 		
 		AttributeValue<Integer> capacity = new AttributeValue("capacity", false, (int) release.getCapacity());
 		
