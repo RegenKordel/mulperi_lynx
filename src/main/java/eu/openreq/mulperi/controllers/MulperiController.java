@@ -400,7 +400,7 @@ public class MulperiController {
 	@RequestMapping(value = "/consistencyCheckForTransitiveClosure", method = RequestMethod.POST)
 	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {	
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId);
-		return uploadDataAndCheckForConsistency(transitiveClosure.getBody().toString());	
+		return consistencyCheckAndDiagnosis(transitiveClosure.getBody().toString());	
 	}
 
 }
