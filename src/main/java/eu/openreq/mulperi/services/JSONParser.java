@@ -61,8 +61,13 @@ public class JSONParser {
 				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {			
 					List<String> versions = parseVersions(reqPart.getText());;
 					for (String version : versions) {	
-						if (!version.equals("No FixVersion") && !version.equals("")) {
-							ComparableVersion compVersion = new ComparableVersion(version);
+						if (!version.equals("")) {
+							ComparableVersion compVersion = null;
+							if (version.equals("No Fixversion")) {
+								compVersion = new ComparableVersion(Integer.MAX_VALUE + ".FINAL");
+							} else {
+								compVersion = new ComparableVersion(version);
+							}
 							List<String> reqs = new ArrayList<String>();
 							if (releaseMap.containsKey(compVersion)) {
 								reqs = releaseMap.get(compVersion);
