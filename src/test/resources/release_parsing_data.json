@@ -1,0 +1,82 @@
+{
+ "project": { 
+ 	"id": "Brussels2018",
+ 	"name": "Brussels example project",
+ 	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
+ },
+ "requirements": [
+   {
+   	"id": "REQ1",
+   	"name": "Requirement example 1",
+   	"effort": 0,
+   	"created_at": 0,
+   	"requirementParts": [
+   		{
+   		"id": "REQPART1",
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.z\"]"
+   		}
+     ]
+   },   
+   {
+   	"id": "REQ2",
+   	"name": "Requirement example 2",
+   	"effort": 0,
+   	"created_at": 0,
+   	"requirementParts": [
+   		{
+   		"id": "REQPART9",
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.1\"]"
+   		}
+     ]
+   },
+   {
+   	"id": "REQ3",
+   	"name": "Requirement example 3",
+   	"effort": 0,
+   	"created_at": 0,
+   	"requirementParts": [
+   		{
+   		"id": "REQPART5",
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.9.1\", \"QT Creator 9.2.4\", \"QT Creator 0.3a\"]"
+   		}
+     ]
+   },
+   {
+   	"id": "REQ4",
+   	"name": "Requirement example 4",
+   	"effort": 0,
+   	"created_at": 0,
+   	"requirementParts": [
+   		{
+   		"id": "REQPART7",
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 6.0\"]"
+   		}
+     ]
+   },
+   {
+   	"id": "REQ5",
+   	"name": "Requirement example 5",
+   	"effort": 0,
+   	"created_at": 0,
+   	"requirementParts": [
+   		{
+   		"id": "REQPART2",
+   		"name": "FixVersion",
+   		"text": "[\"QT Creator 5.9.1\", \"QT Creator 9.2.4\"]"
+   		}
+     ]
+   }  
+ ],  
+
+ "dependencies": [
+   {
+   	"dependency_type": "REQUIRES",
+   	"fromid": "REQ2",
+   	"toid": "REQ1"
+   }
+ ]
+}

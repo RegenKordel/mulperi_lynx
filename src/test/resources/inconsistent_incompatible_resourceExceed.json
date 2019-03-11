@@ -2,7 +2,7 @@
  "project": { 
  	"id": "Brussels2018",
  	"name": "Brussels example project",
- 	"specificRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
+ 	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
    {
@@ -58,7 +58,7 @@
    	"toid": "REQ2"
    },
    {
-   	"dependency_type": "INCOMPATIBLE",
+   	"dependency_type": "EXCLUDES",
    	"fromid": "REQ1",
    	"toid": "REQ5"
    }

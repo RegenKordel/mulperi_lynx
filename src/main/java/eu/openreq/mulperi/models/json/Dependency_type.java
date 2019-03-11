@@ -32,7 +32,11 @@ public enum Dependency_type {
 	@SerializedName(value="duplicates", alternate= {"DUPLICATES"})
 	DUPLICATES,
 	@SerializedName(value="replaces", alternate= {"REPLACES"})
-	REPLACES
+	REPLACES,
+	@SerializedName(value="excludes", alternate= {"EXCLUDES"})
+	EXCLUDES,
+	@SerializedName(value="implies", alternate= {"IMPLIES"})
+	IMPLIES,
 	
 //	@JsonProperty("contributes")
 //	CONTRIBUTES,

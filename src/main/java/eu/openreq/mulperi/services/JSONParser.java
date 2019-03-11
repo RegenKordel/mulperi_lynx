@@ -1,7 +1,12 @@
 package eu.openreq.mulperi.services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.json.JSONException;
 
 import com.google.gson.Gson;
@@ -36,11 +41,71 @@ public class JSONParser {
 			projects = input.getProjects();
 			requirement = input.getRequirement();
 			requirements = input.getRequirements();
-			releases = input.getReleases();
 			dependencies = input.getDependencies();
 			dependent_requirements = input.getDependentRequirements();
+			if (input.getReleases()!=null) {
+				releases = input.getReleases(); 
+			} else {
+				releases = parseReleaseVersionsFromReqParts();
+			}
 	}
 	
+	public static List<Release> parseReleaseVersionsFromReqParts() {
+		HashMap<ComparableVersion, List<String>> releaseMap = new HashMap<ComparableVersion, List<String>>();
+		
+		for (Requirement req : requirements) {
+			if (req.getRequirementParts()==null) {
+				continue;
+			}
+			for (RequirementPart reqPart : req.getRequirementParts()) {
+				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {			
+					List<String> versions = parseVersions(reqPart.getText());;
+					for (String version : versions) {	
+						if (!version.equals("")) {
+							ComparableVersion compVersion = null;
+							if (version.equals("No Fixversion")) {
+								compVersion = new ComparableVersion(Integer.MAX_VALUE + ".FINAL");
+							} else {
+								compVersion = new ComparableVersion(version);
+							}
+							List<String> reqs = new ArrayList<String>();
+							if (releaseMap.containsKey(compVersion)) {
+								reqs = releaseMap.get(compVersion);
+							} 
+							reqs.add(req.getId());
+							releaseMap.put(compVersion, reqs);	
+						}
+					}					
+				}
+			}
+		}
+		
+		List<ComparableVersion> keys = new ArrayList<ComparableVersion>(releaseMap.keySet());
+		
+		Collections.sort(keys);
+		
+		List<Release> releases = new ArrayList<Release>();
+
+		for (int i = 0; i < keys.size(); i++) {
+			Release rel = new Release();
+			rel.setId(keys.get(i).toString());
+			rel.setCapacity(0);
+			rel.setRequirements(releaseMap.get(keys.get(i)));
+			releases.add(rel);
+		}
+		
+		return releases;
+		
+	}
+	
+	private static List<String> parseVersions(String text) {
+		String delims = "\\[\"|\"\\]|\", \"";
+		
+		String[] versions = text.split(delims);
+		
+		return Arrays.asList(versions);
+	}
+
 	public static String parseToJson(ElementModel model) {
 		return gson.toJson(model);
 	}

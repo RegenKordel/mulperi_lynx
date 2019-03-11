@@ -19,7 +19,7 @@ public class Release {
 	 */
 	@SerializedName("id")
 	@Expose
-	int id;
+	String id;
 	
 	@SerializedName("created_at")
 	@Expose
@@ -59,11 +59,11 @@ public class Release {
 	@Expose
 	Status status;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

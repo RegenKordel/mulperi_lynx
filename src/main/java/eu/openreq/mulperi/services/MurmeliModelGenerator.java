@@ -323,7 +323,11 @@ public class MurmeliModelGenerator {
 		case SIMILAR:
 			type = NameType.SIMILAR;
 			break;
-		default:
+		case EXCLUDES:
+			type = NameType.EXCLUDES;
+			break;
+		case IMPLIES:
+			type = NameType.IMPLIES;
 			break;
 		}
 		
@@ -829,8 +833,9 @@ public class MurmeliModelGenerator {
 	}
 	
 	private Container mapRelease(Release release) {
+		String releaseId = release.getId();
 		
-		Container rele = new Container(release.getId()+"", release.getId());
+		Container rele = new Container(releaseId);
 		
 		AttributeValue<Integer> capacity = new AttributeValue("capacity", false, (int) release.getCapacity());
 		
