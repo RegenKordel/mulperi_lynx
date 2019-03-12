@@ -1,5 +1,5 @@
 server.port = 9202
-mulperi.caasAddress = http://localhost:9205
+mulperi.caasAddress = https://api.openreq.eu/keljucaas
 
 #spring.datasource.driverClassName=org.h2.Driver
 #spring.datasource.url=jdbc:h2:./mulperi-test
@@ -10,3 +10,5 @@ mulperi.caasAddress = http://localhost:9205
 # Don't destroy database table on load
 #spring.jpa.hibernate.ddl-auto = none
 
+
+mulperi.caasAddress = http://217.172.12.199:9205

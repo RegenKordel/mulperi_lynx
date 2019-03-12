@@ -89,7 +89,7 @@ public class MulperiController {
 			return this.sendModelToKeljuCaas(JSONParser.parseToJson(model));
 		}
 		catch (Exception e) {
-			return new ResponseEntity<>("Error", HttpStatus.EXPECTATION_FAILED); //change to something else?
+			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
 	}
 	
