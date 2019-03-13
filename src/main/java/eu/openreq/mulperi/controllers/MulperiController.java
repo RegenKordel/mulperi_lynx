@@ -33,7 +33,6 @@ import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.OpenReqConverter;
-import fi.helsinki.ese.murmeli.AttributeDefinition;
 import fi.helsinki.ese.murmeli.ElementModel;
 import fi.helsinki.ese.murmeli.TransitiveClosure;
 import io.swagger.annotations.ApiOperation;
@@ -372,6 +371,12 @@ public class MulperiController {
 			OpenReqConverter converter = new OpenReqConverter(closure.getModel());
 			
 			List<Requirement> requirements = converter.getRequirements();
+			
+			
+			//Add Unknown requirement part if empty (hack?)
+			requirements = converter.addUnknownIfEmpty(requirements);
+		
+			
 			List<Dependency> dependencies = converter.getDependencies();
 			Map<Integer, List<String>> layers = closure.getLayers();
 
