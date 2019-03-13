@@ -449,6 +449,7 @@ public class OpenReqConverter {
 				rpart.setName("Unknown");
 				rpart.setText("Unknown");
 				rpart.setCreated_at(0);
+				rparts.add(rpart);
 				req.setRequirementParts(rparts);
 			}
 			newList.add(req);
