@@ -440,4 +440,20 @@ public class OpenReqConverter {
 		this.releases = releases;
 	}
 	
+	public List<Requirement> addUnknownIfEmpty(List<Requirement> requirements) {
+		List<Requirement> newList = new ArrayList<Requirement>();
+		for (Requirement req : requirements) {
+			if (req.getRequirementParts().isEmpty()) {
+				List<RequirementPart> rparts = new ArrayList<RequirementPart>();
+				RequirementPart rpart = new RequirementPart();
+				rpart.setName("Unknown");
+				rpart.setText("Unknown");
+				rpart.setCreated_at(0);
+				req.setRequirementParts(rparts);
+			}
+			newList.add(req);
+		}
+		return newList;
+	}
+	
 }
