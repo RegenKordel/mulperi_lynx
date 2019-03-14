@@ -63,7 +63,7 @@ public class JSONParser {
 					for (String version : versions) {	
 						if (!version.equals("")) {
 							ComparableVersion compVersion = null;
-							if (version.equals("No Fixversion")) {
+							if (version.equals("No Fixversion") || version.equals("No FixVersion")) {
 								compVersion = new ComparableVersion(Integer.MAX_VALUE + ".FINAL");
 							} else {
 								compVersion = new ComparableVersion(version);
