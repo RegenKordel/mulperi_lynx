@@ -812,8 +812,11 @@ public class MurmeliModelGenerator {
 		
 		this.initializeRootContainer(projectName);
 		
+		int id = 1;
+		
 		for (Release release : releases) {
-			mapRelease(release);
+			mapRelease(release, id);
+			id++;
 		}
 		
 		this.addElementsToRootContainer();
@@ -832,10 +835,10 @@ public class MurmeliModelGenerator {
 		return model;
 	}
 	
-	private Container mapRelease(Release release) {
+	private Container mapRelease(Release release, int id) {
 		String releaseId = release.getId();
 		
-		Container rele = new Container(releaseId);
+		Container rele = new Container(releaseId, id);
 		
 		AttributeValue<Integer> capacity = new AttributeValue("capacity", false, (int) release.getCapacity());
 		
