@@ -56,7 +56,7 @@ public class Container {
 	@Expose
 	private HashMap<String, Integer> attributes = new HashMap<String, Integer>();
 	
-	private int hid = 1;
+	private static int hid = 0;
 	
 	public Container(String nameID, int id) {
 		this.nameID = nameID;

@@ -248,7 +248,7 @@ public class MulperiController {
 		String result = checker.checkInput(project, JSONParser.requirements,  JSONParser.dependencies, releases);
 		
 		if (!result.equals("OK")) {
-			return new ResponseEntity<>("Error(s) with JSON data posted:\n" + result, HttpStatus.BAD_REQUEST); 
+			return new ResponseEntity<>("Mulperi error: " + result, HttpStatus.BAD_REQUEST); 
 		}
 			
 		//---------------------------------------------------------------

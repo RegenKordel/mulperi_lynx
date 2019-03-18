@@ -25,6 +25,10 @@ public class InputChecker {
 	
 		String errorMessage = "";
 		
+		if (requirements.size() == 0) {
+			return "No requirements included!";
+		}
+		
 		if (releases.size() == 0) {
 			errorMessage += "No release versions included!\n";
 		}	

@@ -36,6 +36,14 @@ The swagger page describes all endpoints. There are currently two key functional
 
 2) Checking for a model consistency and, if necessary, providing diagnosis for an inconsisteny model (e.g., endpoint `uploadDataCheckForConsistencyAndDoDiagnosis`).
 
+## Notes for Developers
+
+None at the moment.
+
+## Sources
+
+None
+
 # How to Contribute
 See the OpenReq Contribution Guidelines [here](https://github.com/OpenReqEU/OpenReq/blob/master/CONTRIBUTING.md).
 
