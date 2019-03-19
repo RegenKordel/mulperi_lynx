@@ -1,0 +1,294 @@
+swagger: '2.0'
+info:
+  description: 'Easy to use REST API with JSON for configuring models. Mulperi is a service taking care of the functionality of constructing a model from requirements, more precisely utilizing feature modeling technologies (for details about adopted feature model technology, see D5.1). The constructed model allows expressing various kinds of relationship and, thus, dependency inferences by using KeljuCaaS. Therefore, Mulperi also provides interfaces for the operations to the resulting model.'
+  version: '1.13'
+  title: Mulperi
+host: 'localhost:9202'
+basePath: /
+tags:
+  - name: mulperi-controller
+    description: Mulperi Controller
+paths:
+  /models/consistencyCheckForTransitiveClosure:
+    post:
+      tags:
+        - mulperi-controller
+      summary: 'Get the transitive closure of a requirement, then check for consistency'
+      description: Returns whether the transitive closure of the requirement is consistent
+      operationId: consistencyCheckForTransitiveClosureUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: requirementId
+          description: requirementId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns JSON model'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  /models/findTransitiveClosureOfRequirement:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Get the transitive closure of a requirement
+      description: Returns the transitive closure of a given requirement to the specified depth
+      operationId: findTransitiveClosureOfRequirementUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: requirementId
+          description: requirementId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns JSON model'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  /models/postModelToCaas:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Post ElementModel to KeljuCaaS
+      description: The model is saved in KeljuCaaS
+      operationId: postModelToCaasUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: jsonString
+          description: jsonString
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns message model saved'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Returns what?
+  /models/projects/consistencyCheckAndDiagnosis:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Is release plan consistent and do diagnosis v2
+      description: Check whether a release plan is consistent. Provide diagnosis if it is not consistent.
+      operationId: consistencyCheckAndDiagnosisUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: jsonString
+          description: jsonString
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns JSON {"response": {"consistent": true}}'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: 'Diagnosis of inconsistency returns JSON {"response": {"consistent": false, "diagnosis": [[{"requirement": (requirementID)}]]}}'
+  /models/projects/uploadDataAndCheckForConsistency:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Is release plan consistent
+      description: Check whether a release plan is consistent.
+      operationId: uploadDataAndCheckForConsistencyUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: jsonString
+          description: jsonString
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns JSON {"response": {"consistent": true}}'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: 'Check of inconsistency returns JSON {"response": {"consistent": false}}'
+  /models/projects/uploadDataCheckForConsistencyAndDoDiagnosis:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Is release plan consistent and do diagnosis
+      description: Check whether a release plan is consistent. Provide diagnosis if it is not consistent.
+      operationId: uploadDataCheckForConsistencyAndDoDiagnosisUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: jsonString
+          description: jsonString
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Success, returns JSON {"response": {"consistent": true}}'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: 'Diagnosis of inconsistency returns JSON {"response": {"consistent": false, "diagnosis": [[{"requirement": (requirementID)}]]}}'
+  /models/requirementsToChoco:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Import OpenReq JSON model to Caas
+      description: Import a model in JSON format
+      operationId: requirementsToChocoUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: requirements
+          description: requirements
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '201':
+          description: 'Success, returns received requirements and dependencies in OpenReq JSON format'
+          schema:
+            type: string
+        '400':
+          description: 'Failure, ex. malformed input'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Failure
+  /models/sendModelToKeljuCaas:
+    post:
+      tags:
+        - mulperi-controller
+      summary: Post ElementModel to KeljuCaaS
+      description: The model is saved in KeljuCaaS
+      operationId: sendModelToKeljuCaasUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: jsonString
+          in: query
+          description: jsonString
+          required: false
+          type: string
+      responses:
+        '200':
+          description: 'Success, returns message model saved'
+          schema:
+            type: string
+        '201':
+          description: Created
+        '400':
+          description: 'Failure, ex. model not found'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Returns what?
+
+
