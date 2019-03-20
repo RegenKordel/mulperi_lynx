@@ -293,6 +293,10 @@ public class MurmeliModelGenerator {
 			
 			Element from = findRequirement(dep.getFromid());
 			Element to = findRequirement(dep.getToid());
+			//TODO CHECK if adding this creates side effects
+			//it passes DECOMPOSITION also as dependency
+			//works for ReleasePlanner, but maybe not for something else?
+			type = NameType.DECOMPOSITION;
 			
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
@@ -301,7 +305,6 @@ public class MurmeliModelGenerator {
 			
 			Parts part = new Parts("decomposition");
 			part.addPart(to);
-			
 			from.addPart(part);
 			
 			break;
