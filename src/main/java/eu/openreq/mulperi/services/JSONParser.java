@@ -134,84 +134,91 @@ public class JSONParser {
 				nonDups.add(dep);
 			}
 		}	
-		for (Requirement req : requirements) {
-			reqMap.put(req.getId(), req);
-		}
 		
-		while (!dupsLeft.isEmpty()) {
-			Dependency dup = dupsLeft.pop();		
+		if (!dupsLeft.isEmpty()) {
 			
-			Requirement fromReq = reqMap.get(dup.getFromid());
-			Requirement toReq = reqMap.get(dup.getToid());
+			for (Requirement req : requirements) {
+				reqMap.put(req.getId(), req);
+			}
 			
-			ComparableVersion fromVersion = new ComparableVersion("No FixVersion");
-			ComparableVersion toVersion = new ComparableVersion("No FixVersion");
+			while (!dupsLeft.isEmpty()) {
+				Dependency dup = dupsLeft.pop();		
+				
+				Requirement fromReq = reqMap.get(dup.getFromid());
+				Requirement toReq = reqMap.get(dup.getToid());
+				
+				ComparableVersion fromVersion = new ComparableVersion("No FixVersion");
+				ComparableVersion toVersion = new ComparableVersion("No FixVersion");
+				
+				for (RequirementPart reqPart : fromReq.getRequirementParts()) {
+					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
+						fromVersion = new ComparableVersion(reqPart.getText());
+					}
+				}
+				
+				for (RequirementPart reqPart : toReq.getRequirementParts()) {
+					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
+						toVersion = new ComparableVersion(reqPart.getText());
+					}
+				}
+				
+				if (fromVersion.compareTo(toVersion)==0) {
+					changes += toReq.getId() + " duplicates " + fromReq.getId() + "\n"; 
+					reqMap.put(fromReq.getId(), toReq);
+					reqMap.put(toReq.getId(), toReq);	
+				} else if (fromVersion.compareTo(toVersion)==1) {
+					changes += fromReq.getId() + " " + fromVersion + " duplicates yet has higher version than " 
+							+ toReq.getId() + " " + toVersion + "\n";
+					reqMap.put(fromReq.getId(), fromReq);
+					reqMap.put(toReq.getId(), fromReq);	
+				} else {
+					changes += toReq.getId() + " " + toVersion + " duplicates yet has higher version than " 
+							+ fromReq.getId() + " " + fromVersion + "\n";
+					reqMap.put(fromReq.getId(), toReq);
+					reqMap.put(toReq.getId(), toReq);	
+				}
+	
+			}
 			
-			for (RequirementPart reqPart : fromReq.getRequirementParts()) {
-				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-					fromVersion = new ComparableVersion(reqPart.getText());
+			for (String key : reqMap.keySet()) {
+				Requirement req = reqMap.get(key);
+				if (!newRequirements.contains(req)) {
+					newRequirements.add(req);
+				}		
+			}
+			
+			for (Dependency dep : nonDups) {
+				dep.setFromid(reqMap.get(dep.getFromid()).getId());
+				dep.setToid(reqMap.get(dep.getToid()).getId());
+				if (!newDependencies.contains(dep)) {
+					newDependencies.add(dep);
 				}
 			}
 			
-			for (RequirementPart reqPart : toReq.getRequirementParts()) {
-				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-					toVersion = new ComparableVersion(reqPart.getText());
+			List<String> usedIds = new ArrayList<String>();
+			for (Release rel : releases) {
+				List<String> newIds = new ArrayList<String>();
+				for (String reqId : rel.getRequirements()) {
+					String newId = reqMap.get(reqId).getId();
+					if (!usedIds.contains(newId)) {
+						newIds.add(newId);
+						usedIds.add(newId);
+					}				
+				}
+				if (!newIds.isEmpty()) {
+					rel.setRequirements(newIds);
+					newReleases.add(rel);
 				}
 			}
-			
-			if (fromVersion.compareTo(toVersion)==0) {
-				changes += toReq.getId() + " duplicates " + fromReq.getId() + "\n"; 
-				reqMap.put(fromReq.getId(), toReq);
-				reqMap.put(toReq.getId(), toReq);	
-			} else if (fromVersion.compareTo(toVersion)==1) {
-				changes += fromReq.getId() + " " + fromVersion + " duplicates yet has higher version than " 
-						+ toReq.getId() + " " + toVersion + "\n";
-				reqMap.put(fromReq.getId(), fromReq);
-				reqMap.put(toReq.getId(), fromReq);	
-			} else {
-				changes += toReq.getId() + " " + toVersion + " duplicates yet has higher version than " 
-						+ fromReq.getId() + " " + fromVersion + "\n";
-				reqMap.put(fromReq.getId(), toReq);
-				reqMap.put(toReq.getId(), toReq);	
-			}
+			filteredRequirements = newRequirements;
+			filteredDependencies = newDependencies;
+			filteredReleases = newReleases;	
+		} else {
+			filteredRequirements = requirements;
+			filteredDependencies = dependencies;
+			filteredReleases = releases;
+		}
 
-		}
-		
-		for (String key : reqMap.keySet()) {
-			Requirement req = reqMap.get(key);
-			if (!newRequirements.contains(req)) {
-				newRequirements.add(req);
-			}		
-		}
-		
-		for (Dependency dep : nonDups) {
-			dep.setFromid(reqMap.get(dep.getFromid()).getId());
-			dep.setToid(reqMap.get(dep.getToid()).getId());
-			if (!newDependencies.contains(dep)) {
-				newDependencies.add(dep);
-			}
-		}
-		
-		List<String> usedIds = new ArrayList<String>();
-		for (Release rel : releases) {
-			List<String> newIds = new ArrayList<String>();
-			for (String reqId : rel.getRequirements()) {
-				String newId = reqMap.get(reqId).getId();
-				if (!usedIds.contains(newId)) {
-					newIds.add(newId);
-					usedIds.add(newId);
-				}				
-			}
-			if (!newIds.isEmpty()) {
-				rel.setRequirements(newIds);
-				newReleases.add(rel);
-			}
-		}
-		
-		filteredRequirements = newRequirements;
-		filteredDependencies = newDependencies;
-		filteredReleases = newReleases;
-		
 		return changes;
 	}
 }

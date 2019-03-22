@@ -293,6 +293,9 @@ public class OpenReqConverter {
 			case IMPLIES:
 				dep.setDependency_type(Dependency_type.IMPLIES);
 				break;
+			case DECOMPOSITION:
+				dep.setDependency_type(Dependency_type.DECOMPOSITION);
+				break;
 			}
 			mapRelationshipAttributes(dep, rel);
 			
