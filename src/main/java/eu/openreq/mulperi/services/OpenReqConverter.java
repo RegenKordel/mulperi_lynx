@@ -39,14 +39,14 @@ public class OpenReqConverter {
 			int modified_at = model.getRootContainer().getAttributes().get("modified_at");
 			this.project.setCreated_at((long) model.getAttributeValues().get(modified_at).getValue());
 		}
-		this.project.setSpecifiedRequirements(new ArrayList(model.getElements().keySet()));
+		this.project.setSpecifiedRequirements(new ArrayList<String>(model.getElements().keySet()));
 	}
 	
 	private void mapElements() {
 		for (Element element : model.getElements().values()) {
 			Requirement req = new Requirement();
 			
-			req.setRequirementParts(new ArrayList());
+			req.setRequirementParts(new ArrayList<RequirementPart>());
 			req.setId(element.getNameID());
 			switch (element.getType()) {
 			case "bug":

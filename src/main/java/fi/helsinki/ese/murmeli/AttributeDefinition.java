@@ -30,12 +30,12 @@ public class AttributeDefinition {
 		this.optionality = opt;
 	}
 	
-	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type, Optionality opt) {
+	public AttributeDefinition(AttributeValue<?> defaultValue, AttributeValueType type, Optionality opt) {
 		
 		this(defaultValue.getID(), type.getName(), opt);
 	}
 	
-	public AttributeDefinition(AttributeValue defaultValue, AttributeValueType type) {
+	public AttributeDefinition(AttributeValue<?> defaultValue, AttributeValueType type) {
 		
 		this(defaultValue.getID(), type.getName(), Optionality.REQUIRED);
 	}
@@ -49,7 +49,7 @@ public class AttributeDefinition {
 		return defaultValue;
 	}
 
-	public void setDefaultValue(AttributeValue defaultValue) {
+	public void setDefaultValue(AttributeValue<?> defaultValue) {
 		this.defaultValue = defaultValue.getID();
 	}
 	
