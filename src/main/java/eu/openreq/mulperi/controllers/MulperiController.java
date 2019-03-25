@@ -1,17 +1,13 @@
 package eu.openreq.mulperi.controllers;
 
-import eu.openreq.mulperi.models.json.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -22,13 +18,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
+import eu.openreq.mulperi.models.json.Dependency;
+import eu.openreq.mulperi.models.json.Project;
+import eu.openreq.mulperi.models.json.Release;
+import eu.openreq.mulperi.models.json.Requirement;
+import eu.openreq.mulperi.models.json.Requirement_type;
 import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;

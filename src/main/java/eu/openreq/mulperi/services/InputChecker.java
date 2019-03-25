@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.openreq.mulperi.models.json.Dependency;
-import eu.openreq.mulperi.models.json.Dependency_type;
 import eu.openreq.mulperi.models.json.Project;
 import eu.openreq.mulperi.models.json.Release;
 import eu.openreq.mulperi.models.json.Requirement;
-import eu.openreq.mulperi.models.json.Requirement_status;
 
 public class InputChecker {
 	
