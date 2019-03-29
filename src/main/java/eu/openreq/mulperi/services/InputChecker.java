@@ -7,7 +7,6 @@ import eu.openreq.mulperi.models.json.Dependency;
 import eu.openreq.mulperi.models.json.Project;
 import eu.openreq.mulperi.models.json.Release;
 import eu.openreq.mulperi.models.json.Requirement;
-import eu.openreq.mulperi.models.json.Requirement_status;
 
 public class InputChecker {
 	
@@ -41,9 +40,9 @@ public class InputChecker {
 			errorMessage += "Negative capacity in some release(s)!\n";
 		}
 		
-		if (!noDuplicateDependencies(dependencies)) {
-			errorMessage += "Some duplicate(s) in dependencies!\n";
-		}
+//		if (!noDuplicateDependencies(dependencies)) {
+//			errorMessage += "Some duplicate(s) in dependencies!\n";
+//		}
 		
 //		if (!releasesInOrder(releases)) {
 //			errorMessage += "Some versions missing between releases!\n";

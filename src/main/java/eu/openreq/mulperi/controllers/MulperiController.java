@@ -1,17 +1,13 @@
 package eu.openreq.mulperi.controllers;
 
-import eu.openreq.mulperi.models.json.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -22,13 +18,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
+import eu.openreq.mulperi.models.json.Dependency;
+import eu.openreq.mulperi.models.json.Project;
+import eu.openreq.mulperi.models.json.Release;
+import eu.openreq.mulperi.models.json.Requirement;
+import eu.openreq.mulperi.models.json.Requirement_type;
 import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.JSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
@@ -219,7 +219,10 @@ public class MulperiController {
 			
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
-		for (Requirement req : JSONParser.requirements) {
+		List<Requirement> requirements = JSONParser.requirements;
+		List<Dependency> dependencies = JSONParser.dependencies;
+		
+		for (Requirement req : requirements) {
 			if (req.getRequirement_type() == null) {
 				req.setRequirement_type(Requirement_type.REQUIREMENT);
 			}
@@ -228,8 +231,8 @@ public class MulperiController {
 		Project project = null;
 		String id = null;
 		 
-		if (JSONParser.requirements.size()>0) {
-			id = JSONParser.requirements.get(0).getName();
+		if (requirements.size()>0) {
+			id = requirements.get(0).getName();
 		}
 		if (JSONParser.project != null) {
 			project = JSONParser.project;
@@ -241,11 +244,12 @@ public class MulperiController {
 			releases = JSONParser.releases;
 		}
 		
+		
 		//Input checker
 		//---------------------------------------------------------------
 				
 		InputChecker checker = new InputChecker();
-		String result = checker.checkInput(project, JSONParser.requirements,  JSONParser.dependencies, releases);
+		String result = checker.checkInput(project, requirements,  dependencies, releases);
 		
 		if (!result.equals("OK")) {
 			return new ResponseEntity<>("Mulperi error: " + result, HttpStatus.BAD_REQUEST); 
@@ -253,8 +257,19 @@ public class MulperiController {
 			
 		//---------------------------------------------------------------
 	
+		//Handle duplicates
+		//---------------------------------------------------------------
+		
+		String changes = JSONParser.combineDuplicates();
+		requirements = JSONParser.filteredRequirements;
+		dependencies = JSONParser.filteredDependencies;
+		releases = JSONParser.filteredReleases;
+		
+		//---------------------------------------------------------------
+		
+		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, new ArrayList<String>(), JSONParser.dependencies, releases, id);
+		ElementModel model = generator.initializeElementModel(requirements, new ArrayList<String>(), dependencies, releases, id);
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
@@ -271,7 +286,7 @@ public class MulperiController {
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		return response;
+		return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response, response.getStatusCode());
 	}
 	
 	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
@@ -367,9 +382,7 @@ public class MulperiController {
 		try {
 			response = rt.postForObject(completeAddress, requirementId, String.class);
 			TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
-			
 			OpenReqConverter converter = new OpenReqConverter(closure.getModel());
-			
 			List<Requirement> requirements = converter.getRequirements();
 			
 			
