@@ -31,13 +31,13 @@ public class OpenReqConverter {
 		this.project.setName(model.getRootContainer().getNameID()); // TODO: This is same as id, what to do? Root container has no name.
 		if (model.getRootContainer().getAttributes().containsKey("created_at")) {
 			int created_at = model.getRootContainer().getAttributes().get("created_at");
-			this.project.setCreated_at((long) model.getAttributeValues().get(created_at).getValue());
+			this.project.setCreated_at((Long) model.getAttributeValues().get(created_at).getValue());
 		} else {
-			this.project.setCreated_at((long) 0);
+			this.project.setCreated_at(0L);
 		}
 		if (model.getRootContainer().getAttributes().containsKey("modified_at")) {
 			int modified_at = model.getRootContainer().getAttributes().get("modified_at");
-			this.project.setCreated_at((long) model.getAttributeValues().get(modified_at).getValue());
+			this.project.setCreated_at((Long) model.getAttributeValues().get(modified_at).getValue());
 		}
 		this.project.setSpecifiedRequirements(new ArrayList<String>(model.getElements().keySet()));
 	}
@@ -127,14 +127,14 @@ public class OpenReqConverter {
 		
 		if (element.getAttributes().containsKey("modified_at")) {
 			int modified_atID = element.getAttributes().get("modified_at");
-			req.setCreated_at((long) model.getAttributeValues().get(modified_atID).getValue());
+			req.setCreated_at((Long) model.getAttributeValues().get(modified_atID).getValue());
 		}
 		
 		if (element.getAttributes().containsKey("created_at")) {
 			long created_at = element.getAttributes().get("created_at");
 			req.setCreated_at(created_at);
 		} else {
-			req.setCreated_at((long) 0);
+			req.setCreated_at(0L);
 		}
 		
 		if (element.getAttributes().containsKey("effort")) {
@@ -327,7 +327,7 @@ public class OpenReqConverter {
 		}
 		
 		if (relation.getAttributes().containsKey("dependency_score")) {
-			double dependency_score = (double) model.getAttributeValues().get(relation.getAttributes().get("dependency_score")).getValue();
+			Double dependency_score = (Double) model.getAttributeValues().get(relation.getAttributes().get("dependency_score")).getValue();
 			dep.setDependency_score(dependency_score);
 		}
 	}
@@ -365,7 +365,7 @@ public class OpenReqConverter {
 	}
 	
 	private void mapSubContainerAttributes(Release release, Container container) {
-		release.setCapacity((int) model.getAttributeValues().get(container.getAttributes().get("capacity")).getValue());
+		release.setCapacity((Integer) model.getAttributeValues().get(container.getAttributes().get("capacity")).getValue());
 		
 		switch((String) model.getAttributeValues().get(container.getAttributes().get("status")).getValue()) {
 			case "new":
@@ -384,7 +384,7 @@ public class OpenReqConverter {
 		
 		if (container.getAttributes().containsKey("modified_at")) {
 			int modified_atID = container.getAttributes().get("modified_at");
-			release.setCreated_at((long) model.getAttributeValues().get(modified_atID).getValue());
+			release.setCreated_at((Long) model.getAttributeValues().get(modified_atID).getValue());
 		}
 		
 		if (container.getAttributes().containsKey("created_at")) {
