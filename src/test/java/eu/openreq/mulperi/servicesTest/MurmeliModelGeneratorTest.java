@@ -104,7 +104,7 @@ public class MurmeliModelGeneratorTest {
     
     @Test
     public void createdElementModelRelationsSizeCorrect() {
-    	assertEquals(model.getRelations().size(), 1); //Decompositions do not go to Relations, so Relations only contains other types of dependencies
+    	assertEquals(model.getRelations().size(), 2); //Decompositions DO go to relations
     }
     
     @Test
