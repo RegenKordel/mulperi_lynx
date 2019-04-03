@@ -117,7 +117,7 @@ public class MulperiController {
 	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);		
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);		
 	}
 	
 	
@@ -154,7 +154,7 @@ public class MulperiController {
 	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);
 	}
 	
 	/**
@@ -189,7 +189,7 @@ public class MulperiController {
 	@RequestMapping(value = "/projects/consistencyCheckAndDiagnosis", method = RequestMethod.POST)
 	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress);	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
 	}
 
 	
@@ -215,7 +215,7 @@ public class MulperiController {
 	*/
 	
 
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress) {
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) {
 			
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -286,7 +286,10 @@ public class MulperiController {
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response, response.getStatusCode());
+		if (duplicatesInResponse) {
+			return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response, response.getStatusCode());
+		}
+		return new ResponseEntity<>(response, response.getStatusCode());
 	}
 	
 	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
@@ -418,7 +421,8 @@ public class MulperiController {
 	@RequestMapping(value = "/consistencyCheckForTransitiveClosure", method = RequestMethod.POST)
 	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {	
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId);
-		return consistencyCheckAndDiagnosis(transitiveClosure.getBody().toString());	
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
+		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true);	
 	}
 
 }

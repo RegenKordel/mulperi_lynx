@@ -188,8 +188,14 @@ public class JSONParser {
 			}
 			
 			for (Dependency dep : nonDups) {
-				dep.setFromid(reqMap.get(dep.getFromid()).getId());
-				dep.setToid(reqMap.get(dep.getToid()).getId());
+				Requirement fromReq = reqMap.get(dep.getFromid());
+				if (fromReq!=null) {
+					dep.setFromid(fromReq.getId());
+				}
+				Requirement toReq = reqMap.get(dep.getToid());
+				if (toReq!=null) {
+					dep.setToid(toReq.getId());
+				}	
 				if (!newDependencies.contains(dep)) {
 					newDependencies.add(dep);
 				}
