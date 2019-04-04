@@ -190,28 +190,6 @@ public class MulperiController {
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
 	}
-
-	
-	public String generateName(Object object) {
-		int hashCode = object.hashCode();
-		return "ID" + (hashCode > 0 ? hashCode : "_" + Math.abs(hashCode)); 
-		//replace - with _, since Kumbang doesn't like hyphens
-	}
-	
-	/*public String makeConfigurationRequest(Selections selections, String modelName) throws Exception {
-		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
-
-		if(model == null) {
-			throw new Exception("Model not found");
-		}
-
-		try {
-			return transform.selectionsToConfigurationRequest(selections, model);
-		} catch (Exception e) {
-			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
-		}
-	}
-	*/
 	
 
 	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) {
@@ -291,14 +269,14 @@ public class MulperiController {
 		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}
 	
-	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-			notes = "The model is saved in KeljuCaaS",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Returns what?")}) 
-	@RequestMapping(value = "/sendModelToKeljuCaas", method = RequestMethod.POST)
+//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
+//			notes = "The model is saved in KeljuCaaS",
+//			response = String.class)
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
+//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+//			@ApiResponse(code = 409, message = "Returns what?")}) 
+//	@RequestMapping(value = "/sendModelToKeljuCaas", method = RequestMethod.POST)
 	public ResponseEntity<String> sendModelToKeljuCaas(String jsonString) {
 		RestTemplate rt = new RestTemplate();
 
@@ -318,51 +296,51 @@ public class MulperiController {
 	}
 	
 	
-	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-			notes = "The model is saved in KeljuCaaS",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Returns what?")}) 
-	@RequestMapping(value = "/postModelToCaas", method = RequestMethod.POST)
-	public ResponseEntity<?> postModelToCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String actualPath = "/importModel"; 
-
-		String completeAddress = caasAddress + actualPath;
-		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		
-		System.out.println(jsonString);
-		
-		JSONParser.parseToOpenReqObjects(jsonString);
-		
-		for (Requirement req : JSONParser.requirements) {
-			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-			}
-		} 
-		
-		// TODO Should check if the element is in the model
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
-
-		String murmeli = gson.toJson(model);
-		
-		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-		ResponseEntity<?> response = null;
-		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
-		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		}
-
-		return response;
-	}
+//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
+//			notes = "The model is saved in KeljuCaaS",
+//			response = String.class)
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
+//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+//			@ApiResponse(code = 409, message = "Returns what?")}) 
+//	@RequestMapping(value = "/postModelToCaas", method = RequestMethod.POST)
+//	public ResponseEntity<?> postModelToCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+//		RestTemplate rt = new RestTemplate();
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//		String actualPath = "/importModel"; 
+//
+//		String completeAddress = caasAddress + actualPath;
+//		
+//		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+//		
+//		System.out.println(jsonString);
+//		
+//		JSONParser.parseToOpenReqObjects(jsonString);
+//		
+//		for (Requirement req : JSONParser.requirements) {
+//			if (req.getRequirement_type() == null) {
+//				req.setRequirement_type(Requirement_type.REQUIREMENT);
+//			}
+//		} 
+//		
+//		// TODO Should check if the element is in the model
+//		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
+//
+//		String murmeli = gson.toJson(model);
+//		
+//		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+//		ResponseEntity<?> response = null;
+//		try {
+//			response = rt.postForEntity(completeAddress, entity, String.class);
+//		} catch (HttpClientErrorException e) {
+//			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+//		}
+//
+//		return response;
+//	}
 	
 	
 	@ApiOperation(value = "Get the transitive closure of a requirement",
