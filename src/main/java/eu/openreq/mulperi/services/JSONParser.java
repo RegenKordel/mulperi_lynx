@@ -152,13 +152,21 @@ public class JSONParser {
 				
 				for (RequirementPart reqPart : fromReq.getRequirementParts()) {
 					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-						fromVersion = new ComparableVersion(reqPart.getText());
+						String version = reqPart.getText();
+						if (version.equals("some future version") || version.equals("none") || version.equals("No Fixversion")) {
+							version = "No FixVersion";
+						}
+						fromVersion = new ComparableVersion(version);
 					}
 				}
 				
 				for (RequirementPart reqPart : toReq.getRequirementParts()) {
 					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-						toVersion = new ComparableVersion(reqPart.getText());
+						String version = reqPart.getText();
+						if (version.equals("some future version") || version.equals("none") || version.equals("No Fixversion")) {
+							version = "No FixVersion";
+						}
+						toVersion = new ComparableVersion(version);
 					}
 				}
 				
