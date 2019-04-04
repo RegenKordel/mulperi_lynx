@@ -286,9 +286,9 @@ public class MulperiController {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		if (duplicatesInResponse) {
-			return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response, response.getStatusCode());
+			return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response.getBody(), response.getStatusCode());
 		}
-		return new ResponseEntity<>(response, response.getStatusCode());
+		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}
 	
 	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
