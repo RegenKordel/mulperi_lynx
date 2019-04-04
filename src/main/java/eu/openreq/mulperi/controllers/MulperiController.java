@@ -72,7 +72,6 @@ public class MulperiController {
 		//System.out.println("Received requirements from Milla " + requirements);
 		JSONParser.parseToOpenReqObjects(requirements);
 		
-		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		ElementModel model;
 		if(JSONParser.projects!=null) {
@@ -311,7 +310,7 @@ public class MulperiController {
 		ResponseEntity<String> response = null;
 
 		try {
-			response = rt.postForEntity(caasAddress + "importModelAndUpdateGraph", entity, String.class);
+			response = rt.postForEntity(caasAddress + "/importModelAndUpdateGraph", entity, String.class);
 			return response;
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
