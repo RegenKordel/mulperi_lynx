@@ -29,6 +29,7 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
       return new ApiInfoBuilder()
               .title("Mulperi")
+              .version("1.13")
               .description("Easy to use REST API with JSON for configuring models. Mulperi is a service taking care of the functionality of constructing a model from requirements, more precisely utilizing feature modeling technologies (for details about adopted feature model technology, see D5.1). The constructed model allows expressing various kinds of relationship and, thus, dependency inferences by using KeljuCaaS. Therefore, Mulperi also provides interfaces for the operations to the resulting model.")
               .build();
   }
