@@ -203,7 +203,8 @@ public class MulperiController {
 	 * @param duplicatesInResponse
 	 * @return
 	 */
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) {
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) throws JSONException {
+
 			
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
