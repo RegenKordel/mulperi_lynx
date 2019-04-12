@@ -14,7 +14,7 @@ paths:
       tags:
         - mulperi-controller
       summary: 'Get the transitive closure of a requirement, then check for consistency'
-      description: Returns whether the transitive closure of the requirement is consistent
+      description: Solves whether the transitive closure of the requirement is consistent
       operationId: consistencyCheckForTransitiveClosureUsingPOST
       consumes:
         - application/json
@@ -49,7 +49,7 @@ paths:
       tags:
         - mulperi-controller
       summary: Get the transitive closure of a requirement
-      description: Returns the transitive closure of a given requirement to the specified depth
+      description: Returns the transitive closure of a given requirement up to the depth of 5
       operationId: findTransitiveClosureOfRequirementUsingPOST
       consumes:
         - application/json
@@ -79,41 +79,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-  /models/postModelToCaas:
-    post:
-      tags:
-        - mulperi-controller
-      summary: Post ElementModel to KeljuCaaS
-      description: The model is saved in KeljuCaaS
-      operationId: postModelToCaasUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - '*/*'
-      parameters:
-        - in: body
-          name: jsonString
-          description: jsonString
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Success, returns message model saved'
-          schema:
-            type: string
-        '201':
-          description: Created
-        '400':
-          description: 'Failure, ex. model not found'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '409':
-          description: Returns what?
   /models/projects/consistencyCheckAndDiagnosis:
     post:
       tags:
@@ -154,7 +119,7 @@ paths:
       tags:
         - mulperi-controller
       summary: Is release plan consistent
-      description: Check whether a release plan is consistent.
+      description: Send model to Caas to check whether a release plan is consistent.
       operationId: uploadDataAndCheckForConsistencyUsingPOST
       consumes:
         - application/json
@@ -224,7 +189,7 @@ paths:
       tags:
         - mulperi-controller
       summary: Import OpenReq JSON model to Caas
-      description: Import a model in JSON format
+      description: Import a model to Caas in JSON format
       operationId: requirementsToChocoUsingPOST
       consumes:
         - application/json
@@ -256,39 +221,4 @@ paths:
           description: Not Found
         '409':
           description: Failure
-  /models/sendModelToKeljuCaas:
-    post:
-      tags:
-        - mulperi-controller
-      summary: Post ElementModel to KeljuCaaS
-      description: The model is saved in KeljuCaaS
-      operationId: sendModelToKeljuCaasUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - '*/*'
-      parameters:
-        - name: jsonString
-          in: query
-          description: jsonString
-          required: false
-          type: string
-      responses:
-        '200':
-          description: 'Success, returns message model saved'
-          schema:
-            type: string
-        '201':
-          description: Created
-        '400':
-          description: 'Failure, ex. model not found'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '409':
-          description: Returns what?
-
 

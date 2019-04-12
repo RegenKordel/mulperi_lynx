@@ -1,0 +1,87 @@
+{
+ "project": { 
+ 	"id": "RE2019", 
+	"name": "RE2019 example project",
+ 	"specifiedRequirements": ["R1", "R2", "R3", "R3a", "R4"]
+ },
+ "requirements": [
+   {
+   	"id": "R1",
+   	"name": "ShowMap",
+   	"effort": 1,
+   	"created_at": 0,
+	"priority": 1
+   },   
+   {
+   	"id": "R2",
+   	"name": "CacheMap",
+   	"effort": 1,
+   	"created_at": 0,
+	"priority": 2
+   },
+   {
+   	"id": "R3",
+   	"name": "Location",
+   	"effort": 1,
+   	"created_at": 0,
+	"priority": 1
+   },
+   {
+   	"id": "R3a",
+   	"name": "GPS",
+   	"effort": 1,
+   	"created_at": 0,
+	"priority": 1
+   },
+   {
+   	"id": "R4",
+   	"name": "Navigate",
+   	"effort": 1,
+   	"created_at": 0,
+	"priority": 2
+   }     
+ ],  
+ "releases": [
+   {
+   	"id": 1,
+   	"capacity": 2,
+   	"status": "new",
+   	"requirements": ["R1"]
+   },
+   {
+   	"id": 2,
+   	"capacity": 2,
+   	"status": "new",
+   	"requirements": ["R3", "R4"]
+   },
+   {
+   	"id": 3,
+   	"capacity": 2,
+   	"status": "new",
+   	"requirements": ["R2", "R3a"]
+   }
+
+ ],
+ "dependencies": [
+   {
+   	"dependency_type": "REQUIRES",
+   	"fromid": "R4",
+   	"toid": "R3"
+   },
+   {
+   	"dependency_type": "REQUIRES",
+   	"fromid": "R3",
+   	"toid": "R1"
+   },   
+   {
+   	"dependency_type": "DECOMPOSITION",
+   	"fromid": "R3",
+   	"toid": "R3a"
+   },
+   {
+   	"dependency_type": "DECOMPOSITION",
+   	"fromid": "R1",
+   	"toid": "R2"
+   }
+ ]
+}

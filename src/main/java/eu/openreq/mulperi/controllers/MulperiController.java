@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,13 +44,15 @@ import io.swagger.annotations.ApiResponses;
 @SpringBootApplication
 @RestController
 @RequestMapping("models")
-//@RequestMapping("uh/mulperi/models")
 public class MulperiController {
 	
 	private Gson gson = new Gson();
 
 	@Value("${mulperi.caasAddress}")
 	private String caasAddress; 
+	
+	@Autowired
+	RestTemplate rt;
 	
 	/**
 	 * Import a model in JSON format
@@ -60,13 +64,13 @@ public class MulperiController {
 	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Import OpenReq JSON model to Caas",
-			notes = "Import a model in JSON format",
+			notes = "Import a model to Caas in JSON format",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
-	@RequestMapping(value = "requirementsToChoco", method = RequestMethod.POST)
+	@PostMapping(value = "requirementsToChoco")
 	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		
 		//System.out.println("Received requirements from Milla " + requirements);
@@ -107,13 +111,13 @@ public class MulperiController {
 	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Is release plan consistent",
-			notes = "Check whether a release plan is consistent.",
+			notes = "Send model to Caas to check whether a release plan is consistent.",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
-	@RequestMapping(value = "/projects/uploadDataAndCheckForConsistency", method = RequestMethod.POST)
+	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);		
@@ -150,7 +154,7 @@ public class MulperiController {
 			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
-	@RequestMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis", method = RequestMethod.POST)
+	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);
@@ -185,36 +189,22 @@ public class MulperiController {
 			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
-	@RequestMapping(value = "/projects/consistencyCheckAndDiagnosis", method = RequestMethod.POST)
+	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
 	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
 	}
-
 	
-	public String generateName(Object object) {
-		int hashCode = object.hashCode();
-		return "ID" + (hashCode > 0 ? hashCode : "_" + Math.abs(hashCode)); 
-		//replace - with _, since Kumbang doesn't like hyphens
-	}
-	
-	/*public String makeConfigurationRequest(Selections selections, String modelName) throws Exception {
-		ParsedModel model = parsedModelRepository.findFirstByModelName(modelName);
+	/**
+	 * Converts the given OpenReq JSON to Murmeli along with various checks, then sends it to Keljucaas
+	 * 
+	 * @param jsonString
+	 * @param completeAddress
+	 * @param duplicatesInResponse
+	 * @return
+	 */
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) throws JSONException {
 
-		if(model == null) {
-			throw new Exception("Model not found");
-		}
-
-		try {
-			return transform.selectionsToConfigurationRequest(selections, model);
-		} catch (Exception e) {
-			throw new Exception("Failed to create configurationRequest (feature typos?): " + e.getMessage());
-		}
-	}
-	*/
-	
-
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) {
 			
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -272,9 +262,7 @@ public class MulperiController {
 		
 		Gson gson = new Gson();
 		String murmeli = gson.toJson(model);
-		
-		
-		RestTemplate rt = new RestTemplate();
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		
@@ -291,90 +279,84 @@ public class MulperiController {
 		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}
 	
-	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-			notes = "The model is saved in KeljuCaaS",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Returns what?")}) 
-	@RequestMapping(value = "/sendModelToKeljuCaas", method = RequestMethod.POST)
+//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
+//			notes = "The model is saved in KeljuCaaS",
+//			response = String.class)
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
+//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+//			@ApiResponse(code = 409, message = "Returns what?")}) 
+//	@PostMapping(value = "/sendModelToKeljuCaas")
 	public ResponseEntity<String> sendModelToKeljuCaas(String jsonString) {
-		RestTemplate rt = new RestTemplate();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_XML);
 
 		HttpEntity<String> entity = new HttpEntity<String>(jsonString, headers);
 
-		ResponseEntity<String> response = null;
-
 		try {
-			response = rt.postForEntity(caasAddress + "/importModelAndUpdateGraph", entity, String.class);
-			return response;
+			return rt.postForEntity(caasAddress + "/importModelAndUpdateGraph", entity, String.class);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	
-	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-			notes = "The model is saved in KeljuCaaS",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Returns what?")}) 
-	@RequestMapping(value = "/postModelToCaas", method = RequestMethod.POST)
-	public ResponseEntity<?> postModelToCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		RestTemplate rt = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		String actualPath = "/importModel"; 
-
-		String completeAddress = caasAddress + actualPath;
-		
-		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-		
-		System.out.println(jsonString);
-		
-		JSONParser.parseToOpenReqObjects(jsonString);
-		
-		for (Requirement req : JSONParser.requirements) {
-			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-			}
-		} 
-		
-		// TODO Should check if the element is in the model
-		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
-
-		String murmeli = gson.toJson(model);
-		
-		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-		ResponseEntity<?> response = null;
-		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
-		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-		}
-
-		return response;
-	}
+//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
+//			notes = "The model is saved in KeljuCaaS",
+//			response = String.class)
+//	@ApiResponses(value = { 
+//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
+//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+//			@ApiResponse(code = 409, message = "Returns what?")}) 
+//	@RequestMapping(value = "/postModelToCaas", method = RequestMethod.POST)
+//	public ResponseEntity<?> postModelToCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//		String actualPath = "/importModel"; 
+//
+//		String completeAddress = caasAddress + actualPath;
+//		
+//		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+//		
+//		System.out.println(jsonString);
+//		
+//		JSONParser.parseToOpenReqObjects(jsonString);
+//		
+//		for (Requirement req : JSONParser.requirements) {
+//			if (req.getRequirement_type() == null) {
+//				req.setRequirement_type(Requirement_type.REQUIREMENT);
+//			}
+//		} 
+//		
+//		// TODO Should check if the element is in the model
+//		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
+//
+//		String murmeli = gson.toJson(model);
+//		
+//		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
+//		ResponseEntity<?> response = null;
+//		try {
+//			response = rt.postForEntity(completeAddress, entity, String.class);
+//		} catch (HttpClientErrorException e) {
+//			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+//		}
+//
+//		return response;
+//	}
 	
 	
 	@ApiOperation(value = "Get the transitive closure of a requirement",
-			notes = "Returns the transitive closure of a given requirement to the specified depth",
+			notes = "Returns the transitive closure of a given requirement up to the depth of 5",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success, returns JSON model"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
-	@RequestMapping(value = "/findTransitiveClosureOfRequirement", method = RequestMethod.POST)
+	@PostMapping(value = "/findTransitiveClosureOfRequirement")
 	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {
-		RestTemplate rt = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -411,13 +393,13 @@ public class MulperiController {
 	}
 
 	@ApiOperation(value = "Get the transitive closure of a requirement, then check for consistency",
-			notes = "Returns whether the transitive closure of the requirement is consistent",
+			notes = "Solves whether the transitive closure of the requirement is consistent",
 			response = String.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success, returns JSON model"),
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
-	@RequestMapping(value = "/consistencyCheckForTransitiveClosure", method = RequestMethod.POST)
+	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
 	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {	
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId);
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";

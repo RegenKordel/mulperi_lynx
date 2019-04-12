@@ -55,6 +55,11 @@ public class JSONParser {
 			}
 	}
 	
+	/**
+	 * Parse and sort the release versions from requirement parts using ComparableVersion
+	 * 
+	 * @return
+	 */
 	public static List<Release> parseReleaseVersionsFromReqParts() {
 		HashMap<ComparableVersion, List<String>> releaseMap = new HashMap<ComparableVersion, List<String>>();
 		
@@ -116,6 +121,10 @@ public class JSONParser {
 		return gson.toJson(model);
 	}
 	
+	/**
+	 * Combine duplicate requirements before sending them to Caas
+	 * @return
+	 */
 	public static String combineDuplicates() {
 		Stack<Dependency> dupsLeft = new Stack<Dependency>();
 		List<Dependency> nonDups = new ArrayList<Dependency>();
