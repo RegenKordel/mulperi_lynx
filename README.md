@@ -6,7 +6,7 @@ This service was created as a result of the OpenReq project funded by the Europe
 
 # Technical Description
 
-Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation http://217.172.12.199:9202/swagger-ui.html.
+Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation https://api.openreq.eu/keljucaas/swagger-ui.html.
 
 
 ## The following technologies are used:
@@ -23,7 +23,7 @@ The API is documented by using Swagger2: https://api.openreq.eu/mulperi/swagger-
 
 ## How to Install
 
-Run the compiled jar file, e.g., nohup java -jar Mulperi-1.9.jar.
+Run the compiled jar file, e.g., nohup java -jar Mulperi-1.10.jar.
 
 Mulpeeri uses the port 9202 that needs to be open to in order that the endpoints and Swagger page can be accessed. Mulperi also connects to KeljuCaaS services of OpenReq in the port 9205.
 
