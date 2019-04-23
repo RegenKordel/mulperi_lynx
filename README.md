@@ -18,7 +18,7 @@ Mulperi is a service that is used in the OpenReq infrastructure to generate appr
 	
 ## Public APIs
 
-The API is documented by using Swagger2: http://217.172.12.199:9202/swagger-ui.html
+The API is documented by using Swagger2: https://api.openreq.eu/mulperi/swagger-ui.html
 
 
 ## How to Install
