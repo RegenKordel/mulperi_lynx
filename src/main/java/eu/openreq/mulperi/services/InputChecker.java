@@ -25,7 +25,7 @@ public class InputChecker {
 		String errorMessage = "";
 		
 		if (requirements.size() == 0) {
-			return "No requirements included!";
+			return "No requirements received!";
 		}
 		
 		if (releases.size() == 0) {

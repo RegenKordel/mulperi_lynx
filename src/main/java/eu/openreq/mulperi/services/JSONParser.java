@@ -40,7 +40,6 @@ public class JSONParser {
 	
 	public static void parseToOpenReqObjects(String jsonString) 
 			throws JSONException {
-		
 			input = gson.fromJson(jsonString, InputExtractor.class);
 			project = input.getProject();
 			projects = input.getProjects();
@@ -62,6 +61,7 @@ public class JSONParser {
 	 */
 	public static List<Release> parseReleaseVersionsFromReqParts() {
 		HashMap<ComparableVersion, List<String>> releaseMap = new HashMap<ComparableVersion, List<String>>();
+		List<String> noFixVerReqs = new ArrayList<String>();
 		
 		for (Requirement req : requirements) {
 			if (req.getRequirementParts()==null) {
@@ -69,22 +69,20 @@ public class JSONParser {
 			}
 			for (RequirementPart reqPart : req.getRequirementParts()) {
 				if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {			
-					List<String> versions = parseVersions(reqPart.getText());;
+					List<String> versions = parseVersions(reqPart.getText());
 					for (String version : versions) {	
 						if (!version.equals("")) {
-							ComparableVersion compVersion = null;
-							if (version.equals("No Fixversion") || version.equals("No FixVersion") || 
-									version.equals("some future version") || version.equals("none")) {
-								compVersion = new ComparableVersion(Integer.MAX_VALUE + ".FINAL");
+							if (isFixVersion(version)) {
+								ComparableVersion compVersion = new ComparableVersion(version);
+								List<String> releaseReqs = new ArrayList<String>();
+								if (releaseMap.containsKey(compVersion)) {
+									releaseReqs = releaseMap.get(compVersion);
+								} 
+								releaseReqs.add(req.getId());
+								releaseMap.put(compVersion, releaseReqs);
 							} else {
-								compVersion = new ComparableVersion(version);
+								noFixVerReqs.add(req.getId());
 							}
-							List<String> reqs = new ArrayList<String>();
-							if (releaseMap.containsKey(compVersion)) {
-								reqs = releaseMap.get(compVersion);
-							} 
-							reqs.add(req.getId());
-							releaseMap.put(compVersion, reqs);	
 						}
 					}					
 				}
@@ -105,8 +103,22 @@ public class JSONParser {
 			releases.add(rel);
 		}
 		
+		if (!noFixVerReqs.isEmpty()) {
+			Release rel = new Release();
+			rel.setId("No FixVersion");
+			rel.setCapacity(0);
+			rel.setRequirements(noFixVerReqs);
+			releases.add(rel);
+		}
 		return releases;
 		
+	}
+	
+	private static boolean isFixVersion(String version) {
+		version = version.toLowerCase();	
+		return !(version.equals("no fixversion") || 
+				version.equals("some future version") || 
+				version.equals("none"));
 	}
 	
 	private static List<String> parseVersions(String text) {
@@ -156,28 +168,9 @@ public class JSONParser {
 				Requirement fromReq = reqMap.get(dup.getFromid());
 				Requirement toReq = reqMap.get(dup.getToid());
 				
-				ComparableVersion fromVersion = new ComparableVersion("No FixVersion");
-				ComparableVersion toVersion = new ComparableVersion("No FixVersion");
+				ComparableVersion fromVersion = new ComparableVersion(getFixVerFromReqParts(fromReq.getRequirementParts()));
+				ComparableVersion toVersion = new ComparableVersion(getFixVerFromReqParts(toReq.getRequirementParts()));
 				
-				for (RequirementPart reqPart : fromReq.getRequirementParts()) {
-					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-						String version = reqPart.getText();
-						if (version.equals("some future version") || version.equals("none") || version.equals("No Fixversion")) {
-							version = "No FixVersion";
-						}
-						fromVersion = new ComparableVersion(version);
-					}
-				}
-				
-				for (RequirementPart reqPart : toReq.getRequirementParts()) {
-					if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
-						String version = reqPart.getText();
-						if (version.equals("some future version") || version.equals("none") || version.equals("No Fixversion")) {
-							version = "No FixVersion";
-						}
-						toVersion = new ComparableVersion(version);
-					}
-				}
 				
 				if (fromVersion.compareTo(toVersion)==0) {
 					changes += toReq.getId() + " duplicates " + fromReq.getId() + "\n"; 
@@ -243,5 +236,18 @@ public class JSONParser {
 		}
 
 		return changes;
+	}
+	
+	private static String getFixVerFromReqParts(List<RequirementPart> requirementParts) {
+		for (RequirementPart reqPart : requirementParts) {
+			if (reqPart.getName().equals("FixVersion") && reqPart.getText()!=null) {
+				String version = reqPart.getText();
+				if (isFixVersion(version)) {
+					return version;
+				}
+			}
+			return "No FixVersion";
+		}
+		return "No FixVersion";
 	}
 }
