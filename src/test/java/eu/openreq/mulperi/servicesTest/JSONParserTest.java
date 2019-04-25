@@ -23,7 +23,7 @@ public class JSONParserTest {
 	public static void setUp() throws IOException, JSONException{		
 		String dirPath = System.getProperty("user.dir") + "/src/test/resources/";
 		jsonString = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
-				"release_parsing_data.json"))); 
+				"release_parsing_data_nofixver.json"))); 
 	}
 	
 	@Test
@@ -40,6 +40,7 @@ public class JSONParserTest {
 	
 	@Test
 	public void duplicateCombinationTest() throws IOException, JSONException {
+		JSONParser.parseToOpenReqObjects(jsonString);
 		JSONParser.combineDuplicates();
 		
 		for (Requirement req : JSONParser.filteredRequirements) {

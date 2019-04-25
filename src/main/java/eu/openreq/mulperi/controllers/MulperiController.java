@@ -205,7 +205,6 @@ public class MulperiController {
 	 */
 	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) throws JSONException {
 
-			
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
 		List<Requirement> requirements = JSONParser.requirements;
@@ -246,7 +245,7 @@ public class MulperiController {
 			
 		//---------------------------------------------------------------
 	
-		//Handle duplicates
+		//Combine requirements with dependency "duplicates"
 		//---------------------------------------------------------------
 		
 		String changes = JSONParser.combineDuplicates();
