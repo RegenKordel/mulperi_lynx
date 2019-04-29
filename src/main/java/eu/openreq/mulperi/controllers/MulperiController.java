@@ -2,6 +2,8 @@ package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -355,26 +358,46 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/findTransitiveClosureOfRequirement")
-	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody List<String> requirementId, 
+			@RequestParam(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		String completeAddress = caasAddress + "/findTransitiveClosureOfElement";
 		
+		if (layerCount!=null) {
+			completeAddress += "?layerCount=" + layerCount;
+		}
+		
 		String response = null;
 		try {
-			response = rt.postForObject(completeAddress, requirementId, String.class);
-			TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
-			OpenReqConverter converter = new OpenReqConverter(closure.getModel());
-			List<Requirement> requirements = converter.getRequirements();
-			
-			
-			//Add Unknown requirement part if empty (hack?)
-			requirements = converter.addUnknownIfEmpty(requirements);
-		
-			
-			List<Dependency> dependencies = converter.getDependencies();
-			Map<Integer, List<String>> layers = closure.getLayers();
+			List<Requirement> requirements = new ArrayList<Requirement>();
+			List<Dependency> dependencies = new ArrayList<Dependency>();
+			Map<Integer, List<String>> layers = new HashMap<Integer, List<String>>();
+			for (String reqId : requirementId) {
+				response = rt.postForObject(completeAddress, reqId, String.class);
+				TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
+				OpenReqConverter converter = new OpenReqConverter(closure.getModel());
+				List<Requirement> convertedRequirements = converter.getRequirements();
+				
+				//Add Unknown requirement part if empty (hack?)
+				convertedRequirements = converter.addUnknownIfEmpty(convertedRequirements);
+				
+				requirements.addAll(convertedRequirements);
+				
+				dependencies.addAll(converter.getDependencies());
+				
+				Map<Integer, List<String>> closureLayers = closure.getLayers();
+				for (Integer i : closureLayers.keySet()) {
+					if (layers.containsKey(i)) {
+						List<String> combinedLayers = layers.get(i);
+						combinedLayers.addAll(closureLayers.get(i));
+						layers.put(i, combinedLayers);
+					} else {
+						layers.put(i, closureLayers.get(i));
+					}
+				}
+			}
 
 			String requirementsAsString = gson.toJson(requirements);
 			String dependenciesAsString = gson.toJson(dependencies);
@@ -399,8 +422,12 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
-	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId) throws JSONException, IOException, ParserConfigurationException {	
-		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId);
+	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId, @RequestParam
+			(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
+		if (layerCount==null) {
+			layerCount = 5;
+		}
+		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(Arrays.asList(requirementId), layerCount);
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
 		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true);	
 	}
