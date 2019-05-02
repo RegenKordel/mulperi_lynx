@@ -422,12 +422,12 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
-	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody String requirementId, @RequestParam
+	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, @RequestParam
 			(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
 		if (layerCount==null) {
 			layerCount = 5;
 		}
-		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(Arrays.asList(requirementId), layerCount);
+		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
 		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true);	
 	}
