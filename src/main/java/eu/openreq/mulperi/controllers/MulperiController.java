@@ -194,19 +194,12 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
 	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
-			@RequestParam(required = false) Boolean analysisOnly) throws JSONException, IOException, ParserConfigurationException {
-		if (analysisOnly == null) 
-			analysisOnly = Boolean.FALSE;
-		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		if (analysisOnly== Boolean.FALSE) {
-			completeAddress += "?analysisOnly=" + Boolean.FALSE;
-		}
+			@RequestParam(required = false) boolean analysisOnly) throws JSONException, IOException, ParserConfigurationException {
+		
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly;
+
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
 	}
-	
-
-		 //System.out.println("Requirements received from Mulperi");
-		 //System.out.println(json);
 	
 	/**
 	 * Converts the given OpenReq JSON to Murmeli along with various checks, then sends it to Keljucaas
@@ -432,14 +425,18 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
-	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, @RequestParam
-			(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
+			@RequestParam(required = false) Integer layerCount, @RequestParam(required = false) boolean analysisOnly) 
+					throws JSONException, IOException, ParserConfigurationException {
 		if (layerCount==null) {
 			layerCount = 5;
 		}
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true);	
+		if (analysisOnly) {
+			completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";
+		}
+		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, !analysisOnly);	
 	}
 
 }
