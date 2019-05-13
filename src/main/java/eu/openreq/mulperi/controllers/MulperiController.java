@@ -2,7 +2,6 @@ package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -123,7 +123,7 @@ public class MulperiController {
 	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);		
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
 	}
 	
 	
@@ -160,7 +160,7 @@ public class MulperiController {
 	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);
 	}
 	
 	/**
@@ -194,11 +194,13 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
 	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
-			@RequestParam(required = false) boolean analysisOnly) throws JSONException, IOException, ParserConfigurationException {
+			@RequestParam(required = false) boolean analysisOnly,
+			@RequestParam(required = false, defaultValue = "0") int timeOut) 
+					throws JSONException, IOException, ParserConfigurationException {
 		
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly;
 
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, timeOut);	
 	}
 	
 	/**
@@ -209,7 +211,8 @@ public class MulperiController {
 	 * @param duplicatesInResponse
 	 * @return
 	 */
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) throws JSONException {
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
+			boolean duplicatesInResponse, int timeOut) throws JSONException {
 
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -273,8 +276,22 @@ public class MulperiController {
 		
 		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
 		ResponseEntity<?> response = null;
+		
+		RestTemplate tempRt = null;
+		
+		if (timeOut!=0) {
+			tempRt = new RestTemplate();
+			tempRt.setRequestFactory(new SimpleClientHttpRequestFactory());
+			SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory) tempRt
+	                .getRequestFactory();
+	        rf.setReadTimeout(timeOut);
+		} else {
+			tempRt = rt;
+		}
 		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
+			response = tempRt.postForEntity(completeAddress, entity, String.class);
+		} catch (ResourceAccessException e) {
+			return new ResponseEntity<>("Request timed out", HttpStatus.REQUEST_TIMEOUT);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
@@ -426,17 +443,13 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
 	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
-			@RequestParam(required = false) Integer layerCount, @RequestParam(required = false) boolean analysisOnly) 
+			@RequestParam(required = false) Integer layerCount, 
+			@RequestParam(required = false) boolean analysisOnly,  
+			@RequestParam(required = false, defaultValue = "0") int timeOut) 
 					throws JSONException, IOException, ParserConfigurationException {
-		if (layerCount==null) {
-			layerCount = 5;
-		}
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
-		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		if (analysisOnly) {
-			completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";
-		}
-		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, !analysisOnly);	
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly;
+		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true, timeOut);	
 	}
 
 }
