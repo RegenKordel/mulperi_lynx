@@ -3,8 +3,10 @@ package eu.openreq.mulperi.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -390,9 +392,10 @@ public class MulperiController {
 		}
 		
 		String response = null;
+		
 		try {
-			List<Requirement> requirements = new ArrayList<Requirement>();
-			List<Dependency> dependencies = new ArrayList<Dependency>();
+			Set<Requirement> requirements = new HashSet<Requirement>();
+			Set<Dependency> dependencies = new HashSet<Dependency>();
 			Map<Integer, List<String>> layers = new HashMap<Integer, List<String>>();
 			for (String reqId : requirementId) {
 				response = rt.postForObject(completeAddress, reqId, String.class);

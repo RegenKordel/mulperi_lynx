@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import eu.openreq.mulperi.models.json.Dependency;
+
 /**
 * Dependency
 * The dependency between requirements
@@ -119,4 +121,23 @@ public class Dependency {
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Dependency)) {
+        	return false;
+        }
+        
+		Dependency dep = (Dependency) obj;
+		
+		return (this.getFromid()==dep.getFromid() && this.getToid()==dep.getToid() 
+				&& this.getDependency_type()==dep.getDependency_type());			
+        
+	}
+	
+	@Override
+	public int hashCode() {
+		return 46372891;
+	}
+	
 }

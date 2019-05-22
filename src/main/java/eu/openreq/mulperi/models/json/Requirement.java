@@ -196,4 +196,18 @@ public class Requirement {
 	public void setRequirementParts(List<RequirementPart> requirementParts) {
 		this.requirementParts = requirementParts;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Requirement)) {
+        	return false;
+        }
+        Requirement req = (Requirement) obj;
+        return this.id.equals((req.getId()));
+    }
+
+    @Override
+    public int hashCode() {
+       return 41541153; 
+    } 
 }
