@@ -137,7 +137,7 @@ public class Dependency {
 	
 	@Override
 	public int hashCode() {
-		return 46372891;
+		return this.fromid.hashCode() + this.toid.hashCode() + this.dependency_type.hashCode();
 	}
 	
 }

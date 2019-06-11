@@ -2,6 +2,7 @@ package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -83,8 +84,9 @@ public class MulperiController {
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		ElementModel model;
+		String projectId = null;
 		if(JSONParser.projects!=null) {
-			String projectId = JSONParser.projects.get(0).getId();
+			projectId = JSONParser.projects.get(0).getId();
 			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, projectId);
 		}
 		else{
@@ -92,6 +94,8 @@ public class MulperiController {
 		}
 		
 		try {
+			Date date = new Date();
+			System.out.println("Sending " + projectId + " to KeljuCaas at " + date.toString());
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
 			return this.sendModelToKeljuCaas(JSONParser.parseToJson(model));
 		}
@@ -298,7 +302,11 @@ public class MulperiController {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		if (duplicatesInResponse) {
-			return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response.getBody(), response.getStatusCode());
+			
+			//FIX THIS
+			
+			
+			return new ResponseEntity<>(changes + "\n\n" + response.getBody(), response.getStatusCode());
 		}
 		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}

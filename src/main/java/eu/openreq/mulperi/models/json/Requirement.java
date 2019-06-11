@@ -208,6 +208,6 @@ public class Requirement {
 
     @Override
     public int hashCode() {
-       return 41541153; 
+       return this.id.hashCode() + this.name.hashCode();
     } 
 }
