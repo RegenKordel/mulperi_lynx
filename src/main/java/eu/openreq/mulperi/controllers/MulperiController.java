@@ -11,7 +11,9 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -263,7 +265,7 @@ public class MulperiController {
 		//Combine requirements with dependency "duplicates"
 		//---------------------------------------------------------------
 		
-		String changes = JSONParser.combineDuplicates();
+		JSONObject changes = JSONParser.combineDuplicates();
 		requirements = JSONParser.filteredRequirements;
 		dependencies = JSONParser.filteredDependencies;
 		releases = JSONParser.filteredReleases;
@@ -302,11 +304,12 @@ public class MulperiController {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		if (duplicatesInResponse) {
+			JSONObject responseObject = new JSONObject(response.getBody().toString());
+			JSONArray arr = new JSONArray();
+			arr.put(responseObject);
+			arr.put(changes);
 			
-			//FIX THIS
-			
-			
-			return new ResponseEntity<>(changes + "\n\n" + response.getBody(), response.getStatusCode());
+			return new ResponseEntity<>(arr.toString(1), response.getStatusCode());
 		}
 		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}

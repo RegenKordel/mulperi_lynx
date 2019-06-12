@@ -1,6 +1,8 @@
 package eu.openreq.mulperi.models.json;
 
 import java.util.List;
+import java.util.Objects;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -208,6 +210,6 @@ public class Requirement {
 
     @Override
     public int hashCode() {
-       return this.id.hashCode() + this.name.hashCode();
+    	return Objects.hash(this.id, this.name);
     } 
 }

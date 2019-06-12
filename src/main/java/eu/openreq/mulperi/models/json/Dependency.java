@@ -1,6 +1,7 @@
 package eu.openreq.mulperi.models.json;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -137,7 +138,8 @@ public class Dependency {
 	
 	@Override
 	public int hashCode() {
-		return this.fromid.hashCode() + this.toid.hashCode() + this.dependency_type.hashCode();
+		return Objects.hash(this.fromid, this.toid, this.dependency_type);
+		
 	}
 	
 }
