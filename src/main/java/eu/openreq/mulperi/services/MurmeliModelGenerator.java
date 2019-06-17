@@ -282,6 +282,9 @@ public class MurmeliModelGenerator {
 		
 		Relationship.NameType type = null;
 		
+		Element from = null;
+		Element to = null;
+		
 		switch(dep.getDependency_type()) {
 		case CONTRIBUTES:
 			type = NameType.CONTRIBUTES;
@@ -291,8 +294,8 @@ public class MurmeliModelGenerator {
 			break;
 		case DECOMPOSITION:
 			
-			Element from = findRequirement(dep.getFromid());
-			Element to = findRequirement(dep.getToid());
+			from = findRequirement(dep.getFromid());
+			to = findRequirement(dep.getToid());
 			//TODO CHECK if adding this creates side effects
 			//it passes DECOMPOSITION also as dependency
 			//works for ReleasePlanner, but maybe not for something else?
@@ -338,8 +341,13 @@ public class MurmeliModelGenerator {
 			return null;
 		}
 		
-		Element from = findRequirement(dep.getFromid());
-		Element to = findRequirement(dep.getToid());
+		if (from == null) {
+			from = findRequirement(dep.getFromid());
+		}
+		
+		if (to == null) {
+			to = findRequirement(dep.getToid());
+		}
 		
 		Relationship relationship = new Relationship(type, from.getNameID(), to.getNameID());
 		
