@@ -2,13 +2,18 @@ package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,12 +22,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -79,8 +86,9 @@ public class MulperiController {
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		ElementModel model;
+		String projectId = null;
 		if(JSONParser.projects!=null) {
-			String projectId = JSONParser.projects.get(0).getId();
+			projectId = JSONParser.projects.get(0).getId();
 			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, projectId);
 		}
 		else{
@@ -88,6 +96,8 @@ public class MulperiController {
 		}
 		
 		try {
+			Date date = new Date();
+			System.out.println("Sending " + projectId + " to KeljuCaas at " + date.toString());
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
 			return this.sendModelToKeljuCaas(JSONParser.parseToJson(model));
 		}
@@ -121,7 +131,7 @@ public class MulperiController {
 	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
 	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);		
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
 	}
 	
 	
@@ -158,7 +168,7 @@ public class MulperiController {
 	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")
 	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);
 	}
 	
 	/**
@@ -191,9 +201,14 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
-	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false);	
+	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
+			@RequestParam(required = false) boolean analysisOnly,
+			@RequestParam(required = false, defaultValue = "0") int timeOut) 
+					throws JSONException, IOException, ParserConfigurationException {
+		
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly;
+
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, timeOut);	
 	}
 	
 	/**
@@ -204,7 +219,8 @@ public class MulperiController {
 	 * @param duplicatesInResponse
 	 * @return
 	 */
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, boolean duplicatesInResponse) throws JSONException {
+	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
+			boolean duplicatesInResponse, int timeOut) throws JSONException {
 
 		JSONParser.parseToOpenReqObjects(jsonString);
 		
@@ -249,7 +265,13 @@ public class MulperiController {
 		//Combine requirements with dependency "duplicates"
 		//---------------------------------------------------------------
 		
-		String changes = JSONParser.combineDuplicates();
+		JSONObject changes = null;
+		
+		try {
+			changes = JSONParser.combineDuplicates();
+		} catch (JSONException e) {
+			return new ResponseEntity<>("JSON error", HttpStatus.BAD_REQUEST);
+		}
 		requirements = JSONParser.filteredRequirements;
 		dependencies = JSONParser.filteredDependencies;
 		releases = JSONParser.filteredReleases;
@@ -268,13 +290,32 @@ public class MulperiController {
 		
 		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
 		ResponseEntity<?> response = null;
+		
+		RestTemplate tempRt = null;
+		
+		if (timeOut!=0) {
+			tempRt = new RestTemplate();
+			tempRt.setRequestFactory(new SimpleClientHttpRequestFactory());
+			SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory) tempRt
+	                .getRequestFactory();
+	        rf.setReadTimeout(timeOut);
+		} else {
+			tempRt = rt;
+		}
 		try {
-			response = rt.postForEntity(completeAddress, entity, String.class);
+			response = tempRt.postForEntity(completeAddress, entity, String.class);
+		} catch (ResourceAccessException e) {
+			return new ResponseEntity<>("Request timed out", HttpStatus.REQUEST_TIMEOUT);
 		} catch (HttpClientErrorException e) {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		if (duplicatesInResponse) {
-			return new ResponseEntity<>(changes + "\nCaas response:\n\n" + response.getBody(), response.getStatusCode());
+			JSONObject responseObject = new JSONObject(response.getBody().toString());
+			JSONArray arr = new JSONArray();
+			arr.put(responseObject);
+			arr.put(changes);
+			
+			return new ResponseEntity<>(arr.toString(1), response.getStatusCode());
 		}
 		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
 	}
@@ -368,9 +409,10 @@ public class MulperiController {
 		}
 		
 		String response = null;
+		
 		try {
-			List<Requirement> requirements = new ArrayList<Requirement>();
-			List<Dependency> dependencies = new ArrayList<Dependency>();
+			Set<Requirement> requirements = new HashSet<Requirement>();
+			Set<Dependency> dependencies = new HashSet<Dependency>();
 			Map<Integer, List<String>> layers = new HashMap<Integer, List<String>>();
 			for (String reqId : requirementId) {
 				response = rt.postForObject(completeAddress, reqId, String.class);
@@ -420,14 +462,14 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
-	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, @RequestParam
-			(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
-		if (layerCount==null) {
-			layerCount = 5;
-		}
+	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
+			@RequestParam(required = false) Integer layerCount, 
+			@RequestParam(required = false) boolean analysisOnly,  
+			@RequestParam(required = false, defaultValue = "0") int timeOut) 
+					throws JSONException, IOException, ParserConfigurationException {
 		ResponseEntity<?> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
-		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis";
-		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true);	
+		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly;
+		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true, timeOut);	
 	}
 
 }

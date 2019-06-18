@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.maven.artifact.versioning.ComparableVersion;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
@@ -136,8 +138,9 @@ public class JSONParser {
 	/**
 	 * Combine duplicate requirements before sending them to Caas
 	 * @return
+	 * @throws JSONException 
 	 */
-	public static String combineDuplicates() {
+	public static JSONObject combineDuplicates() throws JSONException {
 		Stack<Dependency> dupsLeft = new Stack<Dependency>();
 		List<Dependency> nonDups = new ArrayList<Dependency>();
 		Map<String, Requirement> reqMap = new HashMap<String, Requirement>();
@@ -146,7 +149,8 @@ public class JSONParser {
 		List<Dependency> newDependencies = new ArrayList<Dependency>();
 		List<Release> newReleases = new ArrayList<Release>();
 		
-		String changes = "";
+		JSONObject changes = new JSONObject();
+		changes.put("duplicates", new JSONArray());
 		
 		for (Dependency dep : dependencies) {
 			if (dep.getDependency_type()==Dependency_type.DUPLICATES) {
@@ -171,22 +175,24 @@ public class JSONParser {
 				ComparableVersion fromVersion = new ComparableVersion(getFixVerFromReqParts(fromReq.getRequirementParts()));
 				ComparableVersion toVersion = new ComparableVersion(getFixVerFromReqParts(toReq.getRequirementParts()));
 				
+				JSONObject newChange = new JSONObject();
+				newChange.put("from", fromReq.getId() + " " + fromVersion);
+				newChange.put("to", toReq.getId() + " " + toVersion);
 				
 				if (fromVersion.compareTo(toVersion)==0) {
-					changes += toReq.getId() + " duplicates " + fromReq.getId() + "\n"; 
+					newChange.put("relation", "equal"); 
 					reqMap.put(fromReq.getId(), toReq);
 					reqMap.put(toReq.getId(), toReq);	
 				} else if (fromVersion.compareTo(toVersion)==1) {
-					changes += fromReq.getId() + " " + fromVersion + " duplicates yet has higher version than " 
-							+ toReq.getId() + " " + toVersion + "\n";
+					newChange.put("relation", "higher");
 					reqMap.put(fromReq.getId(), fromReq);
 					reqMap.put(toReq.getId(), fromReq);	
 				} else {
-					changes += toReq.getId() + " " + toVersion + " duplicates yet has higher version than " 
-							+ fromReq.getId() + " " + fromVersion + "\n";
+					newChange.put("relation", "lower");
 					reqMap.put(fromReq.getId(), toReq);
 					reqMap.put(toReq.getId(), toReq);	
 				}
+				changes.accumulate("duplicates", newChange);
 	
 			}
 			

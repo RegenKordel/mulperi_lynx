@@ -1,6 +1,8 @@
 package eu.openreq.mulperi.models.json;
 
 import java.util.List;
+import java.util.Objects;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -196,4 +198,18 @@ public class Requirement {
 	public void setRequirementParts(List<RequirementPart> requirementParts) {
 		this.requirementParts = requirementParts;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Requirement)) {
+        	return false;
+        }
+        Requirement req = (Requirement) obj;
+        return this.id.equals((req.getId()));
+    }
+
+    @Override
+    public int hashCode() {
+    	return Objects.hash(this.id, this.name);
+    } 
 }
