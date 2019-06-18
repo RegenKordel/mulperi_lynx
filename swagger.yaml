@@ -1,9 +1,8 @@
 swagger: '2.0'
 info:
   description: 'Easy to use REST API with JSON for configuring models. Mulperi is a service taking care of the functionality of constructing a model from requirements, more precisely utilizing feature modeling technologies (for details about adopted feature model technology, see D5.1). The constructed model allows expressing various kinds of relationship and, thus, dependency inferences by using KeljuCaaS. Therefore, Mulperi also provides interfaces for the operations to the resulting model.'
-  version: '1.13'
+  version: '1.14'
   title: Mulperi
-host: 'localhost:9202'
 basePath: /
 tags:
   - name: mulperi-controller
@@ -26,7 +25,27 @@ paths:
           description: requirementId
           required: true
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+        - name: layerCount
+          in: query
+          description: layerCount
+          required: false
+          type: integer
+          format: int32
+        - name: analysisOnly
+          in: query
+          description: analysisOnly
+          required: false
+          type: boolean
+        - name: timeOut
+          in: query
+          description: timeOut
+          required: false
+          type: integer
+          default: 0
+          format: int32
       responses:
         '200':
           description: 'Success, returns JSON model'
@@ -61,7 +80,15 @@ paths:
           description: requirementId
           required: true
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+        - name: layerCount
+          in: query
+          description: layerCount
+          required: false
+          type: integer
+          format: int32
       responses:
         '200':
           description: 'Success, returns JSON model'
@@ -97,6 +124,18 @@ paths:
           required: true
           schema:
             type: string
+        - name: analysisOnly
+          in: query
+          description: analysisOnly
+          required: false
+          type: boolean
+        - name: timeOut
+          in: query
+          description: timeOut
+          required: false
+          type: integer
+          default: 0
+          format: int32
       responses:
         '200':
           description: 'Success, returns JSON {"response": {"consistent": true}}'
@@ -221,4 +260,3 @@ paths:
           description: Not Found
         '409':
           description: Failure
-
