@@ -265,7 +265,13 @@ public class MulperiController {
 		//Combine requirements with dependency "duplicates"
 		//---------------------------------------------------------------
 		
-		JSONObject changes = JSONParser.combineDuplicates();
+		JSONObject changes = null;
+		
+		try {
+			changes = JSONParser.combineDuplicates();
+		} catch (JSONException e) {
+			return new ResponseEntity<>("JSON error", HttpStatus.BAD_REQUEST);
+		}
 		requirements = JSONParser.filteredRequirements;
 		dependencies = JSONParser.filteredDependencies;
 		releases = JSONParser.filteredReleases;

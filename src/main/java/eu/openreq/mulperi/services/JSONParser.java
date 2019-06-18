@@ -138,8 +138,9 @@ public class JSONParser {
 	/**
 	 * Combine duplicate requirements before sending them to Caas
 	 * @return
+	 * @throws JSONException 
 	 */
-	public static JSONObject combineDuplicates() {
+	public static JSONObject combineDuplicates() throws JSONException {
 		Stack<Dependency> dupsLeft = new Stack<Dependency>();
 		List<Dependency> nonDups = new ArrayList<Dependency>();
 		Map<String, Requirement> reqMap = new HashMap<String, Requirement>();

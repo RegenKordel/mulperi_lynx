@@ -76,7 +76,7 @@ public class OpenReqConverter {
 			case "task":
 				req.setRequirement_type(Requirement_type.TASK);
 				break;
-			case "user_story":
+			case "user-story":
 				req.setRequirement_type(Requirement_type.USER_STORY);
 				break;
 			}
