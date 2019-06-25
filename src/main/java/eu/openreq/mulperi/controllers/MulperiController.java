@@ -10,10 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,6 +30,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import eu.openreq.mulperi.models.json.Dependency;
 import eu.openreq.mulperi.models.json.Project;
@@ -40,7 +39,7 @@ import eu.openreq.mulperi.models.json.Release;
 import eu.openreq.mulperi.models.json.Requirement;
 import eu.openreq.mulperi.models.json.Requirement_type;
 import eu.openreq.mulperi.services.InputChecker;
-import eu.openreq.mulperi.services.JSONParser;
+import eu.openreq.mulperi.services.OpenReqJSONParser;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
 import eu.openreq.mulperi.services.OpenReqConverter;
 import fi.helsinki.ese.murmeli.ElementModel;
@@ -48,6 +47,7 @@ import fi.helsinki.ese.murmeli.TransitiveClosure;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @SpringBootApplication
 @RestController
@@ -79,30 +79,30 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@PostMapping(value = "requirementsToChoco")
-	public ResponseEntity<?> requirementsToChoco(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<String> requirementsToChoco(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		
-		//System.out.println("Received requirements from Milla " + requirements);
-		JSONParser.parseToOpenReqObjects(requirements);
+		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		ElementModel model;
 		String projectId = null;
-		if(JSONParser.projects!=null) {
-			projectId = JSONParser.projects.get(0).getId();
-			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, projectId);
+		if(parser.getProjects()!=null) {
+			projectId = parser.getProjects().get(0).getId();
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), projectId);
 		}
 		else{
-			model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.requirements.get(0).getId());
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), 
+					parser.getRequirements().get(0).getId());
 		}
 		
 		try {
 			Date date = new Date();
 			System.out.println("Sending " + projectId + " to KeljuCaas at " + date.toString());
 			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
-			return this.sendModelToKeljuCaas(JSONParser.parseToJson(model));
+			return this.sendModelToKeljuCaas(OpenReqJSONParser.parseToJson(model));
 		}
 		catch (Exception e) {
-			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
+			return new ResponseEntity<String>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
 	}
 	
@@ -129,7 +129,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
 	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
-	public ResponseEntity<?> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<String> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
 		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
 	}
@@ -219,13 +219,13 @@ public class MulperiController {
 	 * @param duplicatesInResponse
 	 * @return
 	 */
-	public ResponseEntity<?> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
+	public ResponseEntity<String> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
 			boolean duplicatesInResponse, int timeOut) throws JSONException {
 
-		JSONParser.parseToOpenReqObjects(jsonString);
+		OpenReqJSONParser parser = new OpenReqJSONParser(jsonString);
 		
-		List<Requirement> requirements = JSONParser.requirements;
-		List<Dependency> dependencies = JSONParser.dependencies;
+		List<Requirement> requirements = parser.getRequirements();
+		List<Dependency> dependencies = parser.getDependencies();
 		
 		for (Requirement req : requirements) {
 			if (req.getRequirement_type() == null) {
@@ -239,14 +239,14 @@ public class MulperiController {
 		if (requirements.size()>0) {
 			id = requirements.get(0).getName();
 		}
-		if (JSONParser.project != null) {
-			project = JSONParser.project;
+		if (parser.getProject() != null) {
+			project = parser.getProject();
 			id = project.getId();
 		}
 		
 		List<Release> releases = new ArrayList<Release>();
-		if (JSONParser.releases != null) {
-			releases = JSONParser.releases;
+		if (parser.getReleases() != null) {
+			releases = parser.getReleases();
 		}
 		
 		
@@ -265,16 +265,16 @@ public class MulperiController {
 		//Combine requirements with dependency "duplicates"
 		//---------------------------------------------------------------
 		
-		JSONObject changes = null;
+		JsonArray changes = null;
 		
 		try {
-			changes = JSONParser.combineDuplicates();
+			changes = parser.combineDuplicates();
 		} catch (JSONException e) {
 			return new ResponseEntity<>("JSON error", HttpStatus.BAD_REQUEST);
 		}
-		requirements = JSONParser.filteredRequirements;
-		dependencies = JSONParser.filteredDependencies;
-		releases = JSONParser.filteredReleases;
+		requirements = parser.getFilteredRequirements();
+		dependencies = parser.getFilteredDependencies();
+		releases = parser.getFilteredReleases();
 		
 		//---------------------------------------------------------------
 		
@@ -310,24 +310,15 @@ public class MulperiController {
 			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		if (duplicatesInResponse) {
-			JSONObject responseObject = new JSONObject(response.getBody().toString());
-			JSONArray arr = new JSONArray();
-			arr.put(responseObject);
-			arr.put(changes);
-			
-			return new ResponseEntity<>(arr.toString(1), response.getStatusCode());
+			JsonObject responseObject = new Gson().fromJson(response.getBody().toString(), JsonObject.class);
+			responseObject.add("duplicates", changes);
+			return new ResponseEntity<String>(responseObject.toString(), response.getStatusCode());
 		}
-		return new ResponseEntity<>(response.getBody(), response.getStatusCode());
+		return new ResponseEntity<String>(response.getBody() + "", response.getStatusCode());
 	}
 	
-//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-//			notes = "The model is saved in KeljuCaaS",
-//			response = String.class)
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-//			@ApiResponse(code = 409, message = "Returns what?")}) 
-//	@PostMapping(value = "/sendModelToKeljuCaas")
+	@ApiIgnore
+	@PostMapping(value = "/sendModelToKeljuCaas")
 	public ResponseEntity<String> sendModelToKeljuCaas(String jsonString) {
 
 		HttpHeaders headers = new HttpHeaders();
@@ -341,52 +332,6 @@ public class MulperiController {
 			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
-//	@ApiOperation(value = "Post ElementModel to KeljuCaaS",
-//			notes = "The model is saved in KeljuCaaS",
-//			response = String.class)
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Success, returns message model saved"),
-//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-//			@ApiResponse(code = 409, message = "Returns what?")}) 
-//	@RequestMapping(value = "/postModelToCaas", method = RequestMethod.POST)
-//	public ResponseEntity<?> postModelToCaas(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-//
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//		String actualPath = "/importModel"; 
-//
-//		String completeAddress = caasAddress + actualPath;
-//		
-//		MurmeliModelGenerator generator = new MurmeliModelGenerator();
-//		
-//		System.out.println(jsonString);
-//		
-//		JSONParser.parseToOpenReqObjects(jsonString);
-//		
-//		for (Requirement req : JSONParser.requirements) {
-//			if (req.getRequirement_type() == null) {
-//				req.setRequirement_type(Requirement_type.REQUIREMENT);
-//			}
-//		} 
-//		
-//		// TODO Should check if the element is in the model
-//		ElementModel model = generator.initializeElementModel(JSONParser.requirements, JSONParser.dependencies, JSONParser.project.getId());
-//
-//		String murmeli = gson.toJson(model);
-//		
-//		HttpEntity<String> entity = new HttpEntity<String>(murmeli, headers);
-//		ResponseEntity<?> response = null;
-//		try {
-//			response = rt.postForEntity(completeAddress, entity, String.class);
-//		} catch (HttpClientErrorException e) {
-//			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
-//		}
-//
-//		return response;
-//	}
 	
 	
 	@ApiOperation(value = "Get the transitive closure of a requirement",

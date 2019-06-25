@@ -9,50 +9,41 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.maven.artifact.versioning.ComparableVersion;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import eu.openreq.mulperi.models.json.*;
 import fi.helsinki.ese.murmeli.ElementModel;
 
-//import eu.openreq.mulperi.models.release.Dependency;
-//import eu.openreq.mulperi.models.release.ReleaseInputExtractor;
-//import eu.openreq.mulperi.models.release.Project;
-//import eu.openreq.mulperi.models.release.Release;
-//import eu.openreq.mulperi.models.release.ReleasePlan;
-//import eu.openreq.mulperi.models.release.ReleasePlanException;
-//import eu.openreq.mulperi.models.release.Requirement;
-
-public class JSONParser {
+public class OpenReqJSONParser {
 	static Gson gson = new Gson();
-	public static Project project;
-	public static Requirement requirement;
-	public static List<Project> projects;
-	public static List<Requirement> requirements;
-	public static List<Requirement> dependent_requirements;
-	public static List<Release> releases;
-	public static List<Dependency> dependencies;
-	public static InputExtractor input;
-	public static List<Requirement> filteredRequirements;
-	public static List<Dependency> filteredDependencies;
-	public static List<Release> filteredReleases;
+	private Project project;
+	private Requirement requirement;
+	private List<Project> projects;
+	private List<Requirement> requirements;
+	private List<Requirement> dependent_requirements;
+	private List<Release> releases;
+	private List<Dependency> dependencies;
+	private List<Requirement> filteredRequirements;
+	private List<Dependency> filteredDependencies;
+	private List<Release> filteredReleases;
 	
-	public static void parseToOpenReqObjects(String jsonString) 
+	public OpenReqJSONParser(String jsonString) 
 			throws JSONException {
-			input = gson.fromJson(jsonString, InputExtractor.class);
-			project = input.getProject();
-			projects = input.getProjects();
-			requirement = input.getRequirement();
-			requirements = input.getRequirements();
-			dependencies = input.getDependencies();
-			dependent_requirements = input.getDependentRequirements();
+			InputExtractor input = gson.fromJson(jsonString, InputExtractor.class);
+			this.project = input.getProject();
+			this.projects = input.getProjects();
+			this.requirement = input.getRequirement();
+			this.requirements = input.getRequirements();
+			this.dependencies = input.getDependencies();
+			this.dependent_requirements = input.getDependentRequirements();
 			if (input.getReleases()!=null) {
-				releases = input.getReleases(); 
+				this.releases = input.getReleases(); 
 			} else {
-				releases = parseReleaseVersionsFromReqParts();
+				this.releases = parseReleaseVersionsFromReqParts();
 			}
 	}
 	
@@ -61,11 +52,11 @@ public class JSONParser {
 	 * 
 	 * @return
 	 */
-	public static List<Release> parseReleaseVersionsFromReqParts() {
+	public List<Release> parseReleaseVersionsFromReqParts() {
 		HashMap<ComparableVersion, List<String>> releaseMap = new HashMap<ComparableVersion, List<String>>();
 		List<String> noFixVerReqs = new ArrayList<String>();
 		
-		for (Requirement req : requirements) {
+		for (Requirement req : this.requirements) {
 			if (req.getRequirementParts()==null) {
 				continue;
 			}
@@ -140,7 +131,7 @@ public class JSONParser {
 	 * @return
 	 * @throws JSONException 
 	 */
-	public static JSONObject combineDuplicates() throws JSONException {
+	public JsonArray combineDuplicates() throws JSONException {
 		Stack<Dependency> dupsLeft = new Stack<Dependency>();
 		List<Dependency> nonDups = new ArrayList<Dependency>();
 		Map<String, Requirement> reqMap = new HashMap<String, Requirement>();
@@ -149,10 +140,9 @@ public class JSONParser {
 		List<Dependency> newDependencies = new ArrayList<Dependency>();
 		List<Release> newReleases = new ArrayList<Release>();
 		
-		JSONObject changes = new JSONObject();
-		changes.put("duplicates", new JSONArray());
+		JsonArray changes = new JsonArray();
 		
-		for (Dependency dep : dependencies) {
+		for (Dependency dep : this.dependencies) {
 			if (dep.getDependency_type()==Dependency_type.DUPLICATES) {
 				dupsLeft.add(dep);			
 			} else {
@@ -175,24 +165,24 @@ public class JSONParser {
 				ComparableVersion fromVersion = new ComparableVersion(getFixVerFromReqParts(fromReq.getRequirementParts()));
 				ComparableVersion toVersion = new ComparableVersion(getFixVerFromReqParts(toReq.getRequirementParts()));
 				
-				JSONObject newChange = new JSONObject();
-				newChange.put("from", fromReq.getId() + " " + fromVersion);
-				newChange.put("to", toReq.getId() + " " + toVersion);
+				JsonObject newChange = new JsonObject();
+				newChange.addProperty("from", fromReq.getId() + " " + fromVersion);
+				newChange.addProperty("to", toReq.getId() + " " + toVersion);
 				
 				if (fromVersion.compareTo(toVersion)==0) {
-					newChange.put("relation", "equal"); 
+					newChange.addProperty("relation", "equal"); 
 					reqMap.put(fromReq.getId(), toReq);
 					reqMap.put(toReq.getId(), toReq);	
 				} else if (fromVersion.compareTo(toVersion)==1) {
-					newChange.put("relation", "higher");
+					newChange.addProperty("relation", "higher");
 					reqMap.put(fromReq.getId(), fromReq);
 					reqMap.put(toReq.getId(), fromReq);	
 				} else {
-					newChange.put("relation", "lower");
+					newChange.addProperty("relation", "lower");
 					reqMap.put(fromReq.getId(), toReq);
 					reqMap.put(toReq.getId(), toReq);	
 				}
-				changes.accumulate("duplicates", newChange);
+				changes.add(newChange);
 	
 			}
 			
@@ -252,8 +242,48 @@ public class JSONParser {
 					return version;
 				}
 			}
-			return "No FixVersion";
 		}
 		return "No FixVersion";
 	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public Requirement getRequirement() {
+		return requirement;
+	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public List<Requirement> getRequirements() {
+		return requirements;
+	}
+
+	public List<Requirement> getDependent_requirements() {
+		return dependent_requirements;
+	}
+
+	public List<Release> getReleases() {
+		return releases;
+	}
+
+	public List<Dependency> getDependencies() {
+		return dependencies;
+	}
+
+	public List<Requirement> getFilteredRequirements() {
+		return filteredRequirements;
+	}
+
+	public List<Dependency> getFilteredDependencies() {
+		return filteredDependencies;
+	}
+
+	public List<Release> getFilteredReleases() {
+		return filteredReleases;
+	}
+	
 }

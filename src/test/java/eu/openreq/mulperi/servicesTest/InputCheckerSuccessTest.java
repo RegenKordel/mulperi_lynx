@@ -15,32 +15,33 @@ import org.junit.Test;
 
 import eu.openreq.mulperi.models.json.Requirement;
 import eu.openreq.mulperi.services.InputChecker;
-import eu.openreq.mulperi.services.JSONParser;
+import eu.openreq.mulperi.services.OpenReqJSONParser;
 
 public class InputCheckerSuccessTest {
 
 	static InputChecker checker;
 	private static List<String> specReqIds;
 	private static List<String> reqIds;
-	
+	static OpenReqJSONParser parser;
+
 	@BeforeClass
 	public static void setUp() throws IOException, JSONException{
 		checker = new InputChecker();
 		String dirPath = System.getProperty("user.dir") + "/src/test/resources/";
 		String jsonString = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
 				"correct_input_data.json"))); 
-		JSONParser.parseToOpenReqObjects(jsonString);
+		parser = new OpenReqJSONParser(jsonString);
 		
 		
 		List<String> specReqList = new ArrayList<String>();
-		for (String specReqId : JSONParser.project.getSpecifiedRequirements()) {
+		for (String specReqId : parser.getProject().getSpecifiedRequirements()) {
 			specReqList.add(specReqId);
 		}
 		specReqIds = specReqList;
 		
 		
 		List<String> reqIdList = new ArrayList<String>();
-		for (Requirement req : JSONParser.requirements) {
+		for (Requirement req : parser.getRequirements()) {
 			reqIdList.add(req.getId());
 		}
 		reqIds = reqIdList;
@@ -49,12 +50,12 @@ public class InputCheckerSuccessTest {
 	
 	@Test
 	public void noNegativeEffortRequirements() {
-		assertTrue(checker.noNegativeEffortRequirements(JSONParser.requirements));
+		assertTrue(checker.noNegativeEffortRequirements(parser.getRequirements()));
 	}
 	
 	@Test
 	public void noNegativeCapacityReleases() {
-		assertTrue(checker.noNegativeCapacityReleases(JSONParser.releases));
+		assertTrue(checker.noNegativeCapacityReleases(parser.getReleases()));
 	}
 	
 	@Test
@@ -70,22 +71,22 @@ public class InputCheckerSuccessTest {
 	@Test
 	public void allSpecifiedRequirementsInReleases() {
 		assertTrue(checker.allSpecifiedRequirementsInReleases(specReqIds, 
-				JSONParser.releases));
+				parser.getReleases()));
 	}
 
 	@Test
 	public void allReleaseRequirementsIncluded() {
-		assertTrue(checker.allReleaseRequirementsIncluded(JSONParser.releases, specReqIds, reqIds));
+		assertTrue(checker.allReleaseRequirementsIncluded(parser.getReleases(), specReqIds, reqIds));
 	}
 	
 	@Test
 	public void allDependencyRequirementsIncluded() {
-		assertTrue(checker.allDependencyRequirementsIncluded(JSONParser.dependencies, specReqIds, reqIds));
+		assertTrue(checker.allDependencyRequirementsIncluded(parser.getDependencies(), specReqIds, reqIds));
 	}
 	
 	@Test
 	public void noDuplicateDependencies() {
-		assertTrue(checker.noDuplicateDependencies(JSONParser.dependencies));
+		assertTrue(checker.noDuplicateDependencies(parser.getDependencies()));
 	}
 	
 //	@Test
@@ -95,13 +96,13 @@ public class InputCheckerSuccessTest {
 	
 	@Test
 	public void requirementNotInMultipleReleases() {
-		assertTrue(checker.requirementNotInMultipleReleases(JSONParser.releases));
+		assertTrue(checker.requirementNotInMultipleReleases(parser.getReleases()));
 	}
 	
 	@Test
 	public void checkInput() throws JSONException {
-		assertEquals(checker.checkInput(JSONParser.project, JSONParser.requirements, 
-				JSONParser.dependencies, JSONParser.releases), "OK");
+		assertEquals(checker.checkInput(parser.getProject(), parser.getRequirements(), 
+				parser.getDependencies(), parser.getReleases()), "OK");
 	}
 		
 }

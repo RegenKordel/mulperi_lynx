@@ -322,6 +322,7 @@ public class OpenReqConverter {
 		
 		if (relation.getAttributes().containsKey("description")) {
 			//TODO Check with Lalli
+			@SuppressWarnings("unchecked")
 			List<String> description = (List<String>) model.getAttributeValues().get(relation.getAttributes().get("description")).getValue();
 			dep.setDescription(description);
 		}
