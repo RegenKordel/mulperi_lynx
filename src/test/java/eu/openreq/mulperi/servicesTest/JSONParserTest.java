@@ -13,7 +13,7 @@ import org.junit.Test;
 import eu.openreq.mulperi.models.json.Dependency;
 import eu.openreq.mulperi.models.json.Release;
 import eu.openreq.mulperi.models.json.Requirement;
-import eu.openreq.mulperi.services.JSONParser;
+import eu.openreq.mulperi.services.OpenReqJSONParser;
 
 public class JSONParserTest {
 
@@ -28,9 +28,9 @@ public class JSONParserTest {
 	
 	@Test
 	public void parseReleaseVersionsTest() throws IOException, JSONException {
-		JSONParser.parseToOpenReqObjects(jsonString);
+		OpenReqJSONParser parser = new OpenReqJSONParser(jsonString);
 		
-		for (Release rel : JSONParser.releases) {
+		for (Release rel : parser.getReleases()) {
 			System.out.println(rel.getId());
 			System.out.println(rel.getRequirements());
 		}
@@ -40,18 +40,18 @@ public class JSONParserTest {
 	
 	@Test
 	public void duplicateCombinationTest() throws IOException, JSONException {
-		JSONParser.parseToOpenReqObjects(jsonString);
-		JSONParser.combineDuplicates();
+		OpenReqJSONParser parser = new OpenReqJSONParser(jsonString);
+		parser.combineDuplicates();
 		
-		for (Requirement req : JSONParser.filteredRequirements) {
+		for (Requirement req : parser.getFilteredRequirements()) {
 			System.out.println(req.getId());
 			System.out.println(req.getName());
 		}
-		for (Dependency dep : JSONParser.filteredDependencies) {
+		for (Dependency dep : parser.getFilteredDependencies()) {
 			System.out.println(dep.getDependency_score() + "_" + dep.getToid());
 			System.out.println(dep.getDependency_type());
 		}
-		for (Release rel : JSONParser.releases) {
+		for (Release rel : parser.getReleases()) {
 			System.out.println(rel.getId());
 			System.out.println(rel.getRequirements());
 		}
