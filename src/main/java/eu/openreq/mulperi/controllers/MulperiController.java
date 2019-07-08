@@ -106,6 +106,61 @@ public class MulperiController {
 		}
 	}
 	
+	/**
+	 * Import a model in JSON format
+	 * @param requirements
+	 * @return
+	 * @throws JSONException 
+	 * @throws ReleasePlanException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 */
+	@ApiOperation(value = "Update OpenReq JSON model in Caas",
+			notes = "Import the updated requirements to Caas as a project in JSON format",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
+			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
+			@ApiResponse(code = 409, message = "Failure")}) 
+	@PostMapping(value = "updateModel")
+	public ResponseEntity<?> updateModel(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
+		
+		//System.out.println("Received requirements from Milla " + requirements);
+		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model;
+		String projectId = null;
+		if (parser.getProjects() != null) {
+			projectId = parser.getProjects().get(0).getId();
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), projectId);
+		} else {
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), parser.getRequirements().get(0).getId());
+		}
+		
+		try {
+			Date date = new Date();
+			System.out.println("Updating " + projectId + " in KeljuCaas at " + date.toString());
+			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
+			return this.updateModelInKeljuCaas(parser.parseToJson(model));
+		} catch (Exception e) {
+			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
+		}
+	}
+	
+	private ResponseEntity<?> updateModelInKeljuCaas(String jsonString) {
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_XML);
+
+		HttpEntity<String> entity = new HttpEntity<String>(jsonString, headers);
+
+		try {
+			return rt.postForEntity(caasAddress + "/updateModel", entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	/**
 	 * Check whether a project is consistent

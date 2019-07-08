@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import eu.openreq.mulperi.models.json.*;
 import fi.helsinki.ese.murmeli.*;
@@ -19,7 +20,7 @@ public class MurmeliModelGenerator {
 	private HashMap<String, ElementType> elementTypes;
 	private HashMap<String, Element> elements;
 	private Container rootContainer;
-	private List<Relationship> relations;
+	private Set<Relationship> relations;
 	private HashMap<Integer, Constraint> constraints;
 	private HashMap<Integer, AttributeValue<?>> attributeValues;
 	private List<Container> subContainers;
@@ -39,7 +40,7 @@ public class MurmeliModelGenerator {
 		this.elementTypes = new HashMap<>();
 		this.elements = new HashMap<>();
 		this.rootContainer = null;
-		this.relations = new ArrayList<>();
+		this.relations = new HashSet<>();
 		this.constraints = new HashMap<>();
 		this.attributeValues = new HashMap<>();
 		this.subContainers = new ArrayList<>();
@@ -301,6 +302,10 @@ public class MurmeliModelGenerator {
 			//works for ReleasePlanner, but maybe not for something else?
 			type = NameType.DECOMPOSITION;
 			
+			break;
+			/*
+			 * NOTE! Passing DECOMPOSITION as parts has been disabled in OpenReq project
+			 * What to do with further projects TBD.
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
 				break;
@@ -311,6 +316,7 @@ public class MurmeliModelGenerator {
 			from.addPart(part);
 			
 			break;
+			*/
 		case DUPLICATES:
 			type = NameType.DUPLICATES;
 			break;
