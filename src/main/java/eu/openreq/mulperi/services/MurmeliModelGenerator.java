@@ -304,8 +304,8 @@ public class MurmeliModelGenerator {
 			
 			break;
 			/*
-			 * NOTE! Passing DECOMPOSITION as parts has been disabled in OpenReq project
-			 * What to do with further projects TBD.
+			 * NOTE! Passing DECOMPOSITION as parts has been disabled in OpenReq project.
+			 * DECOMPOSITION is still passed on as relationships. What to do with further projects TBD.
 			if (!from.getParts().isEmpty()) {
 				from.getParts().get(0).addPart(to);
 				break;

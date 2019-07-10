@@ -226,6 +226,8 @@ public class Container {
 	}
 	
 	/*public String toString() {
+		FOR DEBUGGING PURPOSES
+		
 		StringBuilder lel = new StringBuilder();
 		
 		lel.append(this.nameID + ";");

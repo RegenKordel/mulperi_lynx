@@ -98,7 +98,7 @@ public class MulperiController {
 		try {
 			Date date = new Date();
 			System.out.println("Sending " + projectId + " to KeljuCaas at " + date.toString());
-			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
+			
 			return this.sendModelToKeljuCaas(OpenReqJSONParser.parseToJson(model));
 		}
 		catch (Exception e) {
@@ -107,7 +107,7 @@ public class MulperiController {
 	}
 	
 	/**
-	 * Import a model in JSON format
+	 * Update a model in JSON format
 	 * @param requirements
 	 * @return
 	 * @throws JSONException 
@@ -125,7 +125,6 @@ public class MulperiController {
 	@PostMapping(value = "updateModel")
 	public ResponseEntity<?> updateModel(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		
-		//System.out.println("Received requirements from Milla " + requirements);
 		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
@@ -141,8 +140,8 @@ public class MulperiController {
 		try {
 			Date date = new Date();
 			System.out.println("Updating " + projectId + " in KeljuCaas at " + date.toString());
-			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
-			return this.updateModelInKeljuCaas(parser.parseToJson(model));
+			
+			return this.updateModelInKeljuCaas(OpenReqJSONParser.parseToJson(model));
 		} catch (Exception e) {
 			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
@@ -161,20 +160,20 @@ public class MulperiController {
 			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
+	 * Check whether a release plan is consistent
+	 * 
+	 * @param jsonString
 	 * @return JSON response
 	 * 		{ 
 	 * 			"response": {
 	 * 				"consistent": false
 	 * 			}
 	 * 		}
-	 * @throws JSONException 
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
 	 */
 	@ApiOperation(value = "Is release plan consistent",
 			notes = "Send model to Caas to check whether a release plan is consistent.",
@@ -189,12 +188,10 @@ public class MulperiController {
 		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
 	}
 	
-	
-
 	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
+	 * Checks whether a release plan is consistent and provides diagnosis if not
+	 * 
+	 * @param jsonString
 	 * @return JSON response
 	 * 		{ 
 	 * 			"response": {
@@ -208,10 +205,9 @@ public class MulperiController {
 	 * 				]
 	 * 			}
 	 * 		}
-
-	 * @throws JSONException 
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
 	 */
 	@ApiOperation(value = "Is release plan consistent and do diagnosis",
 			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
@@ -227,9 +223,11 @@ public class MulperiController {
 	}
 	
 	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
+	 * Checks whether a release plan is consistent and provides diagnosis if not
+	 * 
+	 * @param jsonString
+	 * @param analysisOnly
+	 * @param timeOut
 	 * @return JSON response
 	 * 		{ 
 	 * 			"response": {
@@ -243,10 +241,9 @@ public class MulperiController {
 	 * 				]
 	 * 			}
 	 * 		}
-
-	 * @throws JSONException 
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
 	 */
 	@ApiOperation(value = "Is release plan consistent and do diagnosis v2",
 			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
@@ -272,7 +269,9 @@ public class MulperiController {
 	 * @param jsonString
 	 * @param completeAddress
 	 * @param duplicatesInResponse
+	 * @param timeOut
 	 * @return
+	 * @throws JSONException
 	 */
 	public ResponseEntity<String> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
 			boolean duplicatesInResponse, int timeOut) throws JSONException {
