@@ -19,14 +19,14 @@ import eu.openreq.mulperi.models.json.*;
 import fi.helsinki.ese.murmeli.ElementModel;
 
 public class OpenReqJSONParser {
-	static Gson gson = new Gson();
-	private Project project;
-	private Requirement requirement;
-	private List<Project> projects;
-	private List<Requirement> requirements;
-	private List<Requirement> dependent_requirements;
-	private List<Release> releases;
-	private List<Dependency> dependencies;
+	static final Gson gson = new Gson();
+	private final Project project;
+	private final Requirement requirement;
+	private final List<Project> projects;
+	private final List<Requirement> requirements;
+	private final List<Requirement> dependent_requirements;
+	private final List<Release> releases;
+	private final List<Dependency> dependencies;
 	private List<Requirement> filteredRequirements;
 	private List<Dependency> filteredDependencies;
 	private List<Release> filteredReleases;
@@ -222,13 +222,13 @@ public class OpenReqJSONParser {
 					newReleases.add(rel);
 				}
 			}
-			filteredRequirements = newRequirements;
-			filteredDependencies = newDependencies;
-			filteredReleases = newReleases;	
+			this.filteredRequirements = newRequirements;
+			this.filteredDependencies = newDependencies;
+			this.filteredReleases = newReleases;	
 		} else {
-			filteredRequirements = requirements;
-			filteredDependencies = dependencies;
-			filteredReleases = releases;
+			this.filteredRequirements = requirements;
+			this.filteredDependencies = dependencies;
+			this.filteredReleases = releases;
 		}
 
 		return changes;
