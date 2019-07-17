@@ -6,7 +6,7 @@ This service was created as a result of the OpenReq project funded by the Europe
 
 # Technical Description
 
-Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation http://217.172.12.199:9202/swagger-ui.html.
+Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation https://api.openreq.eu/#/services/mulperi.
 
 
 ## The following technologies are used:
