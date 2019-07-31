@@ -6,11 +6,7 @@ This service was created as a result of the OpenReq project funded by the Europe
 
 # Technical Description
 
-<<<<<<< HEAD
-Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation https://api.openreq.eu/keljucaas/swagger-ui.html.
-=======
 Mulperi is a service that is used in the OpenReq infrastructure to generate appropriate knowledge reprensentation for inference in [KeljuCaaS](https://github.com/OpenReqEU/keljucaas/) and manage the communication with KeljuCaaS.  For further details, see the swagger documentation https://api.openreq.eu/#/services/mulperi.
->>>>>>> releases/V1.14
 
 
 ## The following technologies are used:
@@ -19,7 +15,7 @@ Mulperi is a service that is used in the OpenReq infrastructure to generate appr
 - Maven
 - GSON
 
-	
+
 ## Public APIs
 
 The API is documented by using Swagger2: https://api.openreq.eu/#/services/mulperi
@@ -35,8 +31,8 @@ Mulpeeri uses the port 9202 that needs to be open to in order that the endpoints
 
 The swagger page describes all endpoints. There are currently two key functionalities supported by Mulperi, which both take as an argument a project and its requirements in OpenReq JSON format.
 
-1) Construction of a graph (a requirements model) from individual requirements (endpoint 
-`sendModelToKeljuCaas`) for easy query of interdendencies (endpoint `findTransitiveClosureOfRequirement`). 
+1) Construction of a graph (a requirements model) from individual requirements (endpoint
+`sendModelToKeljuCaas`) for easy query of interdendencies (endpoint `findTransitiveClosureOfRequirement`).
 
 2) Checking for a model consistency and, if necessary, providing diagnosis for an inconsisteny model (e.g., endpoint `uploadDataCheckForConsistencyAndDoDiagnosis`).
 
