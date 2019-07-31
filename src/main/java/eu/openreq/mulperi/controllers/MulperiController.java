@@ -78,8 +78,8 @@ public class MulperiController {
 			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
-	@PostMapping(value = "requirementsToChoco")
-	public ResponseEntity<String> requirementsToChoco(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
+	@PostMapping(value = "murmeliModelToKeljuCaaS")
+	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		
 		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
 		
@@ -98,7 +98,7 @@ public class MulperiController {
 		try {
 			Date date = new Date();
 			System.out.println("Sending " + projectId + " to KeljuCaas at " + date.toString());
-			//return new ResponseEntity<>("Requirements received: " + requirements, HttpStatus.ACCEPTED);
+			
 			return this.sendModelToKeljuCaas(OpenReqJSONParser.parseToJson(model));
 		}
 		catch (Exception e) {
@@ -106,40 +106,67 @@ public class MulperiController {
 		}
 	}
 	
-	
 	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
-	 * @return JSON response
-	 * 		{ 
-	 * 			"response": {
-	 * 				"consistent": false
-	 * 			}
-	 * 		}
+	 * Update a model in JSON format
+	 * @param requirements
+	 * @return
 	 * @throws JSONException 
+	 * @throws ReleasePlanException 
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 */
-	@ApiOperation(value = "Is release plan consistent",
-			notes = "Send model to Caas to check whether a release plan is consistent.",
+	@ApiOperation(value = "Update OpenReq JSON model in Caas",
+			notes = "Import the updated requirements to Caas as a project in JSON format",
 			response = String.class)
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
-	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
-	public ResponseEntity<String> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
+			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
+			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
+			@ApiResponse(code = 409, message = "Failure")}) 
+	@PostMapping(value = "updateMurmeliModelInKeljuCaas")
+	public ResponseEntity<?> updateMurmeliModelInKeljuCaas(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
+		
+		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
+		
+		MurmeliModelGenerator generator = new MurmeliModelGenerator();
+		ElementModel model;
+		String projectId = null;
+		if (parser.getProjects() != null) {
+			projectId = parser.getProjects().get(0).getId();
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), projectId);
+		} else {
+			model = generator.initializeElementModel(parser.getRequirements(), parser.getDependencies(), parser.getRequirements().get(0).getId());
+		}
+		
+		try {
+			Date date = new Date();
+			System.out.println("Updating " + projectId + " in KeljuCaas at " + date.toString());
+			
+			return this.updateModelInKeljuCaas(OpenReqJSONParser.parseToJson(model));
+		} catch (Exception e) {
+			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
+		}
 	}
 	
-	
+	private ResponseEntity<?> updateModelInKeljuCaas(String jsonString) {
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_XML);
 
+		HttpEntity<String> entity = new HttpEntity<String>(jsonString, headers);
+
+		try {
+			return rt.postForEntity(caasAddress + "/updateModel", entity, String.class);
+		} catch (HttpClientErrorException e) {
+			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
+	 * Checks whether a release plan is consistent and provides diagnosis if not
+	 * 
+	 * @param jsonString
+	 * @param analysisOnly
+	 * @param timeOut
 	 * @return JSON response
 	 * 		{ 
 	 * 			"response": {
@@ -153,45 +180,9 @@ public class MulperiController {
 	 * 				]
 	 * 			}
 	 * 		}
-
-	 * @throws JSONException 
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
-	 */
-	@ApiOperation(value = "Is release plan consistent and do diagnosis",
-			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
-	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")
-	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
-		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);
-	}
-	
-	/**
-	 * Check whether a project is consistent
-	 * @param selections checked selections
-	 * @param modelName
-	 * @return JSON response
-	 * 		{ 
-	 * 			"response": {
-	 * 				"consistent": false, 
-	 * 				"diagnosis": [
-	 * 					[
-	 * 						{
-	 * 							"requirement": (requirementID)
-	 * 						}
-	 * 					]
-	 * 				]
-	 * 			}
-	 * 		}
-
-	 * @throws JSONException 
-	 * @throws ParserConfigurationException 
-	 * @throws IOException 
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
 	 */
 	@ApiOperation(value = "Is release plan consistent and do diagnosis v2",
 			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
@@ -217,7 +208,9 @@ public class MulperiController {
 	 * @param jsonString
 	 * @param completeAddress
 	 * @param duplicatesInResponse
+	 * @param timeOut
 	 * @return
+	 * @throws JSONException
 	 */
 	public ResponseEntity<String> convertToMurmeliAndPostToCaas(String jsonString, String completeAddress, 
 			boolean duplicatesInResponse, int timeOut) throws JSONException {
@@ -417,4 +410,68 @@ public class MulperiController {
 		return convertToMurmeliAndPostToCaas(transitiveClosure.getBody().toString(), completeAddress, true, timeOut);	
 	}
 
+	/**
+	 * Check whether a release plan is consistent
+	 * 
+	 * @param jsonString
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false
+	 * 			}
+	 * 		}
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
+	/*
+	 * HIDDEN FROM SWAGGER!
+	 * @ApiOperation(value = "Is release plan consistent",
+			notes = "Send model to Caas to check whether a release plan is consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
+	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")*/
+	public ResponseEntity<String> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
+	}
+	
+	/**
+	 * Checks whether a release plan is consistent and provides diagnosis if not
+	 * 
+	 * @param jsonString
+	 * @return JSON response
+	 * 		{ 
+	 * 			"response": {
+	 * 				"consistent": false, 
+	 * 				"diagnosis": [
+	 * 					[
+	 * 						{
+	 * 							"requirement": (requirementID)
+	 * 						}
+	 * 					]
+	 * 				]
+	 * 			}
+	 * 		}
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
+	/*HIDDEN FROM SWAGGER. PERHAPS OBSOLETE.
+	 * 
+	 * @ApiOperation(value = "Is release plan consistent and do diagnosis",
+			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
+			response = String.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
+			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
+			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
+	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")*/
+	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
+		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
+		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);
+	}
 }

@@ -3,18 +3,6 @@ package eu.openreq.mulperi.models.json;
 import com.google.gson.annotations.SerializedName;
 
 public enum Requirement_status {
-
-//	SUBMITTED,
-//	PENDING,
-//	ACCEPTED,
-//	DRAFT,
-//	DEFERRED,
-//	NEW,
-//	PLANNED,
-//	COMPLETED,
-//	REJECTED,
-//	RECOMMENDED,
-//	IN_PROGRESS
 	
 	@SerializedName(value="submitted", alternate= {"SUBMITTED"})
 	SUBMITTED,
@@ -39,27 +27,4 @@ public enum Requirement_status {
 	@SerializedName(value="in_progress", alternate= {"IN_PROGRESS"})
 	IN_PROGRESS
 	
-	
-//	@JsonProperty("submitted")
-//	SUBMITTED,
-//	@JsonProperty("pending")
-//	PENDING,
-//	@JsonProperty("accepted")
-//	ACCEPTED,
-//	@JsonProperty("draft")
-//	DRAFT,
-//	@JsonProperty("deferred")
-//	DEFERRED,
-//	@JsonProperty("new")
-//	NEW,
-//	@JsonProperty("planned")
-//	PLANNED,
-//	@JsonProperty("completed")
-//	COMPLETED,
-//	@JsonProperty("rejected")
-//	REJECTED,
-//	@JsonProperty("recommended")
-//	RECOMMENDED,
-//	@JsonProperty("in_progress")
-//	IN_PROGRESS
 }
