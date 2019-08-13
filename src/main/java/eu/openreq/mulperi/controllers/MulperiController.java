@@ -75,12 +75,13 @@ public class MulperiController {
 			notes = "Import a model to Caas in JSON format",
 			response = String.class)
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies in OpenReq JSON format"),
+			@ApiResponse(code = 201, message = "Success, returns received requirements and dependencies "
+					+ "in OpenReq JSON format"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@PostMapping(value = "murmeliModelToKeljuCaaS")
-	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
-		
+	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements) throws JSONException, 
+				IOException, ParserConfigurationException {
 		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
 		
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
@@ -286,15 +287,15 @@ public class MulperiController {
 		
 		RestTemplate tempRt = null;
 		
-		if (timeOut!=0) {
-			tempRt = new RestTemplate();
-			tempRt.setRequestFactory(new SimpleClientHttpRequestFactory());
-			SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory) tempRt
-	                .getRequestFactory();
-	        rf.setReadTimeout(timeOut);
-		} else {
+//		if (timeOut!=0) {
+//			tempRt = rt;
+//			tempRt.setRequestFactory(new SimpleClientHttpRequestFactory());
+//			SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory) tempRt
+//	                .getRequestFactory();
+//	        rf.setReadTimeout(timeOut);
+//		} else {
 			tempRt = rt;
-		}
+		//}
 		try {
 			response = tempRt.postForEntity(completeAddress, entity, String.class);
 		} catch (ResourceAccessException e) {

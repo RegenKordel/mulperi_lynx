@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.servicesTest;
+package eu.openreq.mulperi.test.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,8 +22,11 @@ public class MurmeliModelGeneratorTest {
 	private Requirement req1;
 	private Requirement req2;
 	private Requirement req3;
+	private Requirement req4;
+	private Requirement req5;
 	private Dependency dep1;
 	private Dependency dep2;
+	private Dependency dep3;
 	List<Requirement> requirements;
 	List<Dependency> dependencies;
 	
@@ -62,6 +65,21 @@ public class MurmeliModelGeneratorTest {
     	req3.setRequirement_type(Requirement_type.EPIC);
     	req3.setStatus(Requirement_status.ACCEPTED);
     	
+    	req4 = new Requirement();
+    	req4.setId("004");
+    	req4.setName("req4");
+    	req4.setCreated_at(123456);
+    	req4.setRequirement_type(Requirement_type.FUNCTIONAL);
+    	req4.setStatus(Requirement_status.RECOMMENDED);
+    	
+    	req5 = new Requirement();
+    	req5.setId("003");
+    	req5.setName("req3");
+    	req5.setCreated_at(12345);
+    	req5.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
+    	req5.setStatus(Requirement_status.DEFERRED);
+    	
+    	
     	dep1 = new Dependency();
     	dep1.setCreated_at(12);
     	dep1.setDependency_type(Dependency_type.DECOMPOSITION);
@@ -74,15 +92,24 @@ public class MurmeliModelGeneratorTest {
     	dep2.setFromid(req2.getId());
     	dep2.setToid(req1.getId());
     	
+    	dep3 = new Dependency();
+    	dep3.setCreated_at(12);
+    	dep3.setDependency_type(Dependency_type.DAMAGES);
+    	dep3.setFromid(req4.getId());
+    	dep3.setToid(req5.getId());
+    	   
     	requirements = new ArrayList<Requirement>();
     	dependencies = new ArrayList<Dependency>();
     	
     	requirements.add(req1);
     	requirements.add(req2);
     	requirements.add(req3);
+    	requirements.add(req4);
+    	requirements.add(req5);
     	
     	dependencies.add(dep1);
     	dependencies.add(dep2);
+    	dependencies.add(dep3);
     	
     	projectName = "project1";
     	model = modelGenerator.initializeElementModel(requirements, dependencies, projectName);
@@ -104,12 +131,12 @@ public class MurmeliModelGeneratorTest {
     
     @Test
     public void createdElementModelRelationsSizeCorrect() {
-    	assertEquals(model.getRelations().size(), 2); //Decompositions DO go to relations
+    	assertEquals(model.getRelations().size(), 3); //Decompositions DO go to relations
     }
     
     @Test
     public void createdElementModelElementsSizeCorrect() {
-    	assertEquals(model.getElements().size(), 3);
+    	assertEquals(model.getElements().size(), 4);
     }
     
     @Test

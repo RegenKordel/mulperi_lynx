@@ -1,6 +1,7 @@
-package eu.openreq.mulperi.servicesTest;
+package eu.openreq.mulperi.test.services;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,19 +17,19 @@ import eu.openreq.mulperi.models.json.Requirement;
 import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.OpenReqJSONParser;
 
-public class InputCheckerFailTest {
+public class InputCheckerSuccessTest {
 
 	static InputChecker checker;
 	private static List<String> specReqIds;
 	private static List<String> reqIds;
 	static OpenReqJSONParser parser;
-	
+
 	@BeforeClass
 	public static void setUp() throws IOException, JSONException{
 		checker = new InputChecker();
 		String dirPath = System.getProperty("user.dir") + "/src/test/resources/";
 		String jsonString = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
-				"failing_input_data.json"))); 
+				"correct_input_data.json"))); 
 		parser = new OpenReqJSONParser(jsonString);
 		
 		
@@ -49,59 +50,59 @@ public class InputCheckerFailTest {
 	
 	@Test
 	public void noNegativeEffortRequirements() {
-		assertFalse(checker.noNegativeEffortRequirements(parser.getRequirements()));
+		assertTrue(checker.noNegativeEffortRequirements(parser.getRequirements()));
 	}
 	
 	@Test
 	public void noNegativeCapacityReleases() {
-		assertFalse(checker.noNegativeCapacityReleases(parser.getReleases()));
+		assertTrue(checker.noNegativeCapacityReleases(parser.getReleases()));
 	}
 	
 	@Test
 	public void allSpecifiedRequirementsIncluded() {
-		assertFalse(checker.allSpecifiedRequirementsIncluded(specReqIds, reqIds));
+		assertTrue(checker.allSpecifiedRequirementsIncluded(specReqIds, reqIds));
 	}
 	
 	@Test
 	public void onlySpecifiedRequirements() {
-		assertFalse(checker.onlySpecifiedRequirements(reqIds, specReqIds));
+		assertTrue(checker.onlySpecifiedRequirements(reqIds, specReqIds));
 	}
 	
 	@Test
 	public void allSpecifiedRequirementsInReleases() {
-		assertFalse(checker.allSpecifiedRequirementsInReleases(specReqIds, 
+		assertTrue(checker.allSpecifiedRequirementsInReleases(specReqIds, 
 				parser.getReleases()));
 	}
 
 	@Test
 	public void allReleaseRequirementsIncluded() {
-		assertFalse(checker.allReleaseRequirementsIncluded(parser.getReleases(), specReqIds, reqIds));
+		assertTrue(checker.allReleaseRequirementsIncluded(parser.getReleases(), specReqIds, reqIds));
 	}
 	
 	@Test
 	public void allDependencyRequirementsIncluded() {
-		assertFalse(checker.allDependencyRequirementsIncluded(parser.getDependencies(), specReqIds, reqIds));
+		assertTrue(checker.allDependencyRequirementsIncluded(parser.getDependencies(), specReqIds, reqIds));
 	}
 	
 	@Test
 	public void noDuplicateDependencies() {
-		assertFalse(checker.noDuplicateDependencies(parser.getDependencies()));
+		assertTrue(checker.noDuplicateDependencies(parser.getDependencies()));
 	}
 	
 //	@Test
 //	public void releasesInOrder() {
-//		assertFalse(checker.releasesInOrder(JSONParser.releases));
+//		assertTrue(checker.releasesInOrder(JSONParser.releases));
 //	}
 	
 	@Test
 	public void requirementNotInMultipleReleases() {
-		assertFalse(checker.requirementNotInMultipleReleases(parser.getReleases()));
+		assertTrue(checker.requirementNotInMultipleReleases(parser.getReleases()));
 	}
 	
 	@Test
 	public void checkInput() throws JSONException {
-		assertFalse(checker.checkInput(parser.getProject(), parser.getRequirements(), 
-				parser.getDependencies(), parser.getReleases()).equals("OK"));
+		assertEquals(checker.checkInput(parser.getProject(), parser.getRequirements(), 
+				parser.getDependencies(), parser.getReleases()), "OK");
 	}
 		
 }

@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.servicesTest;
+package eu.openreq.mulperi.test.services;
 
 import static org.junit.Assert.assertTrue;
 
