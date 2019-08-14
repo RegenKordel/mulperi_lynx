@@ -1,7 +1,7 @@
 {
  "project": { 
- 	"id": "Brussels2018",
- 	"name": "Brussels example project",
+ 	"id": "InconsistentIncompatible",
+ 	"name": "Inconsistent with incompatible",
  	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
@@ -20,7 +20,7 @@
    {
    	"id": "REQ3",
    	"name": "Requirement example 3",
-   	"effort": 8,
+   	"effort": 2,
    	"created_at": 0
    },
    {
@@ -58,9 +58,9 @@
    	"toid": "REQ2"
    },
    {
-   	"dependency_type": "EXCLUDES",
+   	"dependency_type": "INCOMPATIBLE",
    	"fromid": "REQ1",
-   	"toid": "REQ5"
+   	"toid": "REQ3"
    }
  ]
 }
