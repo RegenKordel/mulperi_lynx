@@ -1,7 +1,7 @@
 {
  "project": { 
- 	"id": "Brussels2018",
- 	"name": "Brussels example project",
+ 	"id": "ConsistentIncompatible2",
+ 	"name": "Consistent with incompatible 2",
  	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
