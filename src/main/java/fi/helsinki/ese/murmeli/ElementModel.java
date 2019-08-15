@@ -128,7 +128,7 @@ public class ElementModel {
 		this.rootContainer = rootContainer;
 	}
 	
-	public List<Container> getsubContainers() {
+	public List<Container> getSubContainers() {
 		return subContainers;
 	}
 

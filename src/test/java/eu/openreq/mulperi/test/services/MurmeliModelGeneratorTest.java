@@ -4,10 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import eu.openreq.mulperi.models.json.*;
+import eu.openreq.mulperi.models.json.Release.Status;
 import eu.openreq.mulperi.services.MurmeliModelGenerator;
+import eu.openreq.mulperi.services.OpenReqConverter;
 import fi.helsinki.ese.murmeli.ElementModel;
 
 import org.junit.After;
@@ -19,16 +22,9 @@ import org.junit.Test;
 public class MurmeliModelGeneratorTest {
 	
 	private MurmeliModelGenerator modelGenerator;
-	private Requirement req1;
-	private Requirement req2;
-	private Requirement req3;
-	private Requirement req4;
-	private Requirement req5;
-	private Dependency dep1;
-	private Dependency dep2;
-	private Dependency dep3;
 	List<Requirement> requirements;
 	List<Dependency> dependencies;
+	List<String> reqIds;
 	
 	private String projectName;
 	private ElementModel model;
@@ -41,77 +37,108 @@ public class MurmeliModelGeneratorTest {
     public static void tearDownClass() {
     }
     
+    public List<Requirement> generateReqList(int reqCount) {
+    	List<Requirement> reqList = new ArrayList<>();
+    	List<RequirementPart> parts = generateReqParts();
+    	
+    	for (int i = 0; i<reqCount; i++) {
+	    	Requirement req  = new Requirement();
+	    	req.setId("" + i);
+	    	req.setName("req" + i);
+	    	req.setCreated_at(123 + i);
+	    	
+	    	int reqValue = i;
+	    	if (reqValue > Requirement_type.values().length-1) {
+	    		reqValue = Requirement_type.values().length-1;
+	    	}
+	    	req.setRequirement_type(Requirement_type.values()[reqValue]);
+	    	
+	    	reqValue = i;
+	    	if (reqValue > Requirement_status.values().length-1) {
+	    		reqValue = Requirement_status.values().length-1;
+	    	}
+	    	
+	    	req.setStatus(Requirement_status.values()[reqValue]);
+	    	
+	    	List<RequirementPart> newParts = parts;
+	    	
+	    	newParts.get(5).setText(Requirement_status.values()[reqValue].toString());
+	    	
+	    	req.setRequirementParts(parts);
+	    	
+	    	reqList.add(req);
+	    	
+	    	reqIds.add("" + i);
+    	}
+    	
+    	return reqList;
+    }
+    
+    public List<RequirementPart> generateReqParts() {
+    	List<RequirementPart> parts = new ArrayList<>();
+    	
+    	parts.add(generatePart("0", "Resolution", "testResolution"));
+    	parts.add(generatePart("1", "Platforms", "testPlatforms"));
+    	parts.add(generatePart("2", "Versions", "testVersions"));
+    	parts.add(generatePart("3", "Labels", "testLabels"));
+    	parts.add(generatePart("4", "Environment", "testEnvironment"));
+    	parts.add(generatePart("5", "Status", "testStatus"));
+    	parts.add(generatePart("6", "FixVersion", "testFixVersion"));
+    	parts.add(generatePart("7", "Components", "testComponents"));
+    	
+    	return parts;
+    	
+    }
+    
+    public RequirementPart generatePart(String id, String name, String text) {
+    	RequirementPart part = new RequirementPart();
+    	part.setId(id);
+    	part.setName(name);
+    	part.setText(text);
+    	return part;
+    	
+    }
+    
+    public List<Dependency> generateDepList(int depCount) {
+    	List<Dependency> depList = new ArrayList<>();
+    	
+    	for (int i = 0; i<depCount; i++) {
+	    	Dependency dep  = new Dependency();
+	    	dep.setFromid("" + i);
+	    	dep.setToid("" + i + 1);
+	    	dep.setCreated_at(123 + i);
+	    	
+	    	int depValue = i;
+	    	if (depValue > Dependency_type.values().length-1) {
+	    		depValue = Dependency_type.values().length-1;
+	    	}
+	    	dep.setDependency_type(Dependency_type.values()[depValue]);
+	    	
+	    	depValue = i;
+	    	if (depValue > Dependency_status.values().length-1) {
+	    		depValue = Dependency_status.values().length-1;
+	    	}
+	    	
+	    	dep.setStatus(Dependency_status.values()[depValue]);
+	    	
+	    	depList.add(dep);
+    	}
+    	
+    	return depList;
+    }
+    
     @Before
     public void setUp() {
     	modelGenerator = new MurmeliModelGenerator();
-    	req1 = new Requirement();
-    	req1.setId("001");
-    	req1.setName("req1");
-    	req1.setCreated_at(123);
-    	req1.setRequirement_type(Requirement_type.ISSUE);
-    	req1.setStatus(Requirement_status.ACCEPTED);
     	
-    	req2 = new Requirement();
-    	req2.setId("002");
-    	req2.setName("req2");
-    	req2.setCreated_at(1234);
-    	req2.setRequirement_type(Requirement_type.BUG);
-    	req2.setStatus(Requirement_status.ACCEPTED);
-    	
-    	req3 = new Requirement();
-    	req3.setId("003");
-    	req3.setName("req3");
-    	req3.setCreated_at(12345);
-    	req3.setRequirement_type(Requirement_type.EPIC);
-    	req3.setStatus(Requirement_status.ACCEPTED);
-    	
-    	req4 = new Requirement();
-    	req4.setId("004");
-    	req4.setName("req4");
-    	req4.setCreated_at(123456);
-    	req4.setRequirement_type(Requirement_type.FUNCTIONAL);
-    	req4.setStatus(Requirement_status.RECOMMENDED);
-    	
-    	req5 = new Requirement();
-    	req5.setId("003");
-    	req5.setName("req3");
-    	req5.setCreated_at(12345);
-    	req5.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
-    	req5.setStatus(Requirement_status.DEFERRED);
-    	
-    	
-    	dep1 = new Dependency();
-    	dep1.setCreated_at(12);
-    	dep1.setDependency_type(Dependency_type.DECOMPOSITION);
-    	dep1.setFromid(req3.getId());
-    	dep1.setToid(req1.getId());
-    	
-    	dep2 = new Dependency();
-    	dep2.setCreated_at(12);
-    	dep2.setDependency_type(Dependency_type.REQUIRES);
-    	dep2.setFromid(req2.getId());
-    	dep2.setToid(req1.getId());
-    	
-    	dep3 = new Dependency();
-    	dep3.setCreated_at(12);
-    	dep3.setDependency_type(Dependency_type.DAMAGES);
-    	dep3.setFromid(req4.getId());
-    	dep3.setToid(req5.getId());
-    	   
-    	requirements = new ArrayList<Requirement>();
-    	dependencies = new ArrayList<Dependency>();
-    	
-    	requirements.add(req1);
-    	requirements.add(req2);
-    	requirements.add(req3);
-    	requirements.add(req4);
-    	requirements.add(req5);
-    	
-    	dependencies.add(dep1);
-    	dependencies.add(dep2);
-    	dependencies.add(dep3);
+    	reqIds = new ArrayList<>();
     	
     	projectName = "project1";
+    	
+    	requirements = generateReqList(15);
+    	
+    	dependencies = generateDepList(15);
+    	
     	model = modelGenerator.initializeElementModel(requirements, dependencies, projectName);
     }
     
@@ -131,17 +158,56 @@ public class MurmeliModelGeneratorTest {
     
     @Test
     public void createdElementModelRelationsSizeCorrect() {
-    	assertEquals(model.getRelations().size(), 3); //Decompositions DO go to relations
+    	assertEquals(model.getRelations().size(), 15); //Decompositions DO go to relations
     }
     
     @Test
     public void createdElementModelElementsSizeCorrect() {
-    	assertEquals(model.getElements().size(), 4);
+    	assertEquals(model.getElements().size(), 29);
     }
     
     @Test
     public void createdElementModelConstraintsSizeCorrect() {
     	assertEquals(model.getConstraints().size(), 0);
     }
+    
+    @Test
+    public void createdElementModelWithReleasesAndConstraints() {
+    	List<String> constraints = Arrays.asList("limits", "requires");
+    	List<Release> releases = new ArrayList<Release>();
+    	
+    	Release release = new Release();
+    	release.setId("release1");
+    	release.setCreated_at(1);
+    	release.setCapacity(50);
+    	release.setStatus(Status.NEW);
+    	release.setRequirements(reqIds);
+    	releases.add(release);
+    	
+    	model = modelGenerator.initializeElementModel(requirements, constraints, dependencies, releases, projectName);
+    	
+    	assertEquals(model.getConstraints().size(), 2);
+    	assertEquals(model.getSubContainers().size(), 2);
+    }
+    
+    @Test
+    public void modelCanBeConverted() {
+    	List<String> constraints = Arrays.asList("limits", "requires");
+    	List<Release> releases = new ArrayList<Release>();
+    	
+    	Release release = new Release();
+    	release.setId("release1");
+    	release.setCreated_at(1);
+    	release.setCapacity(50);
+    	release.setStatus(Status.NEW);
+    	release.setRequirements(reqIds);
+    	releases.add(release);
+    	
+    	model = modelGenerator.initializeElementModel(requirements, constraints, dependencies, releases, projectName);
+    	
+    	OpenReqConverter converter = new OpenReqConverter(model);
+    	assertTrue(converter.getRequirements().size()>0);
+    }
+    
 
 }

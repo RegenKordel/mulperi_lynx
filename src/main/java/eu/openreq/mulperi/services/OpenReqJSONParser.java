@@ -53,6 +53,10 @@ public class OpenReqJSONParser {
 	 * @return
 	 */
 	public List<Release> parseReleaseVersionsFromReqParts() {
+		if (this.requirements==null) {
+			return null;
+		}
+		
 		HashMap<ComparableVersion, List<String>> releaseMap = new HashMap<ComparableVersion, List<String>>();
 		List<String> noFixVerReqs = new ArrayList<String>();
 		
