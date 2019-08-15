@@ -16,7 +16,7 @@ public class InputChecker {
 	
 	public String checkInput(Project project, List<Requirement> requirements, 
 			List<Dependency> dependencies, List<Release> releases) {		
-			
+		
 		List<String> reqIds = new ArrayList<String>();
 		for (Requirement req : requirements) {
 			reqIds.add(req.getId());

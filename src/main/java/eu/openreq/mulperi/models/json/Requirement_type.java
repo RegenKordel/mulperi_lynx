@@ -4,17 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public enum Requirement_type {
 
-//	PROSE,
-//	REQUIREMENT,
-//	FUNCTIONAL,
-//	NON_FUNCTIONAL,
-//	ISSUE,
-//	USER_STORY,
-//	EPIC,
-//	INITIATIVE,
-//	TASK,
-//	BUG
-	
 	@SerializedName(value="prose", alternate= {"PROSE"})
 	PROSE,
 	@SerializedName(value="requirement", alternate= {"REQUIREMENT"})
@@ -36,24 +25,4 @@ public enum Requirement_type {
 	@SerializedName(value="bug", alternate= {"BUG"})
 	BUG
 	
-//	@JsonProperty("prose")
-//	PROSE,
-//	@JsonProperty("requirement")
-//	REQUIREMENT,
-//	@JsonProperty("functional")
-//	FUNCTIONAL,
-//	@JsonProperty("non_functional")
-//	NON_FUNCTIONAL,
-//	@JsonProperty("issue")
-//	ISSUE,
-//	@JsonProperty("user_story")
-//	USER_STORY,
-//	@JsonProperty("epic")
-//	EPIC,
-//	@JsonProperty("initiative")
-//	INITIATIVE,
-//	@JsonProperty("task")
-//	TASK,
-//	@JsonProperty("bug")
-//	BUG
 }

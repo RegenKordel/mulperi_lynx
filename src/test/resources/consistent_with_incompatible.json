@@ -1,7 +1,7 @@
 {
  "project": { 
- 	"id": "Brussels2018",
- 	"name": "Brussels example project",
+ 	"id": "ConsistentIncompatible",
+ 	"name": "Consistent with incompatible",
  	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
@@ -39,15 +39,15 @@
  "releases": [
    {
    	"id": 1,
-   	"capacity": 6,
+   	"capacity": 4,
    	"status": "new",
-   	"requirements": ["REQ1", "REQ2", "REQ3"]
+   	"requirements": ["REQ1", "REQ2"]
    },
    {
    	"id": 2,
-   	"capacity": 4,
+   	"capacity": 6,
    	"status": "new",
-   	"requirements": ["REQ4", "REQ5"]
+   	"requirements": [ "REQ3", "REQ4", "REQ5"]
    }
 
  ],

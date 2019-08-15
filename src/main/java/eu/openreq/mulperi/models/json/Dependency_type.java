@@ -3,16 +3,6 @@ package eu.openreq.mulperi.models.json;
 import com.google.gson.annotations.SerializedName;
 
 public enum Dependency_type {
-
-//	CONTRIBUTES,
-//	DAMAGES,
-//	REFINES,
-//	REQUIRES,
-//	INCOMPATIBLE,
-//	DECOMPOSITION,
-//	SIMILAR,
-//	DUPLICATES,
-//	REPLACES
 	
 	@SerializedName(value="contributes", alternate= {"CONTRIBUTES"})
 	CONTRIBUTES,
@@ -37,23 +27,4 @@ public enum Dependency_type {
 	@SerializedName(value="implies", alternate= {"IMPLIES"})
 	IMPLIES,
 	
-//	@JsonProperty("contributes")
-//	CONTRIBUTES,
-//	@JsonProperty("damages")
-//	DAMAGES,
-//	@JsonProperty("refines")
-//	REFINES,
-//	@JsonProperty("requires")
-//	REQUIRES,
-//	@JsonProperty("incompatible")
-//	INCOMPATIBLE,
-//	@JsonProperty("decomposition")
-//	DECOMPOSITION,
-//	@JsonProperty("similar")
-//	SIMILAR,
-//	@JsonProperty("duplicates")
-//	DUPLICATES,
-//	@JsonProperty("replaces")
-//	REPLACES
-
 }

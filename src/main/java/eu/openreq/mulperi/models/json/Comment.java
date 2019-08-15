@@ -43,7 +43,7 @@ public class Comment {
 	@Expose
 	private long modified_at;
 	
-	/*
+	/**
 	 * Person who did the comment
 	 */
 	@SerializedName("commentDoneBy")

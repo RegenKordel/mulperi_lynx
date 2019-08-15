@@ -67,6 +67,9 @@ public class OpenReqConverter {
 			case "non_functional":
 				req.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
 				break;
+			case "non-functional":
+				req.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
+				break;
 			case "prose":
 				req.setRequirement_type(Requirement_type.PROSE);
 				break;
@@ -88,7 +91,8 @@ public class OpenReqConverter {
 	
 	private void mapElementAttributes(Requirement req, Element element) {
 		if (element.getAttributes().containsKey("status")) {
-			switch((String) model.getAttributeValues().get(element.getAttributes().get("status")).getValue()) {
+			String status = model.getAttributeValues().get(element.getAttributes().get("elementStatus")).getValue().toString();
+			switch(status.toLowerCase()) {
 			case "pending":
 				req.setStatus(Requirement_status.PENDING);
 				break;
@@ -105,6 +109,9 @@ public class OpenReqConverter {
 				req.setStatus(Requirement_status.DRAFT);
 				break;
 			case "in_progress":
+				req.setStatus(Requirement_status.IN_PROGRESS);
+				break;
+			case "inprogress":
 				req.setStatus(Requirement_status.IN_PROGRESS);
 				break;
 			case "open":
@@ -138,11 +145,13 @@ public class OpenReqConverter {
 		}
 		
 		if (element.getAttributes().containsKey("effort")) {
-			req.setEffort(((Double) model.getAttributeValues().get(element.getAttributes().get("effort")).getValue()).intValue()); 
+			String effort = model.getAttributeValues().get(element.getAttributes().get("effort")).getValue().toString();
+			req.setEffort(new Double(effort).intValue()); 
 		}
 		
 		if (element.getAttributes().containsKey("priority")) {
-			req.setPriority(((Double) model.getAttributeValues().get(element.getAttributes().get("priority")).getValue()).intValue()); 
+			String priority = model.getAttributeValues().get(element.getAttributes().get("priority")).getValue().toString();
+			req.setPriority(new Double(priority).intValue()); 
 		}
 		
 		if (element.getAttributes().containsKey("resolution")) {
@@ -355,7 +364,7 @@ public class OpenReqConverter {
 	}
 	
 	private void mapSubContainers() {
-		for (Container container : model.getsubContainers()) {
+		for (Container container : model.getSubContainers()) {
 			Release release = new Release();
 			release.setId(container.getID()+"");
 			release.setRequirements(container.getElements());
@@ -368,19 +377,22 @@ public class OpenReqConverter {
 	private void mapSubContainerAttributes(Release release, Container container) {
 		release.setCapacity((Integer) model.getAttributeValues().get(container.getAttributes().get("capacity")).getValue());
 		
-		switch((String) model.getAttributeValues().get(container.getAttributes().get("status")).getValue()) {
-			case "new":
-				release.setStatus(Status.NEW);
-				break;
-			case "completed":
-				release.setStatus(Status.COMPLETED);
-				break;
-			case "planned":
-				release.setStatus(Status.PLANNED);
-				break;
-			case "rejected":
-				release.setStatus(Status.REJECTED);
-				break;
+		AttributeValue<?> status =  model.getAttributeValues().get(container.getAttributes().get("status"));
+		if (status != null) {
+			switch(status.getValue().toString().toLowerCase()) {
+				case "new":
+					release.setStatus(Status.NEW);
+					break;
+				case "completed":
+					release.setStatus(Status.COMPLETED);
+					break;
+				case "planned":
+					release.setStatus(Status.PLANNED);
+					break;
+				case "rejected":
+					release.setStatus(Status.REJECTED);
+					break;
+			}
 		}
 		
 		if (container.getAttributes().containsKey("modified_at")) {

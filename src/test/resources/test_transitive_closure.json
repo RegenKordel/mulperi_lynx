@@ -1,0 +1,3207 @@
+{
+	"model": {
+		"attributeValueTypes": {
+		},
+		"elementTypes": {
+		},
+		"elements": {
+			"QTBUG-65342": {
+				"id": 206687,
+				"nameID": "QTBUG-65342",
+				"attributes": {
+					"environment": 567325,
+					"components": 453537,
+					"versions": 454039,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 567324,
+					"fixVersion": 453385,
+					"title": 567326,
+					"resolution": 453462,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-46129": {
+				"id": 224632,
+				"nameID": "QTBUG-46129",
+				"attributes": {
+					"environment": 453390,
+					"components": 453537,
+					"versions": 454084,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 610025,
+					"fixVersion": 453385,
+					"title": 610026,
+					"resolution": 453477,
+					"status": 453476,
+					"labels": 453384,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTWB-30": {
+				"id": 119082,
+				"nameID": "QTWB-30",
+				"attributes": {
+					"components": 336032,
+					"environment": 336039,
+					"versions": 336038,
+					"elementStatus": 336022,
+					"effort": 336026,
+					"priority": 336041,
+					"fixVersion": 336037,
+					"title": 336045,
+					"resolution": 336043,
+					"platforms": 336042,
+					"labels": 336033,
+					"status": 336044
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-54948": {
+				"id": 210749,
+				"nameID": "QTBUG-54948",
+				"attributes": {
+					"components": 453537,
+					"environment": 453601,
+					"versions": 453548,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 577039,
+					"fixVersion": 453385,
+					"title": 577040,
+					"resolution": 453477,
+					"platforms": 453445,
+					"status": 453476,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-50502": {
+				"id": 207007,
+				"nameID": "QTBUG-50502",
+				"attributes": {
+					"components": 453526,
+					"environment": 568087,
+					"versions": 455845,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 568086,
+					"fixVersion": 453385,
+					"title": 568088,
+					"resolution": 453462,
+					"status": 453358,
+					"labels": 453362,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTWB-31": {
+				"id": 119102,
+				"nameID": "QTWB-31",
+				"attributes": {
+					"components": 336032,
+					"environment": 336039,
+					"versions": 336038,
+					"elementStatus": 336022,
+					"effort": 336026,
+					"priority": 336101,
+					"fixVersion": 336037,
+					"title": 336102,
+					"resolution": 336043,
+					"labels": 336033,
+					"status": 336044,
+					"platforms": 336042
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTWB-32": {
+				"id": 119098,
+				"nameID": "QTWB-32",
+				"attributes": {
+					"environment": 336039,
+					"components": 336032,
+					"versions": 336038,
+					"elementStatus": 336022,
+					"effort": 336026,
+					"priority": 336090,
+					"fixVersion": 336037,
+					"title": 336091,
+					"resolution": 336043,
+					"labels": 336033,
+					"platforms": 336042,
+					"status": 336044
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-46064": {
+				"id": 174356,
+				"nameID": "QTBUG-46064",
+				"attributes": {
+					"components": 453537,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 488935,
+					"fixVersion": 455700,
+					"title": 488936,
+					"resolution": 453363,
+					"platforms": 453360,
+					"labels": 453405,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-61164": {
+				"id": 170440,
+				"nameID": "QTBUG-61164",
+				"attributes": {
+					"components": 453537,
+					"environment": 479166,
+					"versions": 454154,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 479165,
+					"fixVersion": 453385,
+					"title": 479167,
+					"resolution": 453462,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-61682": {
+				"id": 220862,
+				"nameID": "QTBUG-61682",
+				"attributes": {
+					"environment": 601132,
+					"components": 453537,
+					"versions": 454154,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 601131,
+					"fixVersion": 453385,
+					"title": 601133,
+					"resolution": 453462,
+					"platforms": 453360,
+					"status": 453358,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-64999": {
+				"id": 197398,
+				"nameID": "QTBUG-64999",
+				"attributes": {
+					"environment": 545009,
+					"components": 545010,
+					"versions": 454191,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 545008,
+					"fixVersion": 453385,
+					"title": 545011,
+					"resolution": 453462,
+					"status": 453358,
+					"platforms": 453360,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-44986": {
+				"id": 198826,
+				"nameID": "QTBUG-44986",
+				"attributes": {
+					"environment": 453390,
+					"components": 453537,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 548437,
+					"fixVersion": 453385,
+					"title": 548438,
+					"resolution": 453477,
+					"platforms": 453360,
+					"status": 453476,
+					"labels": 453384
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-56674": {
+				"id": 212913,
+				"nameID": "QTBUG-56674",
+				"attributes": {
+					"components": 455580,
+					"environment": 582281,
+					"versions": 463905,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 582280,
+					"fixVersion": 453385,
+					"title": 582282,
+					"resolution": 453462,
+					"status": 453358,
+					"platforms": 453445,
+					"labels": 459093
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-54451": {
+				"id": 220388,
+				"nameID": "QTBUG-54451",
+				"attributes": {
+					"components": 466969,
+					"environment": 453390,
+					"versions": 453406,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 600033,
+					"fixVersion": 453385,
+					"title": 600034,
+					"resolution": 453462,
+					"labels": 453362,
+					"status": 453358,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-61854": {
+				"id": 228836,
+				"nameID": "QTBUG-61854",
+				"attributes": {
+					"components": 468180,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 619982,
+					"fixVersion": 453385,
+					"title": 619983,
+					"resolution": 453477,
+					"platforms": 453445,
+					"status": 453502,
+					"labels": 453910
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-17869": {
+				"id": 223134,
+				"nameID": "QTBUG-17869",
+				"attributes": {
+					"components": 453682,
+					"environment": 489652,
+					"versions": 606524,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 606523,
+					"fixVersion": 453385,
+					"title": 606525,
+					"resolution": 453462,
+					"status": 453358,
+					"platforms": 453836,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-55604": {
+				"id": 173265,
+				"nameID": "QTBUG-55604",
+				"attributes": {
+					"components": 453537,
+					"environment": 486184,
+					"versions": 486185,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 486183,
+					"fixVersion": 462257,
+					"title": 486186,
+					"resolution": 453363,
+					"status": 453358,
+					"labels": 453362,
+					"platforms": 453445
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-32241": {
+				"id": 230755,
+				"nameID": "QTBUG-32241",
+				"attributes": {
+					"components": 453526,
+					"environment": 624522,
+					"versions": 453357,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 624520,
+					"fixVersion": 453385,
+					"title": 624523,
+					"resolution": 453419,
+					"labels": 624521,
+					"status": 453358,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-51188": {
+				"id": 165527,
+				"nameID": "QTBUG-51188",
+				"attributes": {
+					"environment": 453390,
+					"components": 453537,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 466800,
+					"fixVersion": 453385,
+					"title": 466801,
+					"resolution": 453477,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453476
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "task"
+			},
+			"QTBUG-59247": {
+				"id": 214170,
+				"nameID": "QTBUG-59247",
+				"attributes": {
+					"environment": 453370,
+					"components": 453537,
+					"versions": 453459,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 585262,
+					"fixVersion": 453385,
+					"title": 585263,
+					"resolution": 453462,
+					"platforms": 453360,
+					"status": 453358,
+					"labels": 453405
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-70466": {
+				"id": 171723,
+				"nameID": "QTBUG-70466",
+				"attributes": {
+					"components": 453537,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 482363,
+					"fixVersion": 453385,
+					"title": 482364,
+					"resolution": 453477,
+					"status": 453502,
+					"labels": 453362,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "epic"
+			},
+			"QTBUG-45105": {
+				"id": 191321,
+				"nameID": "QTBUG-45105",
+				"attributes": {
+					"environment": 530358,
+					"components": 487722,
+					"versions": 530359,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 530357,
+					"fixVersion": 453385,
+					"title": 530360,
+					"resolution": 453462,
+					"platforms": 453360,
+					"labels": 453384,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-61195": {
+				"id": 212640,
+				"nameID": "QTBUG-61195",
+				"attributes": {
+					"components": 453537,
+					"environment": 581635,
+					"versions": 454154,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 581634,
+					"fixVersion": 453385,
+					"title": 581636,
+					"resolution": 453462,
+					"status": 453358,
+					"labels": 453405,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-52614": {
+				"id": 203968,
+				"nameID": "QTBUG-52614",
+				"attributes": {
+					"environment": 487238,
+					"components": 453444,
+					"versions": 560755,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 560754,
+					"fixVersion": 453385,
+					"title": 560756,
+					"resolution": 453462,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-63232": {
+				"id": 211516,
+				"nameID": "QTBUG-63232",
+				"attributes": {
+					"components": 453537,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 578907,
+					"fixVersion": 453385,
+					"title": 578908,
+					"resolution": 453477,
+					"platforms": 453360,
+					"status": 453502,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "epic"
+			},
+			"QTBUG-44733": {
+				"id": 221048,
+				"nameID": "QTBUG-44733",
+				"attributes": {
+					"environment": 601571,
+					"components": 542062,
+					"versions": 454064,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 601570,
+					"fixVersion": 453385,
+					"title": 601572,
+					"resolution": 453477,
+					"status": 453502,
+					"platforms": 453360,
+					"labels": 453362
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-48235": {
+				"id": 205396,
+				"nameID": "QTBUG-48235",
+				"attributes": {
+					"environment": 453390,
+					"components": 454469,
+					"versions": 453380,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 564177,
+					"fixVersion": 453385,
+					"title": 564178,
+					"resolution": 453462,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-76372": {
+				"id": 218417,
+				"nameID": "QTBUG-76372",
+				"attributes": {
+					"components": 453537,
+					"environment": 595330,
+					"versions": 595329,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 595328,
+					"fixVersion": 453385,
+					"title": 595331,
+					"resolution": 453477,
+					"platforms": 453490,
+					"labels": 465173,
+					"status": 453476
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-55454": {
+				"id": 218342,
+				"nameID": "QTBUG-55454",
+				"attributes": {
+					"components": 453537,
+					"environment": 453390,
+					"versions": 453438,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 595152,
+					"fixVersion": 453385,
+					"title": 595153,
+					"resolution": 453477,
+					"labels": 453362,
+					"status": 453476,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-61989": {
+				"id": 214035,
+				"nameID": "QTBUG-61989",
+				"attributes": {
+					"environment": 584938,
+					"components": 453503,
+					"versions": 453374,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 584937,
+					"fixVersion": 453385,
+					"title": 584939,
+					"resolution": 453462,
+					"platforms": 453360,
+					"labels": 453362,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-62438": {
+				"id": 216357,
+				"nameID": "QTBUG-62438",
+				"attributes": {
+					"components": 454469,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 590450,
+					"fixVersion": 453385,
+					"title": 590451,
+					"resolution": 453477,
+					"labels": 453384,
+					"status": 453476,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-76099": {
+				"id": 218333,
+				"nameID": "QTBUG-76099",
+				"attributes": {
+					"components": 453537,
+					"environment": 453390,
+					"versions": 453411,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 595132,
+					"fixVersion": 453385,
+					"title": 595133,
+					"resolution": 453477,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453476
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-46074": {
+				"id": 174284,
+				"nameID": "QTBUG-46074",
+				"attributes": {
+					"components": 488744,
+					"environment": 487238,
+					"versions": 454064,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 488743,
+					"fixVersion": 456961,
+					"title": 488745,
+					"resolution": 453812,
+					"labels": 456173,
+					"status": 453358,
+					"platforms": 453445
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-32150": {
+				"id": 218440,
+				"nameID": "QTBUG-32150",
+				"attributes": {
+					"components": 453735,
+					"environment": 595384,
+					"versions": 453928,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 595383,
+					"fixVersion": 453385,
+					"title": 595385,
+					"resolution": 453379,
+					"labels": 453362,
+					"platforms": 453360,
+					"status": 453358
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			},
+			"QTBUG-50523": {
+				"id": 198429,
+				"nameID": "QTBUG-50523",
+				"attributes": {
+					"components": 453537,
+					"environment": 453407,
+					"versions": 454033,
+					"elementStatus": 453340,
+					"effort": 453351,
+					"priority": 547486,
+					"fixVersion": 453385,
+					"title": 547487,
+					"resolution": 453477,
+					"labels": 453362,
+					"status": 453476,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "issue"
+			},
+			"QTBUG-51112": {
+				"id": 225362,
+				"nameID": "QTBUG-51112",
+				"attributes": {
+					"components": 453503,
+					"environment": 611771,
+					"versions": 453438,
+					"elementStatus": 453347,
+					"effort": 453351,
+					"priority": 611770,
+					"fixVersion": 453385,
+					"title": 611772,
+					"resolution": 453462,
+					"labels": 453362,
+					"status": 453358,
+					"platforms": 453360
+				},
+				"parts": [
+				],
+				"requiredInterfaces": [
+				],
+				"providedInterfaces": [
+				],
+				"type": "bug"
+			}
+		},
+		"subContainers": [
+		],
+		"relations": [
+			{
+				"id": 45962,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-17869",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 657845,
+					"dependency_score": 657846
+				}
+			},
+			{
+				"id": 52463,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-56674",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 671513,
+					"dependency_score": 671514
+				}
+			},
+			{
+				"id": 38466,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-61989",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 642038,
+					"dependency_score": 642039
+				}
+			},
+			{
+				"id": 46164,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-65342",
+				"toID": "QTBUG-55604",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 658273,
+					"dependency_score": 658274
+				}
+			},
+			{
+				"id": 42410,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-32241",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 650363,
+					"dependency_score": 650364
+				}
+			},
+			{
+				"id": 51794,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-55604",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 670113,
+					"dependency_score": 670114
+				}
+			},
+			{
+				"id": 51851,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-48235",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 670230,
+					"dependency_score": 670231
+				}
+			},
+			{
+				"id": 26307,
+				"nameType": "DUPLICATES",
+				"fromID": "QTWB-31",
+				"toID": "QTWB-30",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 336027,
+					"description": 336122,
+					"dependency_score": 336123
+				}
+			},
+			{
+				"id": 38947,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-50523",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 643049,
+					"dependency_score": 643050
+				}
+			},
+			{
+				"id": 50219,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-61682",
+				"toID": "QTBUG-56674",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 666796,
+					"dependency_score": 666797
+				}
+			},
+			{
+				"id": 46978,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-54948",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 659989,
+					"dependency_score": 659990
+				}
+			},
+			{
+				"id": 46613,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46064",
+				"toID": "QTBUG-46129",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 659226,
+					"dependency_score": 659227
+				}
+			},
+			{
+				"id": 46892,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-51112",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 659807,
+					"dependency_score": 659808
+				}
+			},
+			{
+				"id": 38055,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-51188",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 641166,
+					"dependency_score": 641167
+				}
+			},
+			{
+				"id": 44331,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46129",
+				"toID": "QTBUG-76099",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 654417,
+					"dependency_score": 654418
+				}
+			},
+			{
+				"id": 44001,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-62438",
+				"toID": "QTBUG-61854",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 653720,
+					"dependency_score": 653721
+				}
+			},
+			{
+				"id": 38957,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-45105",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 643070,
+					"dependency_score": 643071
+				}
+			},
+			{
+				"id": 48895,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-61854",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 664028,
+					"dependency_score": 664029
+				}
+			},
+			{
+				"id": 37361,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-44986",
+				"toID": "QTBUG-46129",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 639706,
+					"dependency_score": 639707
+				}
+			},
+			{
+				"id": 50558,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-63232",
+				"toID": "QTBUG-76099",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 667509,
+					"dependency_score": 667510
+				}
+			},
+			{
+				"id": 51277,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-61195",
+				"toID": "QTBUG-55604",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 669017,
+					"dependency_score": 669018
+				}
+			},
+			{
+				"id": 42494,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-59247",
+				"toID": "QTBUG-56674",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 650550,
+					"dependency_score": 650551
+				}
+			},
+			{
+				"id": 50881,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-54451",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 668189,
+					"dependency_score": 668190
+				}
+			},
+			{
+				"id": 42421,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-55454",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 650389,
+					"dependency_score": 650390
+				}
+			},
+			{
+				"id": 41824,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-32150",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 649119,
+					"dependency_score": 649120
+				}
+			},
+			{
+				"id": 38195,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-44733",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 641463,
+					"dependency_score": 641464
+				}
+			},
+			{
+				"id": 26310,
+				"nameType": "DUPLICATES",
+				"fromID": "QTWB-32",
+				"toID": "QTWB-30",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 336027,
+					"description": 336130,
+					"dependency_score": 336131
+				}
+			},
+			{
+				"id": 49736,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-50502",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 665783,
+					"dependency_score": 665784
+				}
+			},
+			{
+				"id": 47679,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-61164",
+				"toID": "QTBUG-56674",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 661464,
+					"dependency_score": 661465
+				}
+			},
+			{
+				"id": 37541,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-56674",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 640088,
+					"dependency_score": 640089
+				}
+			},
+			{
+				"id": 47614,
+				"nameType": "DUPLICATES",
+				"fromID": "QTBUG-52614",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 661327,
+					"dependency_score": 661328
+				}
+			},
+			{
+				"id": 49892,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-64999",
+				"toID": "QTBUG-46074",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 666108,
+					"dependency_score": 666109
+				}
+			},
+			{
+				"id": 48592,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-76372",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 663385,
+					"dependency_score": 663386
+				}
+			},
+			{
+				"id": 67101,
+				"nameType": "DUPLICATES",
+				"fromID": "QTWB-30",
+				"toID": "QTBUG-55604",
+				"power": 0,
+				"attributes": {
+				}
+			},
+			{
+				"id": 40573,
+				"nameType": "CONTRIBUTES",
+				"fromID": "QTBUG-46074",
+				"toID": "QTBUG-45105",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 646486,
+					"dependency_score": 646487
+				}
+			},
+			{
+				"id": 39717,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-44986",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 644673,
+					"dependency_score": 644674
+				}
+			},
+			{
+				"id": 52295,
+				"nameType": "DECOMPOSITION",
+				"fromID": "QTBUG-70466",
+				"toID": "QTBUG-46129",
+				"power": 0,
+				"attributes": {
+					"relationshipStatus": 453352,
+					"description": 671157,
+					"dependency_score": 671158
+				}
+			}
+		],
+		"constraints": {
+		},
+		"attributeValues": {
+			"577039": {
+				"id": 577039,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"581634": {
+				"id": 581634,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"581635": {
+				"id": 581635,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 7, Qt 5.9.0, MSVC 2015\"",
+				"source": "DEFAULT"
+			},
+			"454154": {
+				"id": 454154,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.9.0\"]",
+				"source": "DEFAULT"
+			},
+			"581636": {
+				"id": 581636,
+				"name": "title",
+				"mutable": false,
+				"value": "WebGL not enabled ",
+				"source": "DEFAULT"
+			},
+			"455700": {
+				"id": 455700,
+				"name": "fixVersion",
+				"mutable": false,
+				"value": "5.7.0 Beta",
+				"source": "DEFAULT"
+			},
+			"567324": {
+				"id": 567324,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"668190": {
+				"id": 668190,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"567325": {
+				"id": 567325,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"OS: Windows 10 Pro, 64-bit\\r\\n\\r\\nProcessor: Intel Core i3-3220 3.30 GHz\\r\\n\\r\\nVideo card: Intel HD Graphics 2500\\r\\n\\r\\nBuild version: MSVC 2015, x64\"",
+				"source": "DEFAULT"
+			},
+			"567326": {
+				"id": 567326,
+				"name": "title",
+				"mutable": false,
+				"value": "WebGL not working on Intel HD Graphics 2500",
+				"source": "DEFAULT"
+			},
+			"668189": {
+				"id": 668189,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"577040": {
+				"id": 577040,
+				"name": "title",
+				"mutable": false,
+				"value": "QWebEnginePage\u0027s transparent background is displayed incorrectly in a full-screen display",
+				"source": "DEFAULT"
+			},
+			"670230": {
+				"id": 670230,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"659990": {
+				"id": 659990,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"670231": {
+				"id": 670231,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"466969": {
+				"id": 466969,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: OpenGL\",\"QPA: Windows\"]",
+				"source": "DEFAULT"
+			},
+			"659989": {
+				"id": 659989,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"601131": {
+				"id": 601131,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"601133": {
+				"id": 601133,
+				"name": "title",
+				"mutable": false,
+				"value": "Window flickers on resize when QWebEngineView is present and ANGLE is used",
+				"source": "DEFAULT"
+			},
+			"601132": {
+				"id": 601132,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 10 (Build 14393)\\r\\nVisual Studio 2017\\r\\nGPU: Nvidia GT730\\r\\nGPU Driver: 376.53\\r\\n\"",
+				"source": "DEFAULT"
+			},
+			"463905": {
+				"id": 463905,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.7.0\",\"5.8.0\",\"5.9.0\"]",
+				"source": "DEFAULT"
+			},
+			"585262": {
+				"id": 585262,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"585263": {
+				"id": 585263,
+				"name": "title",
+				"mutable": false,
+				"value": "A lot of flickering when resizing WebEngine window that uses ANGLE",
+				"source": "DEFAULT"
+			},
+			"454191": {
+				"id": 454191,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.9.3\"]",
+				"source": "DEFAULT"
+			},
+			"453682": {
+				"id": 453682,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: OpenGL\"]",
+				"source": "DEFAULT"
+			},
+			"482364": {
+				"id": 482364,
+				"name": "title",
+				"mutable": false,
+				"value": "WebEngine: Rendering",
+				"source": "DEFAULT"
+			},
+			"482363": {
+				"id": 482363,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"644673": {
+				"id": 644673,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"644674": {
+				"id": 644674,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"640089": {
+				"id": 640089,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"640088": {
+				"id": 640088,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"654417": {
+				"id": 654417,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"654418": {
+				"id": 654418,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"548437": {
+				"id": 548437,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"548438": {
+				"id": 548438,
+				"name": "title",
+				"mutable": false,
+				"value": "QtWebEngine frame render to pixmap support",
+				"source": "DEFAULT"
+			},
+			"453735": {
+				"id": 453735,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"Quick: Controls\"]",
+				"source": "DEFAULT"
+			},
+			"650363": {
+				"id": 650363,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"650364": {
+				"id": 650364,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"560754": {
+				"id": 560754,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"590451": {
+				"id": 590451,
+				"name": "title",
+				"mutable": false,
+				"value": "Be able to still fall back from the specified OpenGL approach to software rendering if it is not available",
+				"source": "DEFAULT"
+			},
+			"560755": {
+				"id": 560755,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.3.0\",\"5.4.1\",\"5.5.0 Alpha\"]",
+				"source": "DEFAULT"
+			},
+			"590450": {
+				"id": 590450,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"560756": {
+				"id": 560756,
+				"name": "title",
+				"mutable": false,
+				"value": "CLONE - QML window application resize not smooth anymore",
+				"source": "DEFAULT"
+			},
+			"582280": {
+				"id": 582280,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"582281": {
+				"id": 582281,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 10, compiled in Visual Studio 14.0. \"",
+				"source": "DEFAULT"
+			},
+			"582282": {
+				"id": 582282,
+				"name": "title",
+				"mutable": false,
+				"value": "QWebEngineView Flickers on Resize",
+				"source": "DEFAULT"
+			},
+			"641167": {
+				"id": 641167,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"641166": {
+				"id": 641166,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"336022": {
+				"id": 336022,
+				"name": "elementStatus",
+				"mutable": false,
+				"value": "completed",
+				"source": "DEFAULT",
+				"type": "elementStatus"
+			},
+			"547486": {
+				"id": 547486,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"547487": {
+				"id": 547487,
+				"name": "title",
+				"mutable": false,
+				"value": "Headless support for QWebEngineView",
+				"source": "DEFAULT"
+			},
+			"650389": {
+				"id": 650389,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"336027": {
+				"id": 336027,
+				"name": "relationshipStatus",
+				"mutable": true,
+				"value": "accepted",
+				"source": "DEFAULT",
+				"type": "relationshipStatus"
+			},
+			"336026": {
+				"id": 336026,
+				"name": "effort",
+				"mutable": true,
+				"value": 0.0,
+				"source": "DEFAULT",
+				"type": "effort"
+			},
+			"650390": {
+				"id": 650390,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"336037": {
+				"id": 336037,
+				"name": "fixVersion",
+				"mutable": false,
+				"value": "No FixVersion",
+				"source": "DEFAULT"
+			},
+			"336039": {
+				"id": 336039,
+				"name": "environment",
+				"mutable": false,
+				"source": "DEFAULT"
+			},
+			"336038": {
+				"id": 336038,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"1.0\"]",
+				"source": "DEFAULT"
+			},
+			"455845": {
+				"id": 455845,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.5.0\",\"5.5.1\"]",
+				"source": "DEFAULT"
+			},
+			"336033": {
+				"id": 336033,
+				"name": "labels",
+				"mutable": false,
+				"value": "[]",
+				"source": "DEFAULT"
+			},
+			"336032": {
+				"id": 336032,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"General\"]",
+				"source": "DEFAULT"
+			},
+			"666796": {
+				"id": 666796,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"666797": {
+				"id": 666797,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"336045": {
+				"id": 336045,
+				"name": "title",
+				"mutable": false,
+				"value": "Enable webgl failure.",
+				"source": "DEFAULT"
+			},
+			"336044": {
+				"id": 336044,
+				"name": "status",
+				"mutable": false,
+				"value": "Closed",
+				"source": "DEFAULT"
+			},
+			"336041": {
+				"id": 336041,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"336043": {
+				"id": 336043,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Duplicate",
+				"source": "DEFAULT"
+			},
+			"336042": {
+				"id": 336042,
+				"name": "platforms",
+				"mutable": false,
+				"source": "DEFAULT"
+			},
+			"453812": {
+				"id": 453812,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Fixed",
+				"source": "DEFAULT"
+			},
+			"665784": {
+				"id": 665784,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"489652": {
+				"id": 489652,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"OSX 10.6\"",
+				"source": "DEFAULT"
+			},
+			"595133": {
+				"id": 595133,
+				"name": "title",
+				"mutable": false,
+				"value": "Print to QImage/QPaintDevice",
+				"source": "DEFAULT"
+			},
+			"595132": {
+				"id": 595132,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"665783": {
+				"id": 665783,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"453836": {
+				"id": 453836,
+				"name": "platforms",
+				"mutable": false,
+				"value": "[\"Linux/X11\",\"macOS\",\"Windows\"]",
+				"source": "DEFAULT"
+			},
+			"639707": {
+				"id": 639707,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"468180": {
+				"id": 468180,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: OpenGL\",\"WebEngine\"]",
+				"source": "DEFAULT"
+			},
+			"639706": {
+				"id": 639706,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"595153": {
+				"id": 595153,
+				"name": "title",
+				"mutable": false,
+				"value": "WebEngineView\u0027s current solution for offscreen rendering is somewhat unreasonable",
+				"source": "DEFAULT"
+			},
+			"595152": {
+				"id": 595152,
+				"name": "priority",
+				"mutable": true,
+				"value": 5.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"453340": {
+				"id": 453340,
+				"name": "elementStatus",
+				"mutable": false,
+				"value": "submitted",
+				"source": "DEFAULT",
+				"type": "elementStatus"
+			},
+			"336091": {
+				"id": 336091,
+				"name": "title",
+				"mutable": false,
+				"value": "Win7+Qt5.9.3-msvc2015How open and use webgl modules?",
+				"source": "DEFAULT"
+			},
+			"336090": {
+				"id": 336090,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"610025": {
+				"id": 610025,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"336101": {
+				"id": 336101,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"453351": {
+				"id": 453351,
+				"name": "effort",
+				"mutable": true,
+				"value": 0.0,
+				"source": "DEFAULT",
+				"type": "effort"
+			},
+			"584937": {
+				"id": 584937,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"584938": {
+				"id": 584938,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"* Qt 5.9.1 msys2\\r\\n * Windows 10\\r\\n * Latest NVidia Driver\\r\\n * Nvidia 780\\r\\n * Ryzen 1700\"",
+				"source": "DEFAULT"
+			},
+			"610026": {
+				"id": 610026,
+				"name": "title",
+				"mutable": false,
+				"value": "Support rendering to QPaintDevice in QtWebEngine",
+				"source": "DEFAULT"
+			},
+			"336102": {
+				"id": 336102,
+				"name": "title",
+				"mutable": false,
+				"value": "Enable webgl failure.                              Please don\u0027t close the problem at will. Please check your answer carefully.",
+				"source": "DEFAULT"
+			},
+			"584939": {
+				"id": 584939,
+				"name": "title",
+				"mutable": false,
+				"value": "Excessive black flickering when resizing qml window quickly",
+				"source": "DEFAULT"
+			},
+			"453347": {
+				"id": 453347,
+				"name": "elementStatus",
+				"mutable": false,
+				"value": "completed",
+				"source": "DEFAULT",
+				"type": "elementStatus"
+			},
+			"453358": {
+				"id": 453358,
+				"name": "status",
+				"mutable": false,
+				"value": "Closed",
+				"source": "DEFAULT"
+			},
+			"453357": {
+				"id": 453357,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.1.0 \"]",
+				"source": "DEFAULT"
+			},
+			"453352": {
+				"id": 453352,
+				"name": "relationshipStatus",
+				"mutable": true,
+				"value": "accepted",
+				"source": "DEFAULT",
+				"type": "relationshipStatus"
+			},
+			"453362": {
+				"id": 453362,
+				"name": "labels",
+				"mutable": false,
+				"value": "[]",
+				"source": "DEFAULT"
+			},
+			"453363": {
+				"id": 453363,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Done",
+				"source": "DEFAULT"
+			},
+			"453360": {
+				"id": 453360,
+				"name": "platforms",
+				"mutable": false,
+				"source": "DEFAULT"
+			},
+			"545008": {
+				"id": 545008,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"453374": {
+				"id": 453374,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.9.1\"]",
+				"source": "DEFAULT"
+			},
+			"545009": {
+				"id": 545009,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Gentoo Linux x86_64, 4.12.12\\r\\n\\r\\nKDE 5.11.4\\r\\n\\r\\nnvidia-drivers 387.34\"",
+				"source": "DEFAULT"
+			},
+			"545010": {
+				"id": 545010,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: Painting\",\"GUI: Window management\",\"QPA: X11/XCB\"]",
+				"source": "DEFAULT"
+			},
+			"545011": {
+				"id": 545011,
+				"name": "title",
+				"mutable": false,
+				"value": "Poor window resize performance",
+				"source": "DEFAULT"
+			},
+			"453370": {
+				"id": 453370,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 10\"",
+				"source": "DEFAULT"
+			},
+			"336123": {
+				"id": 336123,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"336122": {
+				"id": 336122,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"453380": {
+				"id": 453380,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.5.0\"]",
+				"source": "DEFAULT"
+			},
+			"453379": {
+				"id": 453379,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Incomplete",
+				"source": "DEFAULT"
+			},
+			"336131": {
+				"id": 336131,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"456961": {
+				"id": 456961,
+				"name": "fixVersion",
+				"mutable": false,
+				"value": "5.12.5",
+				"source": "DEFAULT"
+			},
+			"336130": {
+				"id": 336130,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"453390": {
+				"id": 453390,
+				"name": "environment",
+				"mutable": false,
+				"source": "DEFAULT"
+			},
+			"453384": {
+				"id": 453384,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_standard\"]",
+				"source": "DEFAULT"
+			},
+			"453385": {
+				"id": 453385,
+				"name": "fixVersion",
+				"mutable": false,
+				"value": "No FixVersion",
+				"source": "DEFAULT"
+			},
+			"568088": {
+				"id": 568088,
+				"name": "title",
+				"mutable": false,
+				"value": "Flickering image on resize",
+				"source": "DEFAULT"
+			},
+			"453910": {
+				"id": 453910,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_premium\"]",
+				"source": "DEFAULT"
+			},
+			"671514": {
+				"id": 671514,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"659226": {
+				"id": 659226,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"659227": {
+				"id": 659227,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"465173": {
+				"id": 465173,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"CustomerRequirement\"]",
+				"source": "DEFAULT"
+			},
+			"671513": {
+				"id": 671513,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"453406": {
+				"id": 453406,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.7.0\"]",
+				"source": "DEFAULT"
+			},
+			"453407": {
+				"id": 453407,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows\"",
+				"source": "DEFAULT"
+			},
+			"453405": {
+				"id": 453405,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_silver\"]",
+				"source": "DEFAULT"
+			},
+			"568086": {
+				"id": 568086,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"568087": {
+				"id": 568087,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Intel 4570, Intel HD4200, Windows 7 SP1 x64, Fedora 22 (Gnome, KDE)\"",
+				"source": "DEFAULT"
+			},
+			"486183": {
+				"id": 486183,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"488743": {
+				"id": 488743,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"453411": {
+				"id": 453411,
+				"name": "versions",
+				"mutable": false,
+				"source": "DEFAULT"
+			},
+			"486186": {
+				"id": 486186,
+				"name": "title",
+				"mutable": false,
+				"value": "[REG 5.5.1-\u003e5.x] Windows: WebEngine no longer supports webgl on Intel HD drivers",
+				"source": "DEFAULT"
+			},
+			"453419": {
+				"id": 453419,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Cannot Reproduce",
+				"source": "DEFAULT"
+			},
+			"487722": {
+				"id": 487722,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: Window management\",\"Quick: Other\"]",
+				"source": "DEFAULT"
+			},
+			"486185": {
+				"id": 486185,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.6.1\",\"5.7.0\",\"5.9.0\"]",
+				"source": "DEFAULT"
+			},
+			"488745": {
+				"id": 488745,
+				"name": "title",
+				"mutable": false,
+				"value": "QML window application resize not smooth anymore",
+				"source": "DEFAULT"
+			},
+			"453928": {
+				"id": 453928,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.1.0 RC1\"]",
+				"source": "DEFAULT"
+			},
+			"486184": {
+				"id": 486184,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Intel HD 10.18.10.4358\"",
+				"source": "DEFAULT"
+			},
+			"488744": {
+				"id": 488744,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"QPA: X11/XCB\",\"Quick: Core Declarative QML \"]",
+				"source": "DEFAULT"
+			},
+			"606523": {
+				"id": 606523,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"606525": {
+				"id": 606525,
+				"name": "title",
+				"mutable": false,
+				"value": "QSplitter/QGLWIdget flicker when moving handles",
+				"source": "DEFAULT"
+			},
+			"606524": {
+				"id": 606524,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"4.7.1\",\"5.0.0 RC 1\"]",
+				"source": "DEFAULT"
+			},
+			"453438": {
+				"id": 453438,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.5.1\"]",
+				"source": "DEFAULT"
+			},
+			"650551": {
+				"id": 650551,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"650550": {
+				"id": 650550,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"487238": {
+				"id": 487238,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 7, Windows 8\"",
+				"source": "DEFAULT"
+			},
+			"453444": {
+				"id": 453444,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"QML: Declarative and Javascript Engine\"]",
+				"source": "DEFAULT"
+			},
+			"453445": {
+				"id": 453445,
+				"name": "platforms",
+				"mutable": false,
+				"value": "[\"Windows\"]",
+				"source": "DEFAULT"
+			},
+			"454469": {
+				"id": 454469,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"QPA: Windows\"]",
+				"source": "DEFAULT"
+			},
+			"661327": {
+				"id": 661327,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"453462": {
+				"id": 453462,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Duplicate",
+				"source": "DEFAULT"
+			},
+			"669018": {
+				"id": 669018,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"663386": {
+				"id": 663386,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"459093": {
+				"id": 459093,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_2H17\",\"Reported_by_support_standard\"]",
+				"source": "DEFAULT"
+			},
+			"578907": {
+				"id": 578907,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"669017": {
+				"id": 669017,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"663385": {
+				"id": 663385,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"578908": {
+				"id": 578908,
+				"name": "title",
+				"mutable": false,
+				"value": "WebEngine: Printing",
+				"source": "DEFAULT"
+			},
+			"453459": {
+				"id": 453459,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.8.0\"]",
+				"source": "DEFAULT"
+			},
+			"659807": {
+				"id": 659807,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"661328": {
+				"id": 661328,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"646487": {
+				"id": 646487,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"646486": {
+				"id": 646486,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"453476": {
+				"id": 453476,
+				"name": "status",
+				"mutable": false,
+				"value": "Reported",
+				"source": "DEFAULT"
+			},
+			"453477": {
+				"id": 453477,
+				"name": "resolution",
+				"mutable": false,
+				"value": "Unresolved",
+				"source": "DEFAULT"
+			},
+			"542062": {
+				"id": 542062,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"GUI: Graphics Performance\",\"QPA: X11/XCB\"]",
+				"source": "DEFAULT"
+			},
+			"658274": {
+				"id": 658274,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"659808": {
+				"id": 659808,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"658273": {
+				"id": 658273,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"453490": {
+				"id": 453490,
+				"name": "platforms",
+				"mutable": false,
+				"value": "[\"macOS\"]",
+				"source": "DEFAULT"
+			},
+			"466801": {
+				"id": 466801,
+				"name": "title",
+				"mutable": false,
+				"value": "PreRender support",
+				"source": "DEFAULT"
+			},
+			"466800": {
+				"id": 466800,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"453502": {
+				"id": 453502,
+				"name": "status",
+				"mutable": false,
+				"value": "Open",
+				"source": "DEFAULT"
+			},
+			"453503": {
+				"id": 453503,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"Quick: Core Declarative QML \"]",
+				"source": "DEFAULT"
+			},
+			"667510": {
+				"id": 667510,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"667509": {
+				"id": 667509,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"624521": {
+				"id": 624521,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_silver\",\"driverissue\"]",
+				"source": "DEFAULT"
+			},
+			"624520": {
+				"id": 624520,
+				"name": "priority",
+				"mutable": true,
+				"value": 2.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"624523": {
+				"id": 624523,
+				"name": "title",
+				"mutable": false,
+				"value": "Severe Flickering Regression on transitioning from Qt 5.02 to Qt 5.1",
+				"source": "DEFAULT"
+			},
+			"624522": {
+				"id": 624522,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Ubuntu 13.04,Dell XPS L502X laptop, open-source graphics driver for Intel Integrated graphics HD3000.\"",
+				"source": "DEFAULT"
+			},
+			"595329": {
+				"id": 595329,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.11\",\"5.12.0\",\"5.12.2\",\"5.12.3\"]",
+				"source": "DEFAULT"
+			},
+			"595328": {
+				"id": 595328,
+				"name": "priority",
+				"mutable": true,
+				"value": 2.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"595331": {
+				"id": 595331,
+				"name": "title",
+				"mutable": false,
+				"value": "Qt WebEngine Crash on new MacBook Devices (15-inch, 2018 and newer)",
+				"source": "DEFAULT"
+			},
+			"595330": {
+				"id": 595330,
+				"name": "environment",
+				"mutable": false,
+				"value": "\" Mac OS X 10.14.4 from 2018 mac book devices\"",
+				"source": "DEFAULT"
+			},
+			"453526": {
+				"id": 453526,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"Quick: SceneGraph\"]",
+				"source": "DEFAULT"
+			},
+			"653721": {
+				"id": 653721,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"454039": {
+				"id": 454039,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.10.0\"]",
+				"source": "DEFAULT"
+			},
+			"653720": {
+				"id": 653720,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"649119": {
+				"id": 649119,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"454033": {
+				"id": 454033,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.6.0 Beta\"]",
+				"source": "DEFAULT"
+			},
+			"455580": {
+				"id": 455580,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"WebEngine\",\"Widgets: Widgets and Dialogs\"]",
+				"source": "DEFAULT"
+			},
+			"453537": {
+				"id": 453537,
+				"name": "components",
+				"mutable": false,
+				"value": "[\"WebEngine\"]",
+				"source": "DEFAULT"
+			},
+			"670114": {
+				"id": 670114,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"649120": {
+				"id": 649120,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"453548": {
+				"id": 453548,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.6.0\"]",
+				"source": "DEFAULT"
+			},
+			"670113": {
+				"id": 670113,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"530360": {
+				"id": 530360,
+				"name": "title",
+				"mutable": false,
+				"value": "Resizing Qt applications causes flickering",
+				"source": "DEFAULT"
+			},
+			"595385": {
+				"id": 595385,
+				"name": "title",
+				"mutable": false,
+				"value": "Excessive flicker When Resizing Qt Quick Components Windows",
+				"source": "DEFAULT"
+			},
+			"595384": {
+				"id": 595384,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Linux 3.5.0-34-generic x86_64\\nKDE 4.8.5\"",
+				"source": "DEFAULT"
+			},
+			"641464": {
+				"id": 641464,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"611771": {
+				"id": 611771,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Intel(R) Core(TM) i5-4590 CPU @ 3.30GHz w/o dedicated graphics\\r\\nUbuntu 16.04 and archlinux\"",
+				"source": "DEFAULT"
+			},
+			"611770": {
+				"id": 611770,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"611772": {
+				"id": 611772,
+				"name": "title",
+				"mutable": false,
+				"value": "QQuickview resize out of sync",
+				"source": "DEFAULT"
+			},
+			"462257": {
+				"id": 462257,
+				"name": "fixVersion",
+				"mutable": false,
+				"value": "5.13.0 Beta2",
+				"source": "DEFAULT"
+			},
+			"454064": {
+				"id": 454064,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.12\"]",
+				"source": "DEFAULT"
+			},
+			"479167": {
+				"id": 479167,
+				"name": "title",
+				"mutable": false,
+				"value": "Resizing WebView is slowly",
+				"source": "DEFAULT"
+			},
+			"479166": {
+				"id": 479166,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Linux Mint 18.1 \u0026 Qt 5.9 \u0026 WebEngine\\r\\n\\r\\nWindows 10 \u0026 Qt 5.9 \u0026 WebEngine\"",
+				"source": "DEFAULT"
+			},
+			"479165": {
+				"id": 479165,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"657846": {
+				"id": 657846,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"671158": {
+				"id": 671158,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"530357": {
+				"id": 530357,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"530358": {
+				"id": 530358,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 7 or 10, 5.4.1 OpenGL build\"",
+				"source": "DEFAULT"
+			},
+			"595383": {
+				"id": 595383,
+				"name": "priority",
+				"mutable": true,
+				"value": 7.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"641463": {
+				"id": 641463,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"530359": {
+				"id": 530359,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.4.1\",\"5.5.1\",\"5.6\"]",
+				"source": "DEFAULT"
+			},
+			"657845": {
+				"id": 657845,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"671157": {
+				"id": 671157,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"454084": {
+				"id": 454084,
+				"name": "versions",
+				"mutable": false,
+				"value": "[\"5.5.0 Alpha\"]",
+				"source": "DEFAULT"
+			},
+			"619983": {
+				"id": 619983,
+				"name": "title",
+				"mutable": false,
+				"value": "Support for SwiftShader software rendering on Windows",
+				"source": "DEFAULT"
+			},
+			"619982": {
+				"id": 619982,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"661464": {
+				"id": 661464,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"661465": {
+				"id": 661465,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"664028": {
+				"id": 664028,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"664029": {
+				"id": 664029,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"564177": {
+				"id": 564177,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"564178": {
+				"id": 564178,
+				"name": "title",
+				"mutable": false,
+				"value": "window synchronisation issues on resize",
+				"source": "DEFAULT"
+			},
+			"488935": {
+				"id": 488935,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"643049": {
+				"id": 643049,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"epic"
+				],
+				"source": "DEFAULT"
+			},
+			"643050": {
+				"id": 643050,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"453601": {
+				"id": 453601,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Windows 7\"",
+				"source": "DEFAULT"
+			},
+			"600033": {
+				"id": 600033,
+				"name": "priority",
+				"mutable": true,
+				"value": 3.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"601571": {
+				"id": 601571,
+				"name": "environment",
+				"mutable": false,
+				"value": "\"Linux - Debian Jessie \\r\\nGnome / XFCE\\r\\nIntel GPU x86-64 with TearFree on  / Radeon GPU x86-32 \"",
+				"source": "DEFAULT"
+			},
+			"600034": {
+				"id": 600034,
+				"name": "title",
+				"mutable": false,
+				"value": "QML Window doesn\u0027t refresh its contents on resize when using AA_UseOpenGLES",
+				"source": "DEFAULT"
+			},
+			"601570": {
+				"id": 601570,
+				"name": "priority",
+				"mutable": true,
+				"value": 4.0,
+				"source": "FIXED",
+				"type": "priority"
+			},
+			"456173": {
+				"id": 456173,
+				"name": "labels",
+				"mutable": false,
+				"value": "[\"Reported_by_support_1H19\",\"Reported_by_support_standard\"]",
+				"source": "DEFAULT"
+			},
+			"601572": {
+				"id": 601572,
+				"name": "title",
+				"mutable": false,
+				"value": "Window height resize is jerky, judders ",
+				"source": "DEFAULT"
+			},
+			"488936": {
+				"id": 488936,
+				"name": "title",
+				"mutable": false,
+				"value": "Add page printing support to QtWebEngine QML API",
+				"source": "DEFAULT"
+			},
+			"643071": {
+				"id": 643071,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"666108": {
+				"id": 666108,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			},
+			"643070": {
+				"id": 643070,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Duplicate"
+				],
+				"source": "DEFAULT"
+			},
+			"666109": {
+				"id": 666109,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"642039": {
+				"id": 642039,
+				"name": "dependency_score",
+				"mutable": true,
+				"value": 1.0,
+				"source": "DEFAULT"
+			},
+			"642038": {
+				"id": 642038,
+				"name": "description",
+				"mutable": true,
+				"value": [
+					"Relates"
+				],
+				"source": "DEFAULT"
+			}
+		}
+	},
+	"layers": {
+		"0": [
+			"QTWB-30"
+		],
+		"1": [
+			"QTWB-31",
+			"QTWB-32",
+			"QTBUG-55604"
+		],
+		"2": [
+			"QTBUG-70466",
+			"QTBUG-61195",
+			"QTBUG-65342"
+		],
+		"3": [
+			"QTBUG-54948",
+			"QTBUG-55454",
+			"QTBUG-50523",
+			"QTBUG-51188",
+			"QTBUG-44986",
+			"QTBUG-61854",
+			"QTBUG-56674",
+			"QTBUG-46129",
+			"QTBUG-76372"
+		],
+		"4": [
+			"QTBUG-62438",
+			"QTBUG-61164",
+			"QTBUG-61682",
+			"QTBUG-46074",
+			"QTBUG-59247",
+			"QTBUG-76099",
+			"QTBUG-46064"
+		],
+		"5": [
+			"QTBUG-32241",
+			"QTBUG-52614",
+			"QTBUG-17869",
+			"QTBUG-44733",
+			"QTBUG-45105",
+			"QTBUG-50502",
+			"QTBUG-54451",
+			"QTBUG-61989",
+			"QTBUG-51112",
+			"QTBUG-48235",
+			"QTBUG-64999",
+			"QTBUG-32150",
+			"QTBUG-63232"
+		]
+	},
+	"numberOfOutpointingRelations": 15
+}

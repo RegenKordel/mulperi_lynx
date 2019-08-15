@@ -1,4 +1,4 @@
-package eu.openreq.mulperi.servicesTest;
+package eu.openreq.mulperi.test.services;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,11 +17,12 @@ import eu.openreq.mulperi.services.OpenReqJSONParser;
 
 public class JSONParserTest {
 
+	static String dirPath;
 	static String jsonString;
 	
 	@BeforeClass
 	public static void setUp() throws IOException, JSONException{		
-		String dirPath = System.getProperty("user.dir") + "/src/test/resources/";
+		dirPath = System.getProperty("user.dir") + "/src/test/resources/";
 		jsonString = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
 				"release_parsing_data_nofixver.json"))); 
 	}
@@ -57,6 +58,26 @@ public class JSONParserTest {
 		}
 		
 		assertTrue(true);
+	}
+	
+	@Test
+	public void parsingDataTest() throws IOException {
+		String data = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
+				"release_parsing_data.json"))); 
+		
+		OpenReqJSONParser parser = new OpenReqJSONParser(data);
+		
+		assertTrue(parser.getRequirements().size()>0);
+	}
+	
+	@Test
+	public void dataWithImpliesTest() throws IOException {
+		String data = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
+				"consistent_with_implies.json"))); 
+		
+		OpenReqJSONParser parser = new OpenReqJSONParser(data);
+		
+		assertTrue(parser.getRequirements().size()>0);
 	}
 	
 }
