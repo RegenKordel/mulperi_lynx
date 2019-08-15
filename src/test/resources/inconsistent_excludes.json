@@ -1,7 +1,7 @@
 {
  "project": { 
- 	"id": "Brussels2018",
- 	"name": "Brussels example project",
+ 	"id": "InconsistentExcludes",
+ 	"name": "Inconsistent with Excludes",
  	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
@@ -56,6 +56,11 @@
    	"dependency_type": "REQUIRES",
    	"fromid": "REQ1",
    	"toid": "REQ2"
+   },
+   {
+   	"dependency_type": "EXCLUDES",
+   	"fromid": "REQ1",
+   	"toid": "REQ5"
    }
  ]
 }

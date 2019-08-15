@@ -1,7 +1,7 @@
 {
  "project": { 
- 	"id": "Brussels2018",
- 	"name": "Brussels example project",
+ 	"id": "ConsistentImplies",
+ 	"name": "Consistent with Implies",
  	"specifiedRequirements": ["REQ1", "REQ2", "REQ3", "REQ4", "REQ5"]
  },
  "requirements": [
