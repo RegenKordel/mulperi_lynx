@@ -121,6 +121,8 @@ public class MurmeliModelGeneratorTest {
 	    	
 	    	dep.setStatus(Dependency_status.values()[depValue]);
 	    	
+	    	dep.setDescription(Arrays.asList("description" + i));
+	    	
 	    	depList.add(dep);
     	}
     	

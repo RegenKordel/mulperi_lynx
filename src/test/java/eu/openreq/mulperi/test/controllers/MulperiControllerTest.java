@@ -86,7 +86,7 @@ public class MulperiControllerTest {
 
 	@Test
 	public void consistencyCheckAndDiagnosisTest() throws Exception {
-		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false"))
+		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false&timeOut=0"))
 				.andRespond(withSuccess("Nice", MediaType.TEXT_PLAIN));
 		mockMvc.perform(post("/models/projects/consistencyCheckAndDiagnosis")
 				.content(jsonString)
@@ -136,7 +136,7 @@ public class MulperiControllerTest {
 		mockServer.expect(requestTo(caasAddress + "/findTransitiveClosureOfElement"))
 				.andRespond(withSuccess(closureFromCaas, MediaType.APPLICATION_JSON));
 		
-		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false"))
+		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false&timeOut=0"))
 				.andRespond(withSuccess(closureFromMallikas, MediaType.TEXT_PLAIN));
 		
 		mockMvc.perform(post("/models/consistencyCheckForTransitiveClosure")
