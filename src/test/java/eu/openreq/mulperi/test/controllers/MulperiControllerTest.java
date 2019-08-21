@@ -66,7 +66,7 @@ public class MulperiControllerTest {
 	public void murmeliModelToKeljuCaasTest() throws Exception {
 		mockServer.expect(requestTo(caasAddress + "/importModelAndUpdateGraph"))
 				.andRespond(withSuccess("Nice", MediaType.TEXT_PLAIN));
-		mockMvc.perform(post("/models/murmeliModelToKeljuCaaS")
+		mockMvc.perform(post("/models/murmeliModelToKeljuCaas")
 				.content(jsonString)
 				.contentType(MediaType.APPLICATION_JSON))		
 				.andExpect(status().isOk());

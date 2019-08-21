@@ -80,4 +80,14 @@ public class JSONParserTest {
 		assertTrue(parser.getRequirements().size()>0);
 	}
 	
+	@Test
+	public void dataResourceExceedTest() throws IOException {
+		String data = new String(Files.readAllBytes(Paths.get(dirPath.toString() + 
+				"inconsistent_excludes_resourceExceed.json"))); 
+		
+		OpenReqJSONParser parser = new OpenReqJSONParser(data);
+		
+		assertTrue(parser.getRequirements().size()>0);
+	}
+	
 }

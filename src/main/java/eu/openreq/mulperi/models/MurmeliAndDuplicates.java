@@ -1,13 +1,14 @@
 package eu.openreq.mulperi.models;
 
+import com.google.gson.JsonArray;
+
 public class MurmeliAndDuplicates {
 
 	private String murmeliString;
 	
-	private String duplicatesString;
+	private JsonArray duplicatesString;
 	
-	public MurmeliAndDuplicates(String murmeliString, String duplicatesString) {
-		super();
+	public MurmeliAndDuplicates(String murmeliString, JsonArray duplicatesString) {
 		this.murmeliString = murmeliString;
 		this.duplicatesString = duplicatesString;
 	}
@@ -20,11 +21,11 @@ public class MurmeliAndDuplicates {
 		this.murmeliString = murmeliString;
 	}
 
-	public String getDuplicatesString() {
+	public JsonArray getDuplicatesString() {
 		return duplicatesString;
 	}
 
-	public void setDuplicatesString(String duplicatesString) {
+	public void setDuplicatesString(JsonArray duplicatesString) {
 		this.duplicatesString = duplicatesString;
 	}
 	
