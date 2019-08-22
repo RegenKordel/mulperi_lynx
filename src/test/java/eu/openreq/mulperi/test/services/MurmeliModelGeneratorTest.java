@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public class MurmeliModelGeneratorTest {
 	
 	private MurmeliModelGenerator modelGenerator;
@@ -121,6 +123,8 @@ public class MurmeliModelGeneratorTest {
 	    	
 	    	dep.setStatus(Dependency_status.values()[depValue]);
 	    	
+	    	dep.setDescription(Arrays.asList("description" + i));
+	    	
 	    	depList.add(dep);
     	}
     	
@@ -191,7 +195,7 @@ public class MurmeliModelGeneratorTest {
     }
     
     @Test
-    public void modelCanBeConverted() {
+    public void modelCanBeConverted() throws JsonProcessingException {
     	List<String> constraints = Arrays.asList("limits", "requires");
     	List<Release> releases = new ArrayList<Release>();
     	
