@@ -234,7 +234,7 @@ public class OpenReqJSONParser {
 			this.filteredDependencies = dependencies;
 			this.filteredReleases = releases;
 		}
-
+		
 		return changes;
 	}
 	

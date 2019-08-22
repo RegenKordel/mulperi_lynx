@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -26,7 +27,7 @@ import fi.helsinki.ese.murmeli.TransitiveClosure;
 @Service
 public class FormatTransformerService {
 	
-	private Gson gson = new Gson();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	
 	public JsonObject murmeliClosureToOpenReqJson(List<String> responses) {
 		Set<Requirement> requirements = new HashSet<Requirement>();
@@ -137,7 +138,7 @@ public class FormatTransformerService {
 		MurmeliModelGenerator generator = new MurmeliModelGenerator();
 		ElementModel murmeliModel = generator.initializeElementModel(requirements, new ArrayList<String>(), dependencies, releases, id);
 
-		MurmeliAndDuplicates response = new MurmeliAndDuplicates(gson.toJson(murmeliModel), changes.toString());
+		MurmeliAndDuplicates response = new MurmeliAndDuplicates(gson.toJson(murmeliModel), changes);
 		
 		return response;
 

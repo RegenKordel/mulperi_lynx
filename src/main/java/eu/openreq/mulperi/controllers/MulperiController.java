@@ -48,7 +48,7 @@ public class MulperiController {
 					+ "in OpenReq JSON format"),
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
-	@PostMapping(value = "murmeliModelToKeljuCaaS")
+	@PostMapping(value = "murmeliModelToKeljuCaas")
 	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements) throws JSONException, 
 				IOException, ParserConfigurationException {
 		return keljuService.murmeliModelToKeljuCaaS(requirements);
@@ -71,7 +71,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@PostMapping(value = "updateMurmeliModelInKeljuCaas")
-	public ResponseEntity<?> updateMurmeliModelInKeljuCaas(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
+	public ResponseEntity<String> updateMurmeliModelInKeljuCaas(@RequestBody String requirements) throws JSONException, IOException, ParserConfigurationException {
 		return keljuService.updateMurmeliModelInKeljuCaas(requirements);
 	}
 	
@@ -106,7 +106,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
-	public ResponseEntity<?> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
+	public ResponseEntity<String> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
 			@RequestParam(required = false) boolean analysisOnly,
 			@RequestParam(required = false, defaultValue = "0") int timeOut) 
 					throws JSONException, IOException, ParserConfigurationException {
@@ -121,7 +121,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/findTransitiveClosureOfRequirement")
-	public ResponseEntity<?> findTransitiveClosureOfRequirement(@RequestBody List<String> requirementId, 
+	public ResponseEntity<String> findTransitiveClosureOfRequirement(@RequestBody List<String> requirementId, 
 			@RequestParam(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
 		return keljuService.findTransitiveClosureOfRequirement(requirementId, layerCount);
 
@@ -135,7 +135,7 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
-	public ResponseEntity<?> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
+	public ResponseEntity<String> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
 			@RequestParam(required = false) Integer layerCount, 
 			@RequestParam(required = false) boolean analysisOnly,
 			@RequestParam(required = false, defaultValue = "0") int timeOut) 
@@ -143,68 +143,4 @@ public class MulperiController {
 		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut);
 	}
 
-	/**
-	 * Check whether a release plan is consistent
-	 * 
-	 * @param jsonString
-	 * @return JSON response
-	 * 		{ 
-	 * 			"response": {
-	 * 				"consistent": false
-	 * 			}
-	 * 		}
-	 * @throws JSONException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 */
-	
-	// HIDDEN FROM SWAGGER!
-	// @ApiOperation(value = "Is release plan consistent",
-	//	notes = "Send model to Caas to check whether a release plan is consistent.",
-	//	response = String.class)
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
-//			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-//			@ApiResponse(code = 409, message = "Check of inconsistency returns JSON {\"response\": {\"consistent\": false}}")}) 
-//	@PostMapping(value = "/projects/uploadDataAndCheckForConsistency")
-//	public ResponseEntity<String> uploadDataAndCheckForConsistency(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-//		String completeAddress = caasAddress + "/uploadDataAndCheckForConsistency";	
-//		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);		
-//	}
-	
-	/**
-	 * Checks whether a release plan is consistent and provides diagnosis if not
-	 * 
-	 * @param jsonString
-	 * @return JSON response
-	 * 		{ 
-	 * 			"response": {
-	 * 				"consistent": false, 
-	 * 				"diagnosis": [
-	 * 					[
-	 * 						{
-	 * 							"requirement": (requirementID)
-	 * 						}
-	 * 					]
-	 * 				]
-	 * 			}
-	 * 		}
-	 * @throws JSONException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 */
-	/*HIDDEN FROM SWAGGER. PERHAPS OBSOLETE.
-	 * 
-	 * @ApiOperation(value = "Is release plan consistent and do diagnosis",
-			notes = "Check whether a release plan is consistent. Provide diagnosis if it is not consistent.",
-			response = String.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success, returns JSON {\"response\": {\"consistent\": true}}"),
-			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
-			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
-	@PostMapping(value = "/projects/uploadDataCheckForConsistencyAndDoDiagnosis")*/
-//	public ResponseEntity<?> uploadDataCheckForConsistencyAndDoDiagnosis(@RequestBody String jsonString) throws JSONException, IOException, ParserConfigurationException {
-//		String completeAddress = caasAddress + "/uploadDataCheckForConsistencyAndDoDiagnosis";	
-//		return convertToMurmeliAndPostToCaas(jsonString, completeAddress, false, 30000);
-//	}
 }

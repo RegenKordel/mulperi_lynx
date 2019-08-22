@@ -21,6 +21,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import eu.openreq.mulperi.models.MurmeliAndDuplicates;
@@ -113,10 +114,11 @@ public class KeljuService {
 
 		ResponseEntity<String> response = postMurmeliToCaas(murmeliModel.getMurmeliString(), caasAddress + 
 				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut);
-		JsonObject responseObject = new Gson().fromJson(response.getBody().toString(), JsonObject.class);
-		responseObject.addProperty("duplicates", murmeliModel.getDuplicatesString());
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		JsonObject responseObject = gson.fromJson(response.getBody().toString(), JsonObject.class);
+		responseObject.add("duplicates", murmeliModel.getDuplicatesString());;
 		
-		return new ResponseEntity<String>(responseObject.toString(), response.getStatusCode());
+		return new ResponseEntity<String>(gson.toJson(responseObject), response.getStatusCode());
 		
 	}
 	
