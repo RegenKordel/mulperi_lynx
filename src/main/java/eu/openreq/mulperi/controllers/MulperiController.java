@@ -138,9 +138,10 @@ public class MulperiController {
 	public ResponseEntity<String> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
 			@RequestParam(required = false) Integer layerCount, 
 			@RequestParam(required = false) boolean analysisOnly,
-			@RequestParam(required = false, defaultValue = "0") int timeOut) 
+			@RequestParam(required = false, defaultValue = "0") int timeOut, 
+			@RequestParam(required = false) boolean omitCrossProject) 
 					throws JSONException, IOException, ParserConfigurationException {
-		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut);
+		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut, omitCrossProject);
 	}
 
 }

@@ -39,6 +39,8 @@ public class KeljuService {
 	@Autowired
 	FormatTransformerService formatService;
 	
+	Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	
 	public ResponseEntity<String> murmeliModelToKeljuCaaS(String requirements) throws JSONException, 
 			IOException, ParserConfigurationException {
 		OpenReqJSONParser parser = new OpenReqJSONParser(requirements);
@@ -86,35 +88,35 @@ public class KeljuService {
 			JsonObject object = formatService.murmeliClosureToOpenReqJson(responses);
 			return new ResponseEntity<>(object.toString(), HttpStatus.OK);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 		catch (Exception e) {
-			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Error:\n " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	
-	public ResponseEntity<String> consistencyCheckAndDiagnosis( String jsonString,
+	public ResponseEntity<String> consistencyCheckAndDiagnosis(String jsonString,
 			boolean analysisOnly, int timeOut) 
 					throws JSONException, IOException, ParserConfigurationException {
 		
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly 
 				+ "&timeOut=" + timeOut;
-		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(jsonString, false);
+		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(jsonString);
 		
 		return postMurmeliToCaas(murmeliModel.getMurmeliString(), completeAddress);
 
 	}
 	
 	public ResponseEntity<String> consistencyCheckForTransitiveClosure(List<String> requirementId, 
-			 Integer layerCount, boolean analysisOnly, int timeOut) 
+			 Integer layerCount, boolean analysisOnly, int timeOut, boolean omitCrossProject) 
 					throws JSONException, IOException, ParserConfigurationException {
 		ResponseEntity<String> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
-		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(transitiveClosure.getBody().toString(), false);
+		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(transitiveClosure.getBody().toString());
 
 		ResponseEntity<String> response = postMurmeliToCaas(murmeliModel.getMurmeliString(), caasAddress + 
-				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut 
+				+ "&omitCrossProject=" + omitCrossProject);
 		JsonObject responseObject = gson.fromJson(response.getBody().toString(), JsonObject.class);
 		responseObject.add("duplicates", murmeliModel.getDuplicatesString());;
 		
@@ -133,7 +135,7 @@ public class KeljuService {
 		} catch (ResourceAccessException e) {
 			return new ResponseEntity<>("Request timed out", HttpStatus.REQUEST_TIMEOUT);
 		} catch (HttpClientErrorException e) {
-			return new ResponseEntity<>("Error:\n\n" + e.getResponseBodyAsString(), e.getStatusCode());
+			return new ResponseEntity<>("Error:\n" + e.getResponseBodyAsString(), e.getStatusCode());
 		}
 	}
 
@@ -163,20 +165,6 @@ public class KeljuService {
 			return new ResponseEntity<>("Cannot send the model to KeljuCaas", HttpStatus.EXPECTATION_FAILED); //change to something else?
 		}
 	}
-	
-//	private ResponseEntity<?> updateModelInKeljuCaas(String jsonString) {
-//		
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setContentType(MediaType.APPLICATION_XML);
-//
-//		HttpEntity<String> entity = new HttpEntity<String>(jsonString, headers);
-//
-//		try {
-//			return rt.postForEntity(caasAddress + "/updateModel", entity, String.class);
-//		} catch (HttpClientErrorException e) {
-//			return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//	}
 	
 	
 	

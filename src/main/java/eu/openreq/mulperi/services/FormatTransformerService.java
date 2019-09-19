@@ -78,8 +78,7 @@ public class FormatTransformerService {
 	 * @return
 	 * @throws JSONException
 	 */
-	public MurmeliAndDuplicates openReqJsonToMurmeli(String jsonString, 
-			boolean duplicatesInResponse) throws JSONException {
+	public MurmeliAndDuplicates openReqJsonToMurmeli(String jsonString) throws JSONException {
 
 		OpenReqJSONParser parser = new OpenReqJSONParser(jsonString);
 		
