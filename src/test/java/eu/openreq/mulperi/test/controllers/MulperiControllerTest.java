@@ -136,7 +136,8 @@ public class MulperiControllerTest {
 		mockServer.expect(requestTo(caasAddress + "/findTransitiveClosureOfElement"))
 				.andRespond(withSuccess(closureFromCaas, MediaType.APPLICATION_JSON));
 		
-		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false&timeOut=0"))
+		mockServer.expect(requestTo(caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=false&timeOut=0"
+				+ "&omitCrossProject=false"))
 				.andRespond(withSuccess(closureFromMallikas, MediaType.TEXT_PLAIN));
 		
 		mockMvc.perform(post("/models/consistencyCheckForTransitiveClosure")

@@ -364,7 +364,8 @@ public class MurmeliModelGenerator {
 		this.attributeValues.put(description.getID(), description);
 		relationship.addAttribute(description);
 		
-		if (!from.getNameID().substring(0, from.getNameID().lastIndexOf('-')).equals(to.getNameID().substring(0, to.getNameID().lastIndexOf('-')))) {
+		if (description.getValue()!=null && from.getNameID().lastIndexOf('-')!=-1 && !from.getNameID().substring(0, from.getNameID()
+				.lastIndexOf('-')).equals(to.getNameID().substring(0, to.getNameID().lastIndexOf('-')))) {
 			description.getValue().add("crossProjectTrue");
 		}
 		
