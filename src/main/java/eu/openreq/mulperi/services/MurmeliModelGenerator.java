@@ -364,6 +364,10 @@ public class MurmeliModelGenerator {
 		this.attributeValues.put(description.getID(), description);
 		relationship.addAttribute(description);
 		
+		if (!from.getNameID().substring(0, from.getNameID().lastIndexOf('-')).equals(to.getNameID().substring(0, to.getNameID().lastIndexOf('-')))) {
+			description.getValue().add("crossProjectTrue");
+		}
+		
 		AttributeValue<Double> dependency_score = new AttributeValue<Double>("dependency_score", true, dep.getDependency_score());
 		this.attributeValues.put(dependency_score.getID(), dependency_score);
 		relationship.addAttribute(dependency_score);
