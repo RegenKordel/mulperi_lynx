@@ -109,13 +109,14 @@ public class KeljuService {
 	}
 	
 	public ResponseEntity<String> consistencyCheckForTransitiveClosure(List<String> requirementId, 
-			 Integer layerCount, boolean analysisOnly, int timeOut) 
+			 Integer layerCount, boolean analysisOnly, int timeOut, boolean omitCrossProject) 
 					throws JSONException, IOException, ParserConfigurationException {
 		ResponseEntity<String> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
 		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(transitiveClosure.getBody().toString());
 
 		ResponseEntity<String> response = postMurmeliToCaas(murmeliModel.getMurmeliString(), caasAddress + 
-				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut);
+				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut 
+				+ "&omitCrossProject=" + omitCrossProject);
 		JsonObject responseObject = gson.fromJson(response.getBody().toString(), JsonObject.class);
 		responseObject.add("duplicates", murmeliModel.getDuplicatesString());;
 		
