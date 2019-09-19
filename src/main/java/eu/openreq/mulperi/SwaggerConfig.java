@@ -1,5 +1,6 @@
 package eu.openreq.mulperi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,9 +15,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+	
+	@Value("${mulperi.swaggerHost}")
+	private String swaggerHost;
+	
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+        		.host(swaggerHost)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("eu.openreq.mulperi.controllers"))    
                 .paths(PathSelectors.any())  
