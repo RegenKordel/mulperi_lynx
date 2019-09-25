@@ -97,11 +97,12 @@ public class KeljuService {
 	
 	
 	public ResponseEntity<String> consistencyCheckAndDiagnosis(String jsonString,
-			boolean analysisOnly, int timeOut) 
+			boolean analysisOnly, int timeOut, boolean omitCrossProject, boolean omitReqRelDiag) 
 					throws JSONException, IOException, ParserConfigurationException {
 		
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly 
-				+ "&timeOut=" + timeOut;
+				+ "&timeOut=" + timeOut  +"&omitCrossProject="+omitCrossProject
+				+ "&omitReqRelDiag=" + omitReqRelDiag + "&omitReqRelDiag=" + omitReqRelDiag;
 		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(jsonString);
 		
 		return postMurmeliToCaas(murmeliModel.getMurmeliString(), completeAddress);
@@ -109,14 +110,15 @@ public class KeljuService {
 	}
 	
 	public ResponseEntity<String> consistencyCheckForTransitiveClosure(List<String> requirementId, 
-			 Integer layerCount, boolean analysisOnly, int timeOut, boolean omitCrossProject) 
+			 Integer layerCount, boolean analysisOnly, int timeOut, boolean omitCrossProject, boolean omitReqRelDiag) 
 					throws JSONException, IOException, ParserConfigurationException {
 		ResponseEntity<String> transitiveClosure = findTransitiveClosureOfRequirement(requirementId, layerCount);
 		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(transitiveClosure.getBody().toString());
 
 		ResponseEntity<String> response = postMurmeliToCaas(murmeliModel.getMurmeliString(), caasAddress + 
 				"/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly + "&timeOut=" + timeOut 
-				+ "&omitCrossProject=" + omitCrossProject);
+				+ "&omitCrossProject=" + omitCrossProject 
+				+ "&omitReqRelDiag=" + omitReqRelDiag);
 		JsonObject responseObject = gson.fromJson(response.getBody().toString(), JsonObject.class);
 		responseObject.add("duplicates", murmeliModel.getDuplicatesString());;
 		

@@ -108,9 +108,11 @@ public class MulperiController {
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
 	public ResponseEntity<String> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
 			@RequestParam(required = false) boolean analysisOnly,
-			@RequestParam(required = false, defaultValue = "0") int timeOut) 
+			@RequestParam(required = false, defaultValue = "0") int timeOut,
+			@RequestParam(required = false) boolean omitCrossProject,
+			@RequestParam(required = false) boolean omitReqRelDiag) 
 					throws JSONException, IOException, ParserConfigurationException {
-		return keljuService.consistencyCheckAndDiagnosis(jsonString, analysisOnly, timeOut);
+		return keljuService.consistencyCheckAndDiagnosis(jsonString, analysisOnly, timeOut, omitCrossProject, omitReqRelDiag);
 	}	
 	
 	@ApiOperation(value = "Get the transitive closure of a requirement",
@@ -139,9 +141,10 @@ public class MulperiController {
 			@RequestParam(required = false) Integer layerCount, 
 			@RequestParam(required = false) boolean analysisOnly,
 			@RequestParam(required = false, defaultValue = "0") int timeOut, 
-			@RequestParam(required = false) boolean omitCrossProject) 
+			@RequestParam(required = false) boolean omitCrossProject,
+			@RequestParam(required = false) boolean omitReqRelDiag) 
 					throws JSONException, IOException, ParserConfigurationException {
-		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut, omitCrossProject);
+		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut, omitCrossProject, omitReqRelDiag);
 	}
 
 }
