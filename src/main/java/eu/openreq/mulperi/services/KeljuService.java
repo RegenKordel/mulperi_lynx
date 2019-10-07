@@ -102,7 +102,7 @@ public class KeljuService {
 		
 		String completeAddress = caasAddress + "/consistencyCheckAndDiagnosis?analysisOnly=" + analysisOnly 
 				+ "&timeOut=" + timeOut  +"&omitCrossProject="+omitCrossProject
-				+ "&omitReqRelDiag=" + omitReqRelDiag + "&omitReqRelDiag=" + omitReqRelDiag;
+				+ "&omitReqRelDiag=" + omitReqRelDiag;
 		MurmeliAndDuplicates murmeliModel = formatService.openReqJsonToMurmeli(jsonString);
 		
 		return postMurmeliToCaas(murmeliModel.getMurmeliString(), completeAddress);
