@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import eu.openreq.mulperi.services.KeljuService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -106,12 +107,15 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. model not found"), 
 			@ApiResponse(code = 409, message = "Diagnosis of inconsistency returns JSON {\"response\": {\"consistent\": false, \"diagnosis\": [[{\"requirement\": (requirementID)}]]}}")}) 
 	@PostMapping(value = "/projects/consistencyCheckAndDiagnosis")
-	public ResponseEntity<String> consistencyCheckAndDiagnosis(@RequestBody String jsonString,
+	public ResponseEntity<String> consistencyCheckAndDiagnosis(@RequestBody String jsonString, 
+			@ApiParam(name = "analysisOnly", value = "If true, only analysis of consistency is performed and diagnoses are omitted. If false, Diagnosis is performed in case of inconsistency.")
 			@RequestParam(required = false) boolean analysisOnly,
+			@ApiParam(name = "timeOut", value = "Time in milliseconds allowed for each diagnosis. If the timeOut is exceeded, diagnosis fails and output will include 'Timeout' and 'Timeout_msg' fields. If 0 (default), there is no timeout for diagnoses.")
 			@RequestParam(required = false, defaultValue = "0") int timeOut,
+			@ApiParam(name = "omitCrossProject", value = "If 'true' and 'description' field of a relationship includes 'crossProjectTrue', the relationship is not taken into account in analysis. Adds 'RelationshipsIgnored' and 'RelationshipsIgnored_msg' fields to output.")
 			@RequestParam(required = false) boolean omitCrossProject,
-			@RequestParam(required = false) boolean omitReqRelDiag) 
-					throws JSONException, IOException, ParserConfigurationException {
+			@ApiParam(name = "omitReqRelDiag", value = "If true, the third diagnosis (both requirements and relationships) is omitted.")
+			@RequestParam(required = false) boolean omitReqRelDiag) throws JSONException, IOException, ParserConfigurationException {
 		return keljuService.consistencyCheckAndDiagnosis(jsonString, analysisOnly, timeOut, omitCrossProject, omitReqRelDiag);
 	}	
 	
@@ -139,11 +143,14 @@ public class MulperiController {
 	@PostMapping(value = "/consistencyCheckForTransitiveClosure")
 	public ResponseEntity<String> consistencyCheckForTransitiveClosure(@RequestBody List<String> requirementId, 
 			@RequestParam(required = false) Integer layerCount, 
+			@ApiParam(name = "analysisOnly", value = "If true, only analysis of consistency is performed and diagnoses are omitted. If false, Diagnosis is performed in case of inconsistency.")
 			@RequestParam(required = false) boolean analysisOnly,
-			@RequestParam(required = false, defaultValue = "0") int timeOut, 
+			@ApiParam(name = "timeOut", value = "Time in milliseconds allowed for each diagnosis. If the timeOut is exceeded, diagnosis fails and output will include 'Timeout' and 'Timeout_msg' fields. If 0 (default), there is no timeout for diagnoses.")
+			@RequestParam(required = false, defaultValue = "0") int timeOut,
+			@ApiParam(name = "omitCrossProject", value = "If 'true' and 'description' field of a relationship includes 'crossProjectTrue', the relationship is not taken into account in analysis. Adds 'RelationshipsIgnored' and 'RelationshipsIgnored_msg' fields to output.")
 			@RequestParam(required = false) boolean omitCrossProject,
-			@RequestParam(required = false) boolean omitReqRelDiag) 
-					throws JSONException, IOException, ParserConfigurationException {
+			@ApiParam(name = "omitReqRelDiag", value = "If true, the third diagnosis (both requirements and relationships) is omitted.")
+			@RequestParam(required = false) boolean omitReqRelDiag) throws JSONException, IOException, ParserConfigurationException {
 		return keljuService.consistencyCheckForTransitiveClosure(requirementId, layerCount, analysisOnly, timeOut, omitCrossProject, omitReqRelDiag);
 	}
 
