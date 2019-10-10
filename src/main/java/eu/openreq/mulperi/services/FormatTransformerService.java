@@ -33,6 +33,7 @@ public class FormatTransformerService {
 		Set<Requirement> requirements = new HashSet<Requirement>();
 		Set<Dependency> dependencies = new HashSet<Dependency>();
 		Map<Integer, List<String>> layers = new HashMap<Integer, List<String>>();
+		int numberOfOutpointingRelations = 0;
 		
 		for (String response : responses) {
 			TransitiveClosure closure = gson.fromJson(response, TransitiveClosure.class);
@@ -57,6 +58,8 @@ public class FormatTransformerService {
 					layers.put(i, closureLayers.get(i));
 				}
 			}
+			
+			numberOfOutpointingRelations = closure.getNumberOfOutpointingRelations();
 		}
 		
 		JsonObject object = new JsonObject();
@@ -64,6 +67,7 @@ public class FormatTransformerService {
 		object.add("requirements", gson.toJsonTree(requirements));
 		object.add("dependencies", gson.toJsonTree(dependencies));
 		object.add("layers", gson.toJsonTree(layers));
+		object.add("numberOfOutpointingRelations", gson.toJsonTree(numberOfOutpointingRelations));
 		
 		return object;
 	}
