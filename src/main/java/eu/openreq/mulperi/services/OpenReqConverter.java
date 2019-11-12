@@ -160,6 +160,8 @@ public class OpenReqConverter {
 			resolution.setName("Resolution");
 			resolution.setText(model.getAttributeValues().get(element.getAttributes().get("resolution")).getValue().toString());
 			
+			resolution.setId(element.getNameID() + "_RESOLUTION");
+			
 			req.getRequirementParts().add(resolution);
 		}
 		
@@ -172,6 +174,8 @@ public class OpenReqConverter {
 			} else {
 				platforms.setText(null);
 			}
+			
+			platforms.setId(element.getNameID() + "_PLATFORMS");
 			
 			req.getRequirementParts().add(platforms);
 		}
@@ -187,6 +191,8 @@ public class OpenReqConverter {
 				versions.setText(null);
 			}
 			
+			versions.setId(element.getNameID() + "_VERSIONS");
+			
 			req.getRequirementParts().add(versions);
 		}
 		
@@ -200,6 +206,8 @@ public class OpenReqConverter {
 			} else {
 				labels.setText(null);
 			}
+			
+			labels.setId(element.getNameID() + "_LABELS");
 			
 			req.getRequirementParts().add(labels);
 		}
@@ -215,6 +223,8 @@ public class OpenReqConverter {
 				environment.setText(null);
 			}
 			
+			environment.setId(element.getNameID() + "_ENVIRONMENT");
+			
 			req.getRequirementParts().add(environment);
 		}
 		
@@ -228,6 +238,8 @@ public class OpenReqConverter {
 			} else {
 				status.setText(null);
 			}
+			
+			status.setId(element.getNameID() + "_STATUS");
 			
 			req.getRequirementParts().add(status);
 		}
@@ -243,6 +255,8 @@ public class OpenReqConverter {
 				fixVersion.setText(null);
 			}
 			
+			fixVersion.setId(element.getNameID() + "_FIXVERSION");
+			
 			req.getRequirementParts().add(fixVersion);
 		}
 		
@@ -256,6 +270,8 @@ public class OpenReqConverter {
 			} else {
 				components.setText(null);
 			}
+			
+			components.setId(element.getNameID() + "_COMPONENTS");
 			
 			req.getRequirementParts().add(components);
 		}
