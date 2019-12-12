@@ -26,7 +26,11 @@ The API is documented by using Swagger2: https://api.openreq.eu/#/services/mulpe
 
 Run the compiled jar file, e.g., nohup java -jar Mulperi-1.10.jar.
 
-Mulpeeri uses the port 9202 that needs to be open to in order that the endpoints and Swagger page can be accessed. Mulperi also connects to KeljuCaaS services of OpenReq in the port 9205.
+Mulperi uses the port 9202 that needs to be open to in order that the endpoints and Swagger page can be accessed. Mulperi also connects to KeljuCaaS services of OpenReq in the port 9205.
+
+For token-based authorization using headers, the token can be added as a run property --mulperi.authToken=“tokenhere”, or 
+in the appropriate application.properties file. 
+If no token is provided, no such header will be included in the requests.
 
 ## How to Use This Microservice
 

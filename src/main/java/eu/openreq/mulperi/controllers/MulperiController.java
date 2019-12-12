@@ -2,17 +2,15 @@ package eu.openreq.mulperi.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import eu.openreq.mulperi.services.KeljuService;
@@ -37,8 +35,7 @@ public class MulperiController {
 	 * @param requirements
 	 * @return
 	 * @throws JSONException 
-	 * @throws ReleasePlanException 
-	 * @throws ParserConfigurationException 
+	 * @throws ParserConfigurationException
 	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Import OpenReq JSON model to Caas",
@@ -50,8 +47,8 @@ public class MulperiController {
 			@ApiResponse(code = 400, message = "Failure, ex. malformed input"),
 			@ApiResponse(code = 409, message = "Failure")}) 
 	@PostMapping(value = "murmeliModelToKeljuCaas")
-	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements) throws JSONException, 
-				IOException, ParserConfigurationException {
+	public ResponseEntity<String> murmeliModelToKeljuCaaS(@RequestBody String requirements)
+			throws JSONException, IOException, ParserConfigurationException {
 		return keljuService.murmeliModelToKeljuCaaS(requirements);
 	}
 	
@@ -60,8 +57,7 @@ public class MulperiController {
 	 * @param requirements
 	 * @return
 	 * @throws JSONException 
-	 * @throws ReleasePlanException 
-	 * @throws ParserConfigurationException 
+	 * @throws ParserConfigurationException
 	 * @throws IOException 
 	 */
 	@ApiOperation(value = "Update OpenReq JSON model in Caas",
@@ -128,7 +124,9 @@ public class MulperiController {
 			@ApiResponse(code = 409, message = "Conflict")}) 
 	@PostMapping(value = "/findTransitiveClosureOfRequirement")
 	public ResponseEntity<String> findTransitiveClosureOfRequirement(@RequestBody List<String> requirementId, 
-			@RequestParam(required = false) Integer layerCount) throws JSONException, IOException, ParserConfigurationException {
+			@RequestParam(required = false) Integer layerCount) throws
+			JSONException, IOException, ParserConfigurationException {
+
 		return keljuService.findTransitiveClosureOfRequirement(requirementId, layerCount);
 
 	}
