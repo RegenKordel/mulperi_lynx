@@ -285,62 +285,65 @@ public class MurmeliModelGenerator {
 		
 		Element from = null;
 		Element to = null;
-		
-		switch(dep.getDependency_type()) {
-		case CONTRIBUTES:
-			type = NameType.CONTRIBUTES;
-			break;
-		case DAMAGES:
-			type = NameType.DAMAGES;
-			break;
-		case DECOMPOSITION:
-			
-			from = findRequirement(dep.getFromid());
-			to = findRequirement(dep.getToid());
-			//TODO CHECK if adding this creates side effects
-			//it passes DECOMPOSITION also as dependency
-			//works for ReleasePlanner, but maybe not for something else?
-			type = NameType.DECOMPOSITION;
-			
-			break;
-			/*
-			 * NOTE! Passing DECOMPOSITION as parts has been disabled in OpenReq project.
-			 * DECOMPOSITION is still passed on as relationships. What to do with further projects TBD.
-			if (!from.getParts().isEmpty()) {
-				from.getParts().get(0).addPart(to);
+		if(dep.getDependency_type() != null && dep != null)
+		{
+			switch (dep.getDependency_type())
+			{
+				case CONTRIBUTES:
+					type = NameType.CONTRIBUTES;
+					break;
+				case DAMAGES:
+					type = NameType.DAMAGES;
+					break;
+				case DECOMPOSITION:
+
+					from = findRequirement(dep.getFromid());
+					to = findRequirement(dep.getToid());
+					//TODO CHECK if adding this creates side effects
+					//it passes DECOMPOSITION also as dependency
+					//works for ReleasePlanner, but maybe not for something else?
+					type = NameType.DECOMPOSITION;
+
+					break;
+				/*
+				 * NOTE! Passing DECOMPOSITION as parts has been disabled in OpenReq project.
+				 * DECOMPOSITION is still passed on as relationships. What to do with further projects TBD.
+				if (!from.getParts().isEmpty()) {
+					from.getParts().get(0).addPart(to);
+					break;
+				}
+
+				Parts part = new Parts("decomposition");
+				part.addPart(to);
+				from.addPart(part);
+
 				break;
+				*/
+				case DUPLICATES:
+					type = NameType.DUPLICATES;
+					break;
+				case INCOMPATIBLE:
+					type = NameType.INCOMPATIBLE;
+					break;
+				case REFINES:
+					type = NameType.REFINES;
+					break;
+				case REPLACES:
+					type = NameType.REPLACES;
+					break;
+				case REQUIRES:
+					type = NameType.REQUIRES;
+					break;
+				case SIMILAR:
+					type = NameType.SIMILAR;
+					break;
+				case EXCLUDES:
+					type = NameType.EXCLUDES;
+					break;
+				case IMPLIES:
+					type = NameType.IMPLIES;
+					break;
 			}
-			
-			Parts part = new Parts("decomposition");
-			part.addPart(to);
-			from.addPart(part);
-			
-			break;
-			*/
-		case DUPLICATES:
-			type = NameType.DUPLICATES;
-			break;
-		case INCOMPATIBLE:
-			type = NameType.INCOMPATIBLE;
-			break;
-		case REFINES:
-			type = NameType.REFINES;
-			break;
-		case REPLACES:
-			type = NameType.REPLACES;
-			break;
-		case REQUIRES:
-			type = NameType.REQUIRES;
-			break;
-		case SIMILAR:
-			type = NameType.SIMILAR;
-			break;
-		case EXCLUDES:
-			type = NameType.EXCLUDES;
-			break;
-		case IMPLIES:
-			type = NameType.IMPLIES;
-			break;
 		}
 		
 		if (type == null) {
@@ -829,7 +832,10 @@ public class MurmeliModelGenerator {
 		}
 		
 		for (Dependency dep : dependencies) {
-			mapDependency(dep);
+			if(dep != null)
+			{
+				mapDependency(dep);
+			}
 		}
 		
 		this.initializeRootContainer(projectName);
