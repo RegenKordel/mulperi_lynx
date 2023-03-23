@@ -20,7 +20,6 @@ import eu.openreq.mulperi.models.json.Dependency;
 import eu.openreq.mulperi.models.json.Project;
 import eu.openreq.mulperi.models.json.Release;
 import eu.openreq.mulperi.models.json.Requirement;
-import eu.openreq.mulperi.models.json.Requirement_type;
 import fi.helsinki.ese.murmeli.ElementModel;
 import fi.helsinki.ese.murmeli.TransitiveClosure;
 
@@ -76,9 +75,6 @@ public class FormatTransformerService {
 	 * Converts the given OpenReq JSON to Murmeli along with various checks, then sends it to Keljucaas
 	 * 
 	 * @param jsonString
-	 * @param completeAddress
-	 * @param duplicatesInResponse
-	 * @param timeOut
 	 * @return
 	 * @throws JSONException
 	 */
@@ -91,7 +87,7 @@ public class FormatTransformerService {
 		
 		for (Requirement req : requirements) {
 			if (req.getRequirement_type() == null) {
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
+				req.setRequirement_type("requirement");
 			}
 		} 
 		

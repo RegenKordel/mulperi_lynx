@@ -49,22 +49,11 @@ public class MurmeliModelGeneratorTest {
 	    	req.setName("req" + i);
 	    	req.setCreated_at(123 + i);
 	    	
-	    	int reqValue = i;
-	    	if (reqValue > Requirement_type.values().length-1) {
-	    		reqValue = Requirement_type.values().length-1;
-	    	}
-	    	req.setRequirement_type(Requirement_type.values()[reqValue]);
-	    	
-	    	reqValue = i;
-	    	if (reqValue > Requirement_status.values().length-1) {
-	    		reqValue = Requirement_status.values().length-1;
-	    	}
-	    	
-	    	req.setStatus(Requirement_status.values()[reqValue]);
-	    	
-	    	List<RequirementPart> newParts = parts;
-	    	
-	    	newParts.get(5).setText(Requirement_status.values()[reqValue].toString());
+	    	req.setRequirement_type("epic");
+
+	    	req.setStatus("open");
+
+			parts.get(5).setText("open");
 	    	
 	    	req.setRequirementParts(parts);
 	    	

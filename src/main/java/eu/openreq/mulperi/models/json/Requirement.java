@@ -72,7 +72,7 @@ public class Requirement {
 	*/
 	@SerializedName("requirement_type")
 	@Expose
-	private Requirement_type requirement_type;
+	private String requirement_type;
 	/**
 	* The current status of a requirement
 	* (Required)
@@ -80,7 +80,7 @@ public class Requirement {
 	*/
 	@SerializedName("status")
 	@Expose
-	private Requirement_status status;
+	private String status;
 	/**
 	* The requirements belonging to this requirement
 	* 
@@ -166,19 +166,19 @@ public class Requirement {
 		this.effort = effort;
 	}
 	
-	public Requirement_type getRequirement_type() {
+	public String getRequirement_type() {
 		return requirement_type;
 	}
 	
-	public void setRequirement_type(Requirement_type requirement_type) {
+	public void setRequirement_type(String requirement_type) {
 		this.requirement_type = requirement_type;
 	}
 	
-	public Requirement_status getStatus() {
+	public String getStatus() {
 		return status;
 	}
 	
-	public void setStatus(Requirement_status status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	

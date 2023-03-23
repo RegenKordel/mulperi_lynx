@@ -48,41 +48,8 @@ public class OpenReqConverter {
 			
 			req.setRequirementParts(new ArrayList<RequirementPart>());
 			req.setId(element.getNameID());
-			switch (element.getType()) {
-			case "bug":
-				req.setRequirement_type(Requirement_type.BUG);
-				break;
-			case "epic":
-				req.setRequirement_type(Requirement_type.EPIC);
-				break;
-			case "functional":
-				req.setRequirement_type(Requirement_type.FUNCTIONAL);
-				break;
-			case "initiative":
-				req.setRequirement_type(Requirement_type.INITIATIVE);
-				break;
-			case "issue":
-				req.setRequirement_type(Requirement_type.ISSUE);
-				break;
-			case "non_functional":
-				req.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
-				break;
-			case "non-functional":
-				req.setRequirement_type(Requirement_type.NON_FUNCTIONAL);
-				break;
-			case "prose":
-				req.setRequirement_type(Requirement_type.PROSE);
-				break;
-			case "requirement":
-				req.setRequirement_type(Requirement_type.REQUIREMENT);
-				break;
-			case "task":
-				req.setRequirement_type(Requirement_type.TASK);
-				break;
-			case "user-story":
-				req.setRequirement_type(Requirement_type.USER_STORY);
-				break;
-			}
+			req.setRequirement_type(element.getType());
+
 			mapElementAttributes(req, element);
 			
 			requirements.add(req);
@@ -92,44 +59,7 @@ public class OpenReqConverter {
 	private void mapElementAttributes(Requirement req, Element element) {
 		if (element.getAttributes().containsKey("status")) {
 			String status = model.getAttributeValues().get(element.getAttributes().get("elementStatus")).getValue().toString();
-			switch(status.toLowerCase()) {
-			case "pending":
-				req.setStatus(Requirement_status.PENDING);
-				break;
-			case "completed":
-				req.setStatus(Requirement_status.COMPLETED);
-				break;
-			case "accepted":
-				req.setStatus(Requirement_status.ACCEPTED);
-				break;
-			case "deferred":
-				req.setStatus(Requirement_status.DEFERRED);
-				break;
-			case "draft":
-				req.setStatus(Requirement_status.DRAFT);
-				break;
-			case "in_progress":
-				req.setStatus(Requirement_status.IN_PROGRESS);
-				break;
-			case "inprogress":
-				req.setStatus(Requirement_status.IN_PROGRESS);
-				break;
-			case "open":
-				req.setStatus(Requirement_status.OPEN);
-				break;
-			case "planned":
-				req.setStatus(Requirement_status.PLANNED);
-				break;
-			case "recommended":
-				req.setStatus(Requirement_status.RECOMMENDED);
-				break;
-			case "rejected":
-				req.setStatus(Requirement_status.REJECTED);
-				break;
-			case "submitted":
-				req.setStatus(Requirement_status.SUBMITTED);
-				break;
-			}
+			req.setStatus(status);
 		}
 		
 		if (element.getAttributes().containsKey("modified_at")) {

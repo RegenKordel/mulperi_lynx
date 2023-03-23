@@ -373,7 +373,7 @@ public class MurmeliModelGenerator {
         if (req.getStatus() != null) {
             status = factorStatus(req.getStatus());
         } else {
-            status = factorStatus(Requirement_status.OPEN);
+            status = factorStatus("open");
         }
 
         Element element = new Element(name);
@@ -384,7 +384,9 @@ public class MurmeliModelGenerator {
 
         titleToElement(req, element);
 
-        if (req.getRequirement_type() == null) {
+        String type = req.getRequirement_type();
+
+        if (type == null) {
             ElementType mock = this.elementTypes.get("mock");
             element.setType(mock);
 
@@ -398,48 +400,9 @@ public class MurmeliModelGenerator {
                 return this.elements.get(element.getNameID());
             }
         } else {
-            switch (req.getRequirement_type()) {
-                case BUG:
-                    element.setType(this.elementTypes.get("bug"));
-                    element.addAttribute(factorEffort(req, "bug"));
-                    break;
-                case EPIC:
-                    element.setType(this.elementTypes.get("epic"));
-                    element.addAttribute(factorEffort(req, "epic"));
-                    break;
-                case FUNCTIONAL:
-                    element.setType(this.elementTypes.get("functional"));
-                    element.addAttribute(factorEffort(req, "functional"));
-                    break;
-                case INITIATIVE:
-                    element.setType(this.elementTypes.get("initiative"));
-                    element.addAttribute(factorEffort(req, "initiative"));
-                    break;
-                case ISSUE:
-                    element.setType(this.elementTypes.get("issue"));
-                    element.addAttribute(factorEffort(req, "issue"));
-                    break;
-                case NON_FUNCTIONAL:
-                    element.setType(this.elementTypes.get("non-functional"));
-                    element.addAttribute(factorEffort(req, "non-functional"));
-                    break;
-                case PROSE:
-                    element.setType(this.elementTypes.get("prose"));
-                    element.addAttribute(factorEffort(req, "prose"));
-                    break;
-                case REQUIREMENT:
-                    element.setType(this.elementTypes.get("requirement"));
-                    element.addAttribute(factorEffort(req, "requirement"));
-                    break;
-                case TASK:
-                    element.setType(this.elementTypes.get("task"));
-                    element.addAttribute(factorEffort(req, "task"));
-                    break;
-                case USER_STORY:
-                    element.setType(this.elementTypes.get("user-story"));
-                    element.addAttribute(factorEffort(req, "user-story"));
-                    break;
-            }
+            element.setType(req.getRequirement_type());
+            AttributeValue<Integer> factor = factorEffort(req, type);
+            if (factor != null) element.addAttribute(factor);
         }
         // TODO: in case of mock, might cause problems when trying to find the
         // element in the context of the project the mock element doesn't exist in
@@ -472,6 +435,7 @@ public class MurmeliModelGenerator {
     private void resolutionToElement(Requirement req, Element element) {
         if (req.getRequirementParts() != null) {
             for (RequirementPart part : req.getRequirementParts()) {
+
                 if (part.getName().equals("Resolution")) {
                     if (!this.resolutions.containsKey(part.getText())) {
 
@@ -577,121 +541,14 @@ public class MurmeliModelGenerator {
      * @param status
      * @return
      */
-    private AttributeValue<String> factorStatus(Requirement_status status) {
+    private AttributeValue<String> factorStatus(String status) {
 
         AttributeValueType statuses = this.attributeValueTypes.get("elementStatus");
 
-        switch (status) {
-            case ACCEPTED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("accepted")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case COMPLETED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("completed")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case DEFERRED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("deferred")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-                break;
-            case DRAFT:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("draft")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case IN_PROGRESS:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("inProgress")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case PENDING:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("pending")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case REJECTED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("rejected")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case SUBMITTED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("submitted")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case OPEN:
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("open")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case PLANNED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("planned")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            case RECOMMENDED:
-
-                for (Integer value : statuses.getValues()) {
-
-                    if (this.attributeValues.get(value).getValue().equals("recommended")) {
-                        return (AttributeValue<String>) this.attributeValues.get(value);
-                    }
-                }
-
-                break;
-            default:
-                break;
+        for (Integer value : statuses.getValues()) {
+            if (this.attributeValues.get(value).getValue().equals(status)) {
+                return (AttributeValue<String>) this.attributeValues.get(value);
+            }
         }
 
         return null;
