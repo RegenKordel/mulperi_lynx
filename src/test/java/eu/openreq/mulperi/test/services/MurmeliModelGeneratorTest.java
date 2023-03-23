@@ -109,17 +109,10 @@ public class MurmeliModelGeneratorTest {
 	    	dep.setFromid("" + i);
 	    	dep.setToid("" + i + 1);
 	    	dep.setCreated_at(123 + i);
+
+	    	dep.setDependency_type("duplicate");
 	    	
-	    	int depValue = i;
-	    	if (depValue > Dependency_type.values().length-1) {
-	    		depValue = Dependency_type.values().length-1;
-	    	}
-	    	dep.setDependency_type(Dependency_type.values()[depValue]);
-	    	
-	    	depValue = i;
-	    	if (depValue > Dependency_status.values().length-1) {
-	    		depValue = Dependency_status.values().length-1;
-	    	}
+	    	int depValue = Math.min(i, Dependency_status.values().length-1);
 	    	
 	    	dep.setStatus(Dependency_status.values()[depValue]);
 	    	

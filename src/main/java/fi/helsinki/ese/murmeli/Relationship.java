@@ -13,22 +13,6 @@ import com.google.gson.annotations.SerializedName;
 *
 */
 public class Relationship {
-
-	public enum NameType {
-		
-        REFINES,
-        REQUIRES,
-        INCOMPATIBLE,
-        SIMILAR,
-        DUPLICATES,
-        REPLACES,
-        DAMAGES,
-        CONTRIBUTES,
-        EXCLUDES,
-        IMPLIES,
-        DECOMPOSITION
-	}
-	
 	@SerializedName("id")
 	@Expose
 	final private int id;
@@ -40,7 +24,7 @@ public class Relationship {
 	*/
 	@SerializedName("nameType")
 	@Expose
-	private NameType nameType;
+	private String nameType;
 	
 	/**
 	*
@@ -70,7 +54,7 @@ public class Relationship {
 	
 	private static int hid = 0;
 	
-	public Relationship(NameType nameType, String from, String to, int id) {
+	public Relationship(String nameType, String from, String to, int id) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
@@ -78,7 +62,7 @@ public class Relationship {
 		this.attributes = new HashMap<String, Integer>();
 	}
 	
-	public Relationship(NameType nameType, String from, String to) {
+	public Relationship(String nameType, String from, String to) {
 		this.nameType = nameType;
 		this.fromID = from;
 		this.toID = to;
@@ -87,12 +71,12 @@ public class Relationship {
 		hid++;
 	}
 	
-	public Relationship(NameType nameType, Element from, Element to, int id) {
+	public Relationship(String nameType, Element from, Element to, int id) {
 		
 		this(nameType, from.getNameID(), to.getNameID(), id);
 	}
 	
-	public Relationship(NameType nameType, Element from, Element to) {
+	public Relationship(String nameType, Element from, Element to) {
 		
 		this(nameType, from.getNameID(), to.getNameID());
 	}
@@ -130,7 +114,7 @@ public class Relationship {
 	* (Required)
 	*
 	*/
-	public NameType getNameType() {
+	public String getNameType() {
 		return nameType;
 	}
 	
@@ -139,7 +123,7 @@ public class Relationship {
 	* (Required)
 	*
 	*/
-	public void setNameType(NameType nameType) {
+	public void setNameType(String nameType) {
 		this.nameType = nameType;
 	}
 	

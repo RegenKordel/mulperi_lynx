@@ -146,12 +146,12 @@ public class OpenReqConverter {
 		
 		if (element.getAttributes().containsKey("effort")) {
 			String effort = model.getAttributeValues().get(element.getAttributes().get("effort")).getValue().toString();
-			req.setEffort(new Double(effort).intValue()); 
+			req.setEffort((int) Double.parseDouble(effort));
 		}
 		
 		if (element.getAttributes().containsKey("priority")) {
 			String priority = model.getAttributeValues().get(element.getAttributes().get("priority")).getValue().toString();
-			req.setPriority(new Double(priority).intValue()); 
+			req.setPriority((int) Double.parseDouble(priority));
 		}
 		
 		if (element.getAttributes().containsKey("resolution")) {
@@ -287,41 +287,7 @@ public class OpenReqConverter {
 			Dependency dep = new Dependency();
 			dep.setFromid(rel.getFromID());
 			dep.setToid(rel.getToID());
-			switch(rel.getNameType()) {
-			case REFINES:
-				dep.setDependency_type(Dependency_type.REFINES);
-				break;
-			case CONTRIBUTES:
-				dep.setDependency_type(Dependency_type.CONTRIBUTES);
-				break;
-			case DAMAGES:
-				dep.setDependency_type(Dependency_type.DAMAGES);
-				break;
-			case DUPLICATES:
-				dep.setDependency_type(Dependency_type.DUPLICATES);
-				break;
-			case INCOMPATIBLE:
-				dep.setDependency_type(Dependency_type.INCOMPATIBLE);
-				break;
-			case REPLACES:
-				dep.setDependency_type(Dependency_type.REPLACES);
-				break;
-			case REQUIRES:
-				dep.setDependency_type(Dependency_type.REQUIRES);
-				break;
-			case SIMILAR:
-				dep.setDependency_type(Dependency_type.SIMILAR);
-				break;
-			case EXCLUDES:
-				dep.setDependency_type(Dependency_type.EXCLUDES);
-				break;
-			case IMPLIES:
-				dep.setDependency_type(Dependency_type.IMPLIES);
-				break;
-			case DECOMPOSITION:
-				dep.setDependency_type(Dependency_type.DECOMPOSITION);
-				break;
-			}
+			dep.setDependency_type(rel.getNameType());
 			mapRelationshipAttributes(dep, rel);
 			
 			dependencies.add(dep);
@@ -367,7 +333,7 @@ public class OpenReqConverter {
 						Dependency dep = new Dependency();
 						dep.setFromid(element.getNameID());
 						dep.setToid(toId);
-						dep.setDependency_type(Dependency_type.DECOMPOSITION);
+						dep.setDependency_type("blocks");
 						// TODO: What is the status was something else when transforming into Murmeli?
 						dep.setStatus(Dependency_status.ACCEPTED);
 						

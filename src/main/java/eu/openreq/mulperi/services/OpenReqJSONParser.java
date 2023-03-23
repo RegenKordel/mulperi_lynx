@@ -147,7 +147,7 @@ public class OpenReqJSONParser {
 		JsonArray changes = new JsonArray();
 		
 		for (Dependency dep : this.dependencies) {
-			if (dep.getDependency_type()==Dependency_type.DUPLICATES) {
+			if ("duplicate".equals(dep.getDependency_type())) {
 				dupsLeft.add(dep);			
 			} else {
 				nonDups.add(dep);

@@ -22,7 +22,7 @@ public class Dependency {
 	*/
 	@SerializedName("dependency_type")
 	@Expose
-	private Dependency_type dependency_type;
+	private String dependency_type;
 	/**
 	* NLP engine's estimation of the reliability of a proposed dependency
 	* 
@@ -67,11 +67,11 @@ public class Dependency {
 	@Expose
 	private long created_at;
 
-	public Dependency_type getDependency_type() {
+	public String getDependency_type() {
 		return dependency_type;
 	}
 	
-	public void setDependency_type(Dependency_type dependency_type) {
+	public void setDependency_type(String dependency_type) {
 		this.dependency_type = dependency_type;
 	}
 	
