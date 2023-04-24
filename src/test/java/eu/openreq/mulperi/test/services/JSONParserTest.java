@@ -10,9 +10,9 @@ import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.openreq.mulperi.models.json.Dependency;
-import eu.openreq.mulperi.models.json.Release;
-import eu.openreq.mulperi.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Dependency;
+import eu.closedreq.bridge.models.json.Release;
+import eu.closedreq.bridge.models.json.Requirement;
 import eu.openreq.mulperi.services.OpenReqJSONParser;
 
 public class JSONParserTest {

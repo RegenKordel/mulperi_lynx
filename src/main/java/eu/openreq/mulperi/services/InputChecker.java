@@ -3,10 +3,10 @@ package eu.openreq.mulperi.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.openreq.mulperi.models.json.Dependency;
-import eu.openreq.mulperi.models.json.Project;
-import eu.openreq.mulperi.models.json.Release;
-import eu.openreq.mulperi.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Dependency;
+import eu.closedreq.bridge.models.json.Project;
+import eu.closedreq.bridge.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Release;
 
 public class InputChecker {
 	
@@ -14,8 +14,8 @@ public class InputChecker {
 		
 	}
 	
-	public String checkInput(Project project, List<Requirement> requirements, 
-			List<Dependency> dependencies, List<Release> releases) {		
+	public String checkInput(Project project, List<Requirement> requirements,
+							 List<Dependency> dependencies, List<Release> releases) {
 		
 		List<String> reqIds = new ArrayList<String>();
 		for (Requirement req : requirements) {
@@ -263,7 +263,6 @@ public class InputChecker {
 	
 	/**
 	 * Check that a requirement is not included in multiple releases
-	 * @param reqIds
 	 * @param releases
 	 * @return
 	 */

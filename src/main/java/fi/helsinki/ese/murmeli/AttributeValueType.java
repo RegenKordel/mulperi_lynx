@@ -12,7 +12,6 @@ import com.google.gson.annotations.SerializedName;
 * AttributeValueType
 * <p>
 * Reference to a certain value or set of values
- * @param <T>
 *
 */
 public class AttributeValueType {

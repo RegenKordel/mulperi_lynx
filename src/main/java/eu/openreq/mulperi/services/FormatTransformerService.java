@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import eu.closedreq.bridge.models.json.Project;
+import eu.closedreq.bridge.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Dependency;
 import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import eu.openreq.mulperi.models.MurmeliAndDuplicates;
-import eu.openreq.mulperi.models.json.Dependency;
-import eu.openreq.mulperi.models.json.Project;
-import eu.openreq.mulperi.models.json.Release;
-import eu.openreq.mulperi.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Release;
 import fi.helsinki.ese.murmeli.ElementModel;
 import fi.helsinki.ese.murmeli.TransitiveClosure;
 

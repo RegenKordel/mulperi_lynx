@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.openreq.mulperi.models.json.Requirement;
+import eu.closedreq.bridge.models.json.Requirement;
 import eu.openreq.mulperi.services.InputChecker;
 import eu.openreq.mulperi.services.OpenReqJSONParser;
 

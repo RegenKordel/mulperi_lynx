@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import eu.openreq.mulperi.models.json.*;
+import eu.closedreq.bridge.models.json.Dependency;
+import eu.closedreq.bridge.models.json.Release;
+import eu.closedreq.bridge.models.json.Requirement;
+import eu.closedreq.bridge.models.json.RequirementPart;
 import fi.helsinki.ese.murmeli.*;
 import fi.helsinki.ese.murmeli.AttributeValueType.BaseType;
 import fi.helsinki.ese.murmeli.AttributeValueType.Bound;
